@@ -24,4 +24,5 @@ Imports:
     fs,
     desc
 Suggests: 
-    testthat
+    testthat,
+    MASS

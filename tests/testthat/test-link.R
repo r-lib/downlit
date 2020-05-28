@@ -69,15 +69,16 @@ test_that("links to home of re-exported functions", {
 test_that("fails gracely if can't find re-exported function", {
   skip_if_not(getRversion() >= "3.2.0")
 
-  scoped_package_context("pkgdown", c(foo = "reexports"))
+  scoped_package_context("downlit", c(foo = "reexports"))
   expect_equal(href_expr_(foo()), NA_character_)
 })
 
 test_that("can link to remote pkgdown sites", {
   scoped_package_context("test", c(foo = "bar"))
 
-  expect_equal(href_expr_(pkgdown::add_slug), href_topic_remote("pkgdown", "add_slug"))
-  expect_equal(href_expr_(pkgdown::add_slug(1)), href_topic_remote("pkgdown", "add_slug"))
+  # use href_string() to avoid R CMD check NOTE
+  expect_equal(href_string("pkgdown::add_slug"), href_topic_remote("pkgdown", "add_slug"))
+  expect_equal(href_string("pkgdown::add_slug(1)"), href_topic_remote("pkgdown", "add_slug"))
 })
 
 test_that("or local sites, if registered", {
@@ -124,7 +125,7 @@ test_that("library() linked to package reference", {
   scoped_package_context("test", c(foo = "bar"))
 
   expect_equal(href_expr_(library()), NA_character_)
-  expect_equal(href_expr_(library(pkgdown)), "https://pkgdown.r-lib.org/reference")
+  expect_equal(href_expr_(library(rlang)), "https://rlang.r-lib.org/reference")
   expect_equal(href_expr_(library(MASS)), "https://rdrr.io/pkg/MASS/man")
 })
 
@@ -154,8 +155,8 @@ test_that("can link to remote articles", {
   )
 
   expect_equal(
-    href_expr_(vignette("pkgdown", "pkgdown")),
-    "https://pkgdown.r-lib.org/articles/pkgdown.html"
+    href_expr_(vignette("custom-expectation", "testthat")),
+    "https://testthat.r-lib.org/articles/custom-expectation.html"
   )
 })
 
