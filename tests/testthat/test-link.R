@@ -2,6 +2,7 @@ test_that("can link infix", {
   scoped_package_context("test")
   scoped_file_context() # package registry maintained on per-file basis
 
+  expect_equal(href_string("%in%"), "https://rdrr.io/r/base/match.html")
   expect_equal(href_topic("%in%"), "https://rdrr.io/r/base/match.html")
 
   expect_equal(href_expr_(`%in%`), href_topic("%in%"))
@@ -17,14 +18,18 @@ test_that("can link function calls", {
   # even if namespaced
   expect_equal(href_expr_(test::foo()), "bar.html")
   expect_equal(href_expr_(test::foo(1, 2, 3)), "bar.html")
+
+  # but function factories are ignored
+  expect_equal(href_expr_(foo()(1, 2, 3)), NA_character_)
+  # as functions with special syntax
+  expect_equal(href_expr_(if (TRUE) 1), NA_character_)
 })
-
-
 
 test_that("respects href_topic_local args", {
   scoped_package_context("test", c(foo = "bar"))
   scoped_file_context()
   expect_equal(href_expr_(foo()), "reference/bar.html")
+  expect_equal(href_expr_(barbar()), NA_character_)
 
   scoped_file_context("bar")
   expect_equal(href_expr_(foo()), NA_character_)
@@ -179,4 +184,8 @@ test_that("spurious functions are not linked (#889)", {
   expect_equal(href_expr_(Authors@R), NA_character_)
   expect_equal(href_expr_(content-home.html), NA_character_)
   expect_equal(href_expr_(toc: depth), NA_character_)
+})
+
+test_that("href_string fails cleanly if not parseable", {
+  expect_equal(href_string("1 +"), NA_character_)
 })
