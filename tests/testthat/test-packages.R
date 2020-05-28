@@ -33,8 +33,6 @@ test_that("handles expressions", {
 })
 
 test_that("detects with non-standard arg order", {
-  local_options(warnPartialMatchArgs = FALSE)
-
   expect_equal(extract_package_attach_(library(quiet = TRUE, pa = "a")), "a")
   expect_equal(extract_package_attach_(library(quiet = TRUE, a)), "a")
 })
