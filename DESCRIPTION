@@ -12,8 +12,8 @@ Description: Syntax highlight of R code, specifically designed
     for the needs of RMarkdown packages like pkgdown, hugodown, and
     bookdown.
 License: MIT + file LICENSE
+Depends: R (>= 3.2.0)
 Imports: 
-    fs,
     highlight,
     memoise,
     rlang,
@@ -21,7 +21,8 @@ Imports:
 Suggests: 
     MASS,
     testthat,
-    covr
+    covr,
+    pkgload
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)

@@ -3,26 +3,21 @@ article_index <- function(package) {
     context_get("article_index")
   } else if (devtools_loaded(package)) {
     # Use live docs for in-development packages
-    article_index_local(package)
+    article_index_source(package)
   } else {
     article_index_remote(package)
   }
 }
 
-article_index_local <- function(package, path = find.package(package)) {
-  if (!is_installed(package)) {
+article_index_source <- function(package) {
+  path <- file.path(find.package(package), "vignettes")
+  if (!file.exists(path)) {
     return(character())
   }
 
-  src <- fs::path(path, "vignettes")
-  if (!fs::dir_exists(src)) {
-    return(character())
-  }
-
-  vig_path <- fs::dir_ls(src, regexp = "\\.[rR]md$", recurse = TRUE, type = "file")
-
-  out_path <- gsub("\\.[rR]md$", ".html", fs::path_rel(vig_path, start = fs::path_real(src)))
-  vig_name <- gsub("\\.[rR]md$", "", fs::path_file(vig_path))
+  vig_path <- dir(path, pattern = "\\.[rR]md$", recursive = TRUE)
+  out_path <- gsub("\\.[rR]md$", ".html", vig_path)
+  vig_name <- gsub("\\.[rR]md$", "", basename(vig_path))
 
   set_names(out_path, vig_name)
 }
@@ -38,7 +33,7 @@ article_index_remote <- function(package) {
   # Otherwise, fallback to vignette index
   path <- system.file("Meta", "vignette.rds", package = package)
   if (path == "") {
-    return(NULL)
+    return(character())
   }
 
   meta <- readRDS(path)
@@ -48,10 +43,6 @@ article_index_remote <- function(package) {
 }
 
 find_article <- function(package, name) {
-  if (!(is.character(package) || is.null(package)) || !is.character(name)) {
-    return()
-  }
-
   index <- article_index(package)
   if (has_name(index, name)) {
     index[[name]]

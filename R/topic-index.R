@@ -13,30 +13,26 @@ topic_index <- function(package) {
   }
 }
 
-topic_index_source <- memoise::memoise(function(package, path = NULL) {
-  if (!is_installed(package)) {
+topic_index_source <- function(package) {
+  path <- file.path(find.package(package), "man")
+  if (!file.exists(path)) {
     return(character())
   }
 
-  if (is.null(path)) {
-    path <- find.package(package)
-  }
-
   rd <- package_rd(path)
-  aliases <- lapply(rd, extract_tag, `[[`, "tag_alias")
+  aliases <- lapply(rd, extract_alias)
   names(aliases) <- gsub("\\.Rd$", "", names(rd))
 
   unlist(invert_index(aliases))
-})
+}
 
-
-topic_index_installed <- memoise::memoise(function(package) {
+topic_index_installed <- function(package) {
   path <- system.file("help", "aliases.rds", package = package)
   if (path == "")
     return(character())
 
   readRDS(path)
-})
+}
 
 # A helper that can warn if the topic is not found
 find_rdname <- function(package, topic, warn_if_not_found = FALSE) {
@@ -52,11 +48,9 @@ find_rdname <- function(package, topic, warn_if_not_found = FALSE) {
   }
 }
 
-find_rdname_local <- function(topic) {
-  find_rdname(NULL, topic)
-}
-
 find_rdname_attached <- function(topic) {
+  # Deliberately ignore base packages here; as don't want to link every
+  # single function invocation
   for (package in context_get("packages")) {
     rdname <- find_rdname(package, topic)
     if (!is.null(rdname)) {

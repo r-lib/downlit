@@ -58,7 +58,13 @@ href_expr <- function(expr, bare_symbol = FALSE) {
       href_package(pkg)
     } else if (fun_name == "vignette") {
       expr <- call_standardise(expr)
-      href_article(expr$topic, expr$package)
+      topic_ok <- is.character(expr$topic)
+      package_ok <- is.character(expr$package) || is.null(expr$package)
+      if (topic_ok && package_ok) {
+        href_article(expr$topic, expr$package)
+      } else {
+        NA_character_
+      }
     } else if (fun_name == "?") {
       if (n_args == 1) {
         topic <- expr[[2]]
@@ -107,7 +113,7 @@ href_topic <- function(topic, package = NULL) {
 }
 
 href_topic_local <- function(topic) {
-  rdname <- find_rdname_local(topic)
+  rdname <- find_rdname(NULL, topic)
   if (is.null(rdname)) {
     # Check attached packages
     loc <- find_rdname_attached(topic)
