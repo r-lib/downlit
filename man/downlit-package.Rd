@@ -4,9 +4,10 @@
 \name{downlit-package}
 \alias{downlit}
 \alias{downlit-package}
-\title{downlit: What the Package Does (One Line, Title Case)}
+\title{downlit: Syntax Highlighting and Automatic Linking}
 \description{
-What the package does (one paragraph).
+Syntax highlight of R code, specifically designed for the needs
+    of RMarkdown packages like pkgdown, hugodown, and bookdown.
 }
 \author{
 \strong{Maintainer}: Hadley Wickham \email{hadley@rstudio.com}

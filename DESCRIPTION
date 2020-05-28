@@ -1,5 +1,5 @@
 Package: downlit
-Title: What the Package Does (One Line, Title Case)
+Title: Syntax Highlighting and Automatic Linking
 Version: 0.0.0.9000
 Authors@R: 
     c(person(given = "Hadley",
@@ -8,7 +8,8 @@ Authors@R:
              email = "hadley@rstudio.com"),
       person(given = "RStudio",
              role = "cph"))
-Description: What the package does (one paragraph).
+Description: Syntax highlight of R code, specifically designed for the needs
+    of RMarkdown packages like pkgdown, hugodown, and bookdown.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
