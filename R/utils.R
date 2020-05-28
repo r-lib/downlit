@@ -37,53 +37,28 @@ escape_html <- function(x) {
   x <- gsub("&", "&amp;", x)
   x <- gsub("<", "&lt;", x)
   x <- gsub(">", "&gt;", x)
-  # x <- gsub("'", "&#39;", x)
-  # x <- gsub("\"", "&quot;", x)
   x
 }
-
-unescape_html <- function(x) {
-  x <- gsub("&lt;", "<", x)
-  x <- gsub("&gt;", ">", x)
-  x <- gsub("&amp;", "&", x)
-  x
-}
-
 
 is_infix <- function(x) {
-  if (is.null(x)) {
-    return(FALSE)
-  }
-
-  x <- as.character(x)
   ops <- c(
-    "+", "-", "*", "^", "/",
-    "==", ">", "<", "!=", "<=", ">=",
-    "&", "|",
-    "[[", "[", "$"
+    "::", ":::", "$", "@", "[", "[[", "^", "-", "+", ":", "*", "/",
+    "<", ">", "<=", ">=", "==", "!=", "!", "&", "&&", "|", "||", "~",
+    "->", "->>", "<-", "<<-", "=", "?"
   )
 
   grepl("^%.*%$", x) || x %in% ops
 }
 
-is_prefix <- function(fun) {
-  if (grepl("^%.*%$", fun)) {
-    return(FALSE)
-  }
-
-  infix <- c(
-    "::", ":::", "$", "@", "[", "[[", "^", "-", "+", ":", "*", "/",
-    "<", ">", "<=", ">=", "==", "!=", "!", "&", "&&", "|", "||", "~",
-    "->", "->>", "<-", "<<-", "=", "?"
-  )
-  if (fun %in% infix) {
+is_prefix <- function(x) {
+  if (is_infix(x)) {
     return(FALSE)
   }
 
   special <- c(
     "(", "{", "if", "for", "while", "repeat", "next", "break", "function"
   )
-  if (fun %in% special) {
+  if (x %in% special) {
     return(FALSE)
   }
 

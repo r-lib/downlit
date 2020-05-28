@@ -4,7 +4,6 @@ test_that("can link infix", {
 
   expect_equal(href_topic("%in%"), "https://rdrr.io/r/base/match.html")
 
-  expect_equal(href_expr_("%in%"), href_topic("%in%"))
   expect_equal(href_expr_(`%in%`), href_topic("%in%"))
   expect_equal(href_expr_(?`%in%`), href_topic("%in%"))
 })

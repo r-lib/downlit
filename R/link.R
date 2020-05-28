@@ -16,9 +16,14 @@ href_string <- function(x, bare_symbol = FALSE) {
 
 
 href_expr <- function(expr, bare_symbol = FALSE) {
-  if (is_symbol(expr) && bare_symbol) {
-    # foo
-    href_topic_local(as.character(expr))
+  if (is_symbol(expr)) {
+    if (bare_symbol) {
+      href_topic_local(as.character(expr))
+    } else if (is_infix(as.character(expr))) {
+      href_topic(as.character(expr))
+    } else {
+      NA_character_
+    }
   } else if (is_call(expr)) {
     fun <- expr[[1]]
 
@@ -83,8 +88,6 @@ href_expr <- function(expr, bare_symbol = FALSE) {
     } else {
       href_topic(fun_name, pkg)
     }
-  } else if (is_infix(expr)) {
-    href_topic(as.character(expr))
   } else {
     NA_character_
   }
