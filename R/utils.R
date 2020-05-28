@@ -10,7 +10,7 @@ find_reexport_source <- function(obj, ns, topic) {
     ## have name clashes.
     imp <- getNamespaceImports(ns)
     imp <- imp[names(imp) != ""]
-    wpkgs <- purrr::map_lgl(imp, `%in%`, x = topic)
+    wpkgs <- vapply(imp, `%in%`, x = topic, FUN.VALUE = logical(1))
     if (!any(wpkgs)) stop("Cannot find reexport source for `", topic, "`")
     pkgs <- names(wpkgs)[wpkgs]
     pkgs[[length(pkgs)]]

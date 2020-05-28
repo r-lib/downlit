@@ -23,7 +23,7 @@ topic_index_local <- memoise::memoise(function(package, path = NULL) {
   }
 
   rd <- package_rd(path)
-  aliases <- purrr::map(rd, extract_tag, "tag_alias")
+  aliases <- lapply(rd, extract_tag, `[[`, "tag_alias")
   names(aliases) <- gsub("\\.Rd$", "", names(rd))
 
   unlist(invert_index(aliases))

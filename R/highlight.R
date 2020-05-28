@@ -57,19 +57,22 @@ href_tokens <- function(tokens, styles) {
   pkg_local <- tokens[pkg] == context_get("package")
   pkg_call <- pkg + 2
 
-  href[pkg_call[!pkg_local]] <- purrr::map2_chr(
-    tokens[pkg_call[!pkg_local]],
-    tokens[pkg[!pkg_local]],
-    href_topic_remote
+  href[pkg_call[!pkg_local]] <- vapply(which(!pkg_local),
+    function(i) {
+      href_topic_remote(tokens[pkg_call[i]], tokens[pkg[i]])
+    },
+    character(1)
   )
-  href[pkg_call[pkg_local]] <- purrr::map_chr(
+
+  href[pkg_call[pkg_local]] <- vapply(
     tokens[pkg_call[pkg_local]],
-    href_topic_local
+    href_topic_local,
+    character(1)
   )
 
   call <- which(styles %in% "fu")
   call <- setdiff(call, pkg_call)
-  href[call] <- purrr::map_chr(tokens[call], href_topic_local)
+  href[call] <- vapply(tokens[call], href_topic_local, character(1))
 
   href
 }

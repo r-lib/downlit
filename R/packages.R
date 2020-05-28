@@ -1,10 +1,10 @@
 extract_package_attach <- function(expr) {
   if (is.expression(expr)) {
-    packages <- purrr::map(expr, extract_package_attach)
-    purrr::flatten_chr(packages)
+    packages <- lapply(expr, extract_package_attach)
+    unlist(packages)
   } else if (is_call(expr)) {
     if (is_call(expr, c("library", "require"))) {
-      expr <- rlang::call_standardise(expr)
+      expr <- call_standardise(expr)
       if (!is_true(expr$character.only)) {
         as.character(expr$package)
       } else {
@@ -12,7 +12,7 @@ extract_package_attach <- function(expr) {
       }
     } else {
       args <- as.list(expr[-1])
-      purrr::flatten_chr(purrr::map(args, extract_package_attach))
+      unlist(lapply(args, extract_package_attach))
     }
   } else {
     character()

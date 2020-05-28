@@ -16,7 +16,6 @@ Imports:
     fs,
     highlight,
     memoise,
-    purrr,
     rlang,
     yaml
 Suggests: 
