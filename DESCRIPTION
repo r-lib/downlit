@@ -21,8 +21,7 @@ Imports:
     rlang,
     purrr,
     highlight,
-    fs,
-    desc
+    fs
 Suggests: 
     testthat,
     MASS

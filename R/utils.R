@@ -25,14 +25,6 @@ up_path <- function(depth) {
   paste(rep.int("../", depth), collapse = "")
 }
 
-read_desc <- function(path = ".") {
-  path <- fs::path(path, "DESCRIPTION")
-  if (!fs::file_exists(path)) {
-    stop("Can't find DESCRIPTION", call. = FALSE)
-  }
-  desc::description$new(path)
-}
-
 escape_html <- function(x) {
   x <- gsub("&", "&amp;", x)
   x <- gsub("<", "&lt;", x)

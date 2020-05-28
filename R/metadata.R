@@ -18,18 +18,12 @@ remote_package_article_url <- function(package) {
   remote_urls(package)$article
 }
 
-remote_metadata <- memoise::memoise(function(package) {
-  path <- find.package(package, quiet = TRUE)
-  if (length(path) == 0) {
-    return(NULL)
-  }
 
-  desc <- read_desc(path)
-  urls <- sub_special_cases(desc$get_urls())
+remote_metadata <- memoise::memoise(function(package) {
+  urls <- package_urls(package)
 
   for (url in urls) {
     url <- paste0(url, "/pkgdown.yml")
-
     yaml <- tryCatch(fetch_yaml(url), error = function(e) NULL)
     if (is.list(yaml)) {
       if (has_name(yaml, "articles")) {
@@ -48,6 +42,24 @@ fetch_yaml <- function(url) {
 
   text <- httr::content(resp, as = "text", encoding = "UTF-8")
   yaml::yaml.load(text)
+}
+
+# Helpers -----------------------------------------------------------------
+
+package_urls <- function(package) {
+  path <- system.file("DESCRIPTION", package = package)
+  if (path == "") {
+    return(character())
+  }
+
+  desc_url <- read.dcf(path, fields = "URL")[[1]]
+  if (is.na(desc_url)) {
+    return(character())
+  }
+
+  urls <- strsplit(desc_url, ", ?")[[1]]
+  urls <- sub("/$", "", urls)
+  sub_special_cases(urls)
 }
 
 # All rOpenSci repositories have a known pkgdown URL.
