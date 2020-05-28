@@ -37,11 +37,12 @@ remote_metadata <- memoise::memoise(function(package) {
 })
 
 fetch_yaml <- function(url) {
-  resp <- httr::GET(url, httr::timeout(3))
-  httr::stop_for_status(resp)
+  path <- tempfile()
+  if (suppressWarnings(utils::download.file(url, path, quiet = TRUE) != 0)) {
+    abort("Failed to download")
+  }
 
-  text <- httr::content(resp, as = "text", encoding = "UTF-8")
-  yaml::yaml.load(text)
+  yaml::read_yaml(path)
 }
 
 # Helpers -----------------------------------------------------------------
