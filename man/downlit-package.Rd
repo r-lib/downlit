@@ -10,6 +10,14 @@ Syntax highlight of R code, specifically designed
     for the needs of RMarkdown packages like pkgdown, hugodown, and
     bookdown.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/r-lib/downlit}
+  \item Report bugs at \url{https://github.com/r-lib/downlit/issues}
+}
+
+}
 \author{
 \strong{Maintainer}: Hadley Wickham \email{hadley@rstudio.com}
 
