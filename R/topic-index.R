@@ -7,13 +7,13 @@ topic_index <- function(package) {
     context_get("topic_index")
   } else if (devtools_loaded(package)) {
     # Use live docs for in-development packages
-    topic_index_local(package)
+    topic_index_source(package)
   } else {
     topic_index_installed(package)
   }
 }
 
-topic_index_local <- memoise::memoise(function(package, path = NULL) {
+topic_index_source <- memoise::memoise(function(package, path = NULL) {
   if (!is_installed(package)) {
     return(character())
   }

@@ -1,5 +1,4 @@
 href_string <- function(x, bare_symbol = FALSE) {
-
   if (is_infix(x)) {
     # backticks are needed for the parse call, otherwise get:
     # Error: unexpected SPECIAL in "href_expr_(%in%"
@@ -14,6 +13,10 @@ href_string <- function(x, bare_symbol = FALSE) {
   href_expr(expr, bare_symbol = bare_symbol)
 }
 
+# Helper for testing
+href_expr_ <- function(expr, ...) {
+  href_expr(substitute(expr), ...)
+}
 
 href_expr <- function(expr, bare_symbol = FALSE) {
   if (is_symbol(expr)) {
@@ -93,10 +96,7 @@ href_expr <- function(expr, bare_symbol = FALSE) {
   }
 }
 
-# Helper for testing
-href_expr_ <- function(expr, ...) {
-  href_expr(substitute(expr), ...)
-}
+# Topics ------------------------------------------------------------------
 
 href_topic <- function(topic, package = NULL) {
   if (is.null(package) || package == context_get("package")) {
@@ -155,6 +155,8 @@ href_topic_remote <- function(topic, package) {
   paste0(href_package(package), "/", rdname, ".html")
 }
 
+# Packages ----------------------------------------------------------------
+
 href_package <- function(package) {
   reference_url <- remote_package_reference_url(package)
   if (!is.null(reference_url)) {
@@ -172,6 +174,8 @@ href_package <- function(package) {
 is_base_package <- function(x) {
   x %in% as.vector(utils::installed.packages(priority = "base")[, "Package"])
 }
+
+# Articles ----------------------------------------------------------------
 
 href_article <- function(article, package = NULL) {
   local <- is.null(package) || package == context_get("package")
@@ -196,5 +200,3 @@ href_article <- function(article, package = NULL) {
     }
   }
 }
-
-
