@@ -8,20 +8,21 @@ Authors@R:
              email = "hadley@rstudio.com"),
       person(given = "RStudio",
              role = "cph"))
-Description: Syntax highlight of R code, specifically designed for the needs
-    of RMarkdown packages like pkgdown, hugodown, and bookdown.
+Description: Syntax highlight of R code, specifically designed
+    for the needs of RMarkdown packages like pkgdown, hugodown, and
+    bookdown.
 License: MIT + file LICENSE
+Imports: 
+    fs,
+    highlight,
+    memoise,
+    purrr,
+    rlang,
+    yaml
+Suggests: 
+    MASS,
+    testthat
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0
-Imports: 
-    memoise,
-    yaml,
-    rlang,
-    purrr,
-    highlight,
-    fs
-Suggests: 
-    testthat,
-    MASS

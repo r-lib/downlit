@@ -6,8 +6,9 @@
 \alias{downlit-package}
 \title{downlit: Syntax Highlighting and Automatic Linking}
 \description{
-Syntax highlight of R code, specifically designed for the needs
-    of RMarkdown packages like pkgdown, hugodown, and bookdown.
+Syntax highlight of R code, specifically designed
+    for the needs of RMarkdown packages like pkgdown, hugodown, and
+    bookdown.
 }
 \author{
 \strong{Maintainer}: Hadley Wickham \email{hadley@rstudio.com}
