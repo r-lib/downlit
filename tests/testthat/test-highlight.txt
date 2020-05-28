@@ -1,0 +1,22 @@
+> # explicit package
+> cat(highlight_text("MASS::addterm()"))
+<span class='kw pkg'>MASS</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/MASS/man/addterm.html'>addterm</a></span>()
+
+> cat(highlight_text("MASS::addterm"))
+<span class='kw pkg'>MASS</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/MASS/man/addterm.html'>addterm</a></span>
+
+> cat(highlight_text("?MASS::addterm"))
+?<span class='kw pkg'>MASS</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/MASS/man/addterm.html'>addterm</a></span>
+
+> # implicit package
+> register_attached_packages("MASS")
+> cat(highlight_text("addterm()"))
+<span class='fu'><a href='https://rdrr.io/pkg/MASS/man/addterm.html'>addterm</a></span>()
+
+> cat(highlight_text("median()"))
+<span class='fu'><a href='https://rdrr.io/r/stats/median.html'>median</a></span>()
+
+> # local package
+> cat(highlight_text("test::foo()"))
+<span class='kw pkg'>test</span><span class='kw ns'>::</span><span class='fu'><a href='bar.html'>foo</a></span>()
+
