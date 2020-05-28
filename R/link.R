@@ -52,7 +52,7 @@ href_expr <- function(expr, bare_symbol = FALSE) {
         return(NA_character_)
       }
       pkg <- as.character(expr[[2]])
-      href_package_reference(pkg)
+      href_package(pkg)
     } else if (fun_name == "vignette") {
       expr <- call_standardise(expr)
       href_article(expr$topic, expr$package)
@@ -79,7 +79,7 @@ href_expr <- function(expr, bare_symbol = FALSE) {
       } else if (!is.null(expr$topic) && is.null(expr$package)) {
         href_topic(as.character(expr$topic))
       } else if (is.null(expr$topic) && !is.null(expr$package)) {
-        href_package_reference(as.character(expr$package))
+        href_package(as.character(expr$package))
       } else {
         NA_character_
       }
@@ -152,20 +152,20 @@ href_topic_remote <- function(topic, package) {
     return(NA_character_)
   }
 
-  paste0(href_package_reference(package), "/", rdname, ".html")
+  paste0(href_package(package), "/", rdname, ".html")
 }
 
-href_package_reference <- function(package) {
+href_package <- function(package) {
   reference_url <- remote_package_reference_url(package)
   if (!is.null(reference_url)) {
-    return(reference_url)
-  }
-
-  # Fall back to rdrr.io
-  if (is_base_package(package)) {
-    paste0("https://rdrr.io/r/", package)
+    reference_url
   } else {
-    paste0("https://rdrr.io/pkg/", package, "/man")
+    # Fall back to rdrr.io
+    if (is_base_package(package)) {
+      paste0("https://rdrr.io/r/", package)
+    } else {
+      paste0("https://rdrr.io/pkg/", package, "/man")
+    }
   }
 }
 
