@@ -77,20 +77,44 @@ href_tokens <- function(tokens, styles) {
   href
 }
 
-# KeywordTok = kw,
-# DataTypeTok = dt (data types)
-# DecValTok = dv (decimal values)
-# BaseNTok = bn (values with a base other than 10)
-# FloatTok = fl (float values)
-# CharTok = ch (a character)
-# StringTok = st (strings)
-# CommontTok = co,
-# OtherTok = ot
-# AlertTok = al (warning messages)
-# FunctionTok = fu (function calls),
-# RegionMarkerTok = re ( region markers.)
-# ErrorTok = er.
+# Pandoc styles are based on KDE default styles:
+# https://docs.kde.org/stable5/en/applications/katepart/highlight.html#kate-highlight-default-styles
+# But are given a two letter abbreviations (presumably to reduce generated html size)
 #
+# Default syntax highlighting def for R:
+# https://github.com/KDE/syntax-highlighting/blob/master/data/syntax/r.xml
+#
+# al = Alert
+# an = Annotation
+# at = Attribute
+# bn = BaseN
+# bu = BuiltIn
+# cf = ControlFlow
+# ch = Char
+# cn = Constant
+# co = Comment
+# cv = CommentVar
+# do = Documentation
+# dt = DataType
+# dv = DecVal
+# er = Error
+# ex = Extension
+# fl = Float
+# fu = Function
+# im = Import
+# in = Information
+# kw = Keyword
+# op = Operator
+# ot = Other
+# pp = Preprocessor
+# sc = SpecialChar
+# ss = SpecialString
+# st = String
+# va = Variable
+# vs = VerbatimString
+# wa = Warning
+
+
 # Token list comes from gram.c
 pkgdown_detective <- function(x, ...) {
   data <- utils::getParseData(x)
