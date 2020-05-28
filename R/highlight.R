@@ -83,36 +83,37 @@ href_tokens <- function(tokens, styles) {
 #
 # Default syntax highlighting def for R:
 # https://github.com/KDE/syntax-highlighting/blob/master/data/syntax/r.xml
+# Types used by this definition marked by *
 #
-# al = Alert
-# an = Annotation
-# at = Attribute
-# bn = BaseN
-# bu = BuiltIn
-# cf = ControlFlow
-# ch = Char
-# cn = Constant
-# co = Comment
-# cv = CommentVar
-# do = Documentation
-# dt = DataType
-# dv = DecVal
-# er = Error
-# ex = Extension
-# fl = Float
-# fu = Function
-# im = Import
-# in = Information
-# kw = Keyword
-# op = Operator
-# ot = Other
-# pp = Preprocessor
-# sc = SpecialChar
-# ss = SpecialString
-# st = String
-# va = Variable
-# vs = VerbatimString
-# wa = Warning
+#  al = Alert
+#  an = Annotation
+#  at = Attribute
+#  bn = BaseN
+#  bu = BuiltIn
+# *cf = ControlFlow
+# *ch = Char
+#  cn = Constant
+# *co = Comment
+#  cv = CommentVar
+#  do = Documentation
+# *dt = DataType
+# *dv = DecVal
+# *er = Error
+#  ex = Extension
+# *fl = Float
+#  fu = Function
+#  im = Import
+#  in = Information
+# *kw = Keyword
+# *op = Operator
+# *ot = Other
+#  pp = Preprocessor
+#  sc = SpecialChar
+#  ss = SpecialString
+# *st = String
+#  va = Variable
+#  vs = VerbatimString
+#  wa = Warning
 
 
 # Token list comes from gram.c
