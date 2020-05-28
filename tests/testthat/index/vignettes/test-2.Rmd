@@ -1,0 +1,8 @@
+---
+title: "test-2"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{test-2}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
