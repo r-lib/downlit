@@ -2,10 +2,11 @@
 % Please edit documentation in R/basic.R
 \name{b}
 \alias{b}
-\title{use_+ B}
+\alias{c}
+\title{B + C}
 \usage{
 b()
 }
 \description{
-use_+ B
+B + C
 }

@@ -2,11 +2,7 @@
 #' @export
 a <- function() {}
 
-#'use_+ B
+#' B + C
+#' @aliases c
 #' @export
 b <- function() {}
-
-#' C-D
-#' @export
-#' @aliases C D
-cd <- function() {}

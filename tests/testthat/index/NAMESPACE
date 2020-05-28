@@ -2,4 +2,3 @@
 
 export(a)
 export(b)
-export(cd)
