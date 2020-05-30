@@ -86,7 +86,7 @@ token_class <- function(token, classes) {
 
 # Collapse token types to a smaller set of categories that we care about
 # for syntax highlighting
-# See full list in gram.c
+# https://github.com/wch/r-source/blob/trunk/src/main/gram.c#L511
 token_type <- function(x) {
   special <- c("IF", "ELSE", "REPEAT", "WHILE", "FOR", "IN", "NEXT", "BREAK")
   infix <- c(
