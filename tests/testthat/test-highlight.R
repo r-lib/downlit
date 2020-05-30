@@ -9,7 +9,7 @@ test_that("can link to external topics that use ::", {
     cat(highlight("?MASS::addterm"))
 
     "implicit package"
-    register_attached_packages("MASS")
+    cat(highlight("library(MASS)"))
     cat(highlight("addterm()"))
     cat(highlight("median()")) # base
 

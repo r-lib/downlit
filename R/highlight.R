@@ -141,6 +141,13 @@ token_href <- function(token, text) {
   fun <- setdiff(fun, ns_fun)
   href[fun] <- map_chr(text[fun], href_topic_local)
 
+  # Highlight packages
+  lib_call <- which(
+    token == "SYMBOL_FUNCTION_CALL" & text %in% c("library", "require")
+  )
+  pkg <- lib_call + 3 # expr + '(' + STR_CONST
+  href[pkg] <- map_chr(gsub("['\"]", "", text[pkg]), href_package)
+
   href
 }
 
