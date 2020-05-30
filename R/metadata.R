@@ -1,5 +1,5 @@
 remote_urls <- function(package) {
-  local <- context_get("local_packages")
+  local <- context_get2("local_packages", NULL)
   if (has_name(local, package)) {
     base_url <- local[[package]]
     list(

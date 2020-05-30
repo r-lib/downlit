@@ -14,7 +14,6 @@ Description: Syntax highlight of R code, specifically designed
 License: MIT + file LICENSE
 Depends: R (>= 3.2.0)
 Imports: 
-    highlight,
     memoise,
     rlang,
     yaml

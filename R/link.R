@@ -105,11 +105,24 @@ href_expr <- function(expr, bare_symbol = FALSE) {
 # Topics ------------------------------------------------------------------
 
 href_topic <- function(topic, package = NULL) {
-  if (is.null(package) || package == context_get("package")) {
+  if (is_package_local(package)) {
     href_topic_local(topic)
   } else {
     href_topic_remote(topic, package)
   }
+}
+
+is_package_local <- function(package) {
+  if (is.null(package)) {
+    return(TRUE)
+  }
+  cur <- context_get2("package", NULL)
+  if (is.null(cur)) {
+    return(FALSE)
+  }
+
+  package == cur
+
 }
 
 href_topic_local <- function(topic) {

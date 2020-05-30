@@ -1,7 +1,66 @@
-# highlight_text mutates the linking scope because it has to register
-# library()/require() calls in order to link unqualified symbols to the
-# correct package.
-highlight_text <- function(text) {
+#' @return Either `NULL` if `text` is not valid R code, or an HTML
+#'   string representing a code block.
+highlight <- function(text, classes = classes_pandoc()) {
+  parsed <- parse_data(text)
+  if (is.null(parsed)) {
+    return()
+  }
+
+  # Figure out which packages are attached to the search path. This is a
+  # hack because loading a package will affect code _before_ the library()
+  # call. But it should lead to relatively few false positives and is simple.
+  packages <- extract_package_attach(parsed$expr)
+  register_attached_packages(packages)
+
+  # Highlight, link, and escape
+  out <- parsed$data
+  out$class <- token_class(out$token, classes)
+  out$href <- token_href(out$token, out$text)
+  out$escaped <- escape_html(out$text)
+
+  # Update input - basic idea from prettycode
+  changed <- !is.na(out$href) | !is.na(out$class) | out$text != out$escaped
+  changes <- out[changed, , drop = FALSE]
+  changes_by_line <- split(changes, changes$line1)
+  lines <- strsplit(text, "\r?\n")[[1]]
+
+  for (change in changes_by_line) {
+    i <- change$line1[[1]]
+    new <- style_token(change$escaped, change$href, change$class)
+
+    lines[[i]] <- replace_in_place(
+      lines[[i]],
+      start = change$col1,
+      end = change$col2,
+      replacement = new
+    )
+  }
+  paste0(lines, collapse = "\n")
+}
+
+style_token <- function(x, href = NA, class = NA) {
+  x <- ifelse(is.na(href), x, paste0("<a href='", href, "'>", x, "</a>"))
+  x <- ifelse(is.na(class), x, paste0("<span class='", class, "'>", x, "</span>"))
+  x
+}
+
+# From prettycode:::replace_in_place
+replace_in_place <- function(str, start, end, replacement) {
+  stopifnot(
+    length(str) == 1, length(start) == length(end),
+    length(end) == length(replacement)
+  )
+
+  keep <- substring(str, c(1, end + 1), c(start - 1, nchar(str)))
+  pieces <- character(length(replacement) * 2 + 1)
+  even <- seq_along(replacement) * 2
+  odd <- c(1, even + 1)
+  pieces[even] <- replacement
+  pieces[odd] <- keep
+  paste0(pieces, collapse = "")
+}
+
+parse_data <- function(text) {
   stopifnot(is.character(text), length(text) == 1)
 
   text <- gsub("\r", "", text)
@@ -12,69 +71,33 @@ highlight_text <- function(text) {
 
   # Failed to parse, or yielded empty expression
   if (length(expr) == 0) {
-    return(escape_html(text))
+    return(NULL)
   }
 
-  packages <- extract_package_attach(expr)
-  register_attached_packages(packages)
-
-  out <- highlight::highlight(
-    parse.output = expr,
-    renderer = pkgdown_renderer(),
-    detective = pkgdown_detective,
-    output = NULL
-  )
-  paste0(out, collapse = "")
+  list(expr = expr, data = utils::getParseData(expr))
 }
 
-pkgdown_renderer <- function() {
-  formatter <- function(tokens, styles, ...) {
-    href <- href_tokens(tokens, styles)
-    linked <- !is.na(href)
-    tokens[linked] <- a(tokens[linked], href[linked])
+# Highlighting ------------------------------------------------------------
 
-    styled <- !is.na(styles)
-    tokens[styled] <- sprintf("<span class='%s'>%s</span>",
-      styles[styled],
-      tokens[styled]
-    )
-    tokens
-  }
-
-  highlight::renderer_html(
-    header = function(...) character(),
-    footer = function(...) character(),
-    formatter = formatter
-  )
+token_class <- function(token, classes) {
+  token <- token_type(token)
+  unname(classes[token])
 }
 
-href_tokens <- function(tokens, styles) {
-  href <- rep_along(tokens, na_chr)
-
-  # SYMBOL_PACKAGE must always be followed NS_GET (or NS_GET_INT)
-  # SYMBOL_FUNCTION_CALL or SYMBOL
-  pkg <- which(styles %in% "kw pkg")
-  pkg_local <- tokens[pkg] == context_get("package")
-  pkg_call <- pkg + 2
-
-  href[pkg_call[!pkg_local]] <- vapply(which(!pkg_local),
-    function(i) {
-      href_topic_remote(tokens[pkg_call[i]], tokens[pkg[i]])
-    },
-    character(1)
+# Collapse token types to a smaller set of categories that we care about
+# for syntax highlighting
+# See full list in gram.c
+token_type <- function(x) {
+  special <- c("IF", "ELSE", "REPEAT", "WHILE", "FOR", "IN", "NEXT", "BREAK")
+  infix <- c(
+    "'-'", "'+'", "'!'", "'~'", "'?'", "':'", "'*'", "'/'", "'^'", "'~'",
+    "SPECIAL", "LT", "GT", "EQ", "GE", "LE", "AND", "AND2", "OR",
+    "OR2", "LEFT_ASSIGN", "RIGHT_ASSIGN", "'$'", "'@'", "EQ_ASSIGN"
   )
 
-  href[pkg_call[pkg_local]] <- vapply(
-    tokens[pkg_call[pkg_local]],
-    href_topic_local,
-    character(1)
-  )
-
-  call <- which(styles %in% "fu")
-  call <- setdiff(call, pkg_call)
-  href[call] <- vapply(tokens[call], href_topic_local, character(1))
-
-  href
+  x[x %in% special] <- "special"
+  x[x %in% infix] <- "infix"
+  x
 }
 
 # Pandoc styles are based on KDE default styles:
@@ -83,93 +106,56 @@ href_tokens <- function(tokens, styles) {
 #
 # Default syntax highlighting def for R:
 # https://github.com/KDE/syntax-highlighting/blob/master/data/syntax/r.xml
-# Types used by this definition marked by *
-#
-#  al = Alert
-#  an = Annotation
-#  at = Attribute
-#  bn = BaseN
-#  bu = BuiltIn
-# *cf = ControlFlow
-# *ch = Char
-#  cn = Constant
-# *co = Comment
-#  cv = CommentVar
-#  do = Documentation
-# *dt = DataType
-# *dv = DecVal
-# *er = Error
-#  ex = Extension
-# *fl = Float
-#  fu = Function
-#  im = Import
-#  in = Information
-# *kw = Keyword
-# *op = Operator
-# *ot = Other
-#  pp = Preprocessor
-#  sc = SpecialChar
-#  ss = SpecialString
-# *st = String
-#  va = Variable
-#  vs = VerbatimString
-#  wa = Warning
-
-
-# Token list comes from gram.c
-pkgdown_detective <- function(x, ...) {
-  data <- utils::getParseData(x)
-  token <- data$token[data$terminal]
-
-  token_style <- c(
-    STR_CONST            = "st",
-    NUM_CONST            = "fl",
-    NULL_CONST           = "kw",
-    SYMBOL               = "no",
-    FUNCTION             = "kw",
-    INCOMPLETE_STRING    = "al",
-    LEFT_ASSIGN          = "kw",
-    EQ_ASSIGN            = "kw",
-    RIGHT_ASSIGN         = "kw",
-    LBB                  = "kw",  # [[
-    FOR                  = "kw",
-    IN                   = "kw",
-    IF                   = "kw",
-    ELSE                 = "kw",
-    WHILE                = "kw",
-    NEXT                 = "kw",
-    BREAK                = "kw",
-    REPEAT               = "kw",
-    GT                   = "kw",
-    GE                   = "kw",
-    LT                   = "kw",
-    LE                   = "kw",
-    EQ                   = "kw",
-    NE                   = "kw",
-    AND                  = "kw",
-    OR                   = "kw",
-    AND2                 = "kw",
-    OR2                  = "kw",
-    NS_GET               = "kw ns",
-    NS_GET_INT           = "kw ns",
-    COMMENT              = "co",
-    LINE_DIRECTIVE       = "co",
-    SYMBOL_FORMALS       = "no",
-    EQ_FORMALS           = "kw",
-    EQ_SUB               = "kw",
-    SYMBOL_SUB           = "kw",
-    SYMBOL_FUNCTION_CALL = "fu",
-    SYMBOL_PACKAGE       = "kw pkg",
-    COLON_ASSIGN         = "kw",
-    SLOT                 = "kw",
-    LOW                  = "kw",
-    TILDE                = "kw",
-    NOT                  = "kw",
-    UNOT                 = "kw",
-    SPECIAL              = "kw",
-    UPLUS                = "kw",
-    UMINUS               = "kw"
+classes_pandoc <- function() {
+  c(
+    "NUM_CONST" = "fl",
+    "STR_CONST" = "st",
+    "NULL_CONST" = "kw",
+    "FUNCTION" = "fu",
+    "special" = "co",
+    "infix" = "op",
+    "SYMBOL" = "kw",
+    "SYMBOL_FUNCTION_CALL" = "fu",
+    "SYMBOL_PACKAGE" = "kw",
+    "SYMBOL_FORMALS" = "kw",
+    "COMMENT" = "co"
   )
+}
 
-  unname(token_style[token])
+# Linking -----------------------------------------------------------------
+
+token_href <- function(token, text) {
+  href <- rep(NA, length(token))
+
+  # Highlight namespaced function calls. In the parsed tree, these are
+  # SYMBOL_PACKAGE then NS_GET/NS_GET_INT then SYMBOL_FUNCTION_CALL/SYMBOL
+  ns_pkg <- which(token %in% "SYMBOL_PACKAGE")
+  ns_fun <- ns_pkg + 2L
+
+  href[ns_fun] <- map2_chr(text[ns_fun], text[ns_pkg], href_topic)
+
+  # Then highlight all remaining calls, using loaded packages registered
+  # above. These maintained at a higher-level, because (e.g) in .Rmds you want
+  # earlier library() statements to affect the highlighting of later blocks
+  fun <- which(token %in% "SYMBOL_FUNCTION_CALL")
+  fun <- setdiff(fun, ns_fun)
+  href[fun] <- map_chr(text[fun], href_topic_local)
+
+  href
+}
+
+map_chr <- function(.x, .f, ...) {
+  vapply(.x, .f, ..., FUN.VALUE = character(1))
+}
+map2_chr <- function(.x, .y, .f, ...) {
+  vapply(seq_along(.x), function(i) .f(.x[[i]], .y[[i]], ...), character(1))
+}
+
+# Escaping ----------------------------------------------------------------
+
+escape_html <- function(x) {
+  x <- gsub("&", "&amp;", x)
+  x <- gsub("<", "&lt;", x)
+  x <- gsub(">", "&gt;", x)
+  x
 }

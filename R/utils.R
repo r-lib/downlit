@@ -25,13 +25,6 @@ up_path <- function(depth) {
   paste(rep.int("../", depth), collapse = "")
 }
 
-escape_html <- function(x) {
-  x <- gsub("&", "&amp;", x)
-  x <- gsub("<", "&lt;", x)
-  x <- gsub(">", "&gt;", x)
-  x
-}
-
 is_infix <- function(x) {
   ops <- c(
     "::", ":::", "$", "@", "[", "[[", "^", "-", "+", ":", "*", "/",

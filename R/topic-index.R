@@ -4,7 +4,7 @@
 
 topic_index <- function(package) {
   if (is.null(package)) {
-    context_get("topic_index")
+    context_get2("topic_index", NULL)
   } else if (devtools_loaded(package)) {
     # Use live docs for in-development packages
     topic_index_source(package)

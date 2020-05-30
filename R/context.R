@@ -22,6 +22,10 @@ context_get <- function(name) {
   }
 }
 
+context_get2 <- function(name, default) {
+  env_get(context, name, default = default)
+}
+
 scoped_package_context <- function(package,
                                    topic_index = NULL,
                                    article_index = NULL,
