@@ -74,6 +74,30 @@
 <!-- badges: start -->
 
 <p>The goal of downlit is to provide syntax highlighting and automatic linking of R code in a way that is easily used from RMarkdown packages like <a href="http://pkgdown.r-lib.org/">pkgdown</a>, <a href="https://bookdown.org">bookdown</a>, and <a href="http://github.com/r-lib/hugodown/issues">hugodown</a>.</p>
+<div id="features" class="section level2">
+<h2 class="hasAnchor">
+<a href="#features" class="anchor"></a>Features</h2>
+<p>downlit has two slightly different highlighting/linking engines, one for multiline code blocks (focussed primarily on highlighting), and one for inline code (focussed primarily on highlighting).</p>
+<p>Multiline code blocks have:</p>
+<ul>
+<li>Code syntax highlighted using R’s parser.</li>
+<li>Function calls automatically linked to their corresponding documentation.</li>
+<li>Comments styled by transforming ANSI escapes sequences to their HTML equivalents (thanks <a href="https://github.com/brodieG/fansi">fansi</a> package).</li>
+</ul>
+<p>The following forms of inline code are recognised and automatically linked:</p>
+<ul>
+<li>
+<code>fun()</code>, <code>pkg::fun()</code>.</li>
+<li>
+<code>?fun</code>, <code>pkg::fun</code>, <code>type?topic</code>.</li>
+<li>
+<code>help("fun")</code>, <code>help("fun", package = "package")</code>, <code><a href="https://rdrr.io/pkg/package/man">help(package = "package")</a></code>.</li>
+<li>
+<code>vignette("name")</code>, <code>vignette("name", package = "package")</code>.</li>
+<li>
+<code><a href="https://rdrr.io/pkg/pacakge/man">library(pacakge)</a></code>, <code><a href="https://rdrr.io/pkg/package/man">require(package)</a></code>, <code><a href="https://rdrr.io/pkg/package/man">requireNamespace("package")</a></code>.</li>
+</ul>
+</div>
 </div>
   </div>
 
