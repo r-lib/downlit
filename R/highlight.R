@@ -122,6 +122,23 @@ classes_pandoc <- function() {
   )
 }
 
+# Derived from https://github.com/ropensci/roweb2/blob/master/themes/ropensci/static/css/pygments.css
+classes_chroma <- function() {
+  c(
+    "NUM_CONST" = "m",
+    "STR_CONST" = "s",
+    "NULL_CONST" = "kr",
+    "FUNCTION" = "nf",
+    "special" = "kr",
+    "infix" = "o",
+    "SYMBOL" = "k",
+    "SYMBOL_FUNCTION_CALL" = "kr",
+    "SYMBOL_PACKAGE" = "k",
+    "SYMBOL_FORMALS" = "k",
+    "COMMENT" = "c"
+  )
+}
+
 # Linking -----------------------------------------------------------------
 
 token_href <- function(token, text) {
