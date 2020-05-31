@@ -9,7 +9,7 @@ The goal of downlit is to provide syntax highlighting and automatic linking of R
 
 ## Features
 
-downlit has two slightly different highlighting/linking engines, one for multiline code blocks (focussed primarily on highlighting), and one for inline code (focussed primarily on highlighting).
+downlit has two slightly different highlighting/linking engines, one for multiline code blocks (focussed primarily on highlighting), and one for inline code (focussed primarily on linking).
 
 Multiline code blocks have:
 
