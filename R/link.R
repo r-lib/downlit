@@ -1,4 +1,4 @@
-href_string <- function(x, bare_symbol = FALSE) {
+href_string <- function(x) {
   if (is_infix(x)) {
     # backticks are needed for the parse call, otherwise get:
     # Error: unexpected SPECIAL in "href_expr_(%in%"
@@ -10,7 +10,7 @@ href_string <- function(x, bare_symbol = FALSE) {
     return(NA_character_)
   }
 
-  href_expr(expr, bare_symbol = bare_symbol)
+  href_expr(expr)
 }
 
 # Helper for testing
@@ -18,11 +18,9 @@ href_expr_ <- function(expr, ...) {
   href_expr(substitute(expr), ...)
 }
 
-href_expr <- function(expr, bare_symbol = FALSE) {
+href_expr <- function(expr) {
   if (is_symbol(expr)) {
-    if (bare_symbol) {
-      href_topic_local(as.character(expr))
-    } else if (is_infix(as.character(expr))) {
+    if (is_infix(as.character(expr))) {
       href_topic(as.character(expr))
     } else {
       NA_character_

@@ -1,14 +1,3 @@
-test_that("can link infix", {
-  scoped_package_context("test")
-  scoped_file_context() # package registry maintained on per-file basis
-
-  expect_equal(href_string("%in%"), "https://rdrr.io/r/base/match.html")
-  expect_equal(href_topic("%in%"), "https://rdrr.io/r/base/match.html")
-
-  expect_equal(href_expr_(`%in%`), href_topic("%in%"))
-  expect_equal(href_expr_(?`%in%`), href_topic("%in%"))
-})
-
 test_that("can link function calls", {
   scoped_package_context("test", c(foo = "bar"))
   scoped_file_context("test")
@@ -90,14 +79,10 @@ test_that("or local sites, if registered", {
   expect_equal(href_expr_(MASS::abbey), "MASS/reference/abbey.html")
 })
 
-test_that("only links bare symbols if requested", {
-  scoped_package_context("test", c(foo = "bar"))
-  scoped_file_context("baz")
-
-  expect_equal(href_expr_(foo), NA_character_)
-  expect_equal(href_expr_(foo, bare_symbol = TRUE), "bar.html")
+test_that("only links bare symbols if they're infix functions", {
+  expect_equal(href_string("%in%"), "https://rdrr.io/r/base/match.html")
+  expect_equal(href_string("foo"), NA_character_)
 })
-
 
 # help --------------------------------------------------------------------
 
