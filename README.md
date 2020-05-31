@@ -31,5 +31,7 @@ The following forms of inline code are recognised and automatically linked:
 <ul>
   <li><a href="http://google.com">A link</a></li>
   <li><span class="foo">Span with class</class></li>
+  <li><span style="color: green">Span with style</class></li>
+  <li><pre>This is a pre block</pre></li>
 </ul>
 
