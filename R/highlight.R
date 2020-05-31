@@ -12,14 +12,15 @@
 #'   Bundled `classes_pandoc()` and `classes_chroma()` provide mappings
 #'   that (roughly) match Pandoc and chroma (used by hugo) classes so you
 #'   can use existing themes.
-#' @return If `text` is valid R code, an HTML formatted string. Otherwise,
-#'   `NULL`.
+#' @param pre_class Class(es) to give output `<pre>`.
+#' @return If `text` is valid R code, an HTML `<pre>` tag. Otherwise,
+#'   `NA`.
 #' @examples
 #' cat(highlight("1 + 1"))
-highlight <- function(text, classes = classes_pandoc()) {
+highlight <- function(text, classes = classes_pandoc(), pre_class = "downlit") {
   parsed <- parse_data(text)
   if (is.null(parsed)) {
-    return()
+    return(NA_character_)
   }
 
   # Figure out which packages are attached to the search path. This is a
@@ -51,7 +52,13 @@ highlight <- function(text, classes = classes_pandoc()) {
       replacement = new
     )
   }
-  paste0(lines, collapse = "\n")
+  out <- paste0(lines, collapse = "\n")
+
+  paste0(
+    "<pre class='", paste0(pre_class, collapse = " "), "'>\n",
+    out, "\n",
+    "</pre>"
+  )
 }
 
 style_token <- function(x, href = NA, class = NA) {
@@ -183,7 +190,7 @@ token_href <- function(token, text) {
 }
 
 map_chr <- function(.x, .f, ...) {
-  vapply(.x, .f, ..., FUN.VALUE = character(1))
+  vapply(.x, .f, ..., FUN.VALUE = character(1), USE.NAMES = FALSE)
 }
 map2_chr <- function(.x, .y, .f, ...) {
   vapply(seq_along(.x), function(i) .f(.x[[i]], .y[[i]], ...), character(1))

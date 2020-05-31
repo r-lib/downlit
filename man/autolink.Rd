@@ -10,7 +10,7 @@ autolink(text)
 \item{text}{String of code to highlight and link.}
 }
 \value{
-If \code{text} is linkable, an HTML link. Otherwise, \code{NULL}.
+If \code{text} is linkable, an HTML link. Otherwise, \code{NA}.
 }
 \description{
 Automatically link inline code

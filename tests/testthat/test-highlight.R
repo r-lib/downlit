@@ -30,14 +30,17 @@ test_that("can link to external topics that use ::", {
 test_that("can parse code with carriage returns", {
   scoped_package_context("test")
 
-  expect_equal(
-    highlight("1\r\n2"),
-    "<span class='fl'>1</span>\n<span class='fl'>2</span>"
-  )
+  lines <- strsplit(highlight("1\r\n2"), "\n")[[1]]
+
+  expect_equal(lines[[2]], "<span class='fl'>1</span>")
+  expect_equal(lines[[3]], "<span class='fl'>2</span>")
 })
 
 test_that("unparsable code returns NULL", {
-  expect_equal(highlight("<"), NULL)
+  expect_equal(highlight("<"), NA_character_)
   # but pure comments still highlighted
-  expect_equal(highlight("#"), "<span class='co'>#</span>")
+  expect_equal(
+    highlight("#"),
+    "<pre class='downlit'>\n<span class='co'>#</span>\n</pre>"
+  )
 })

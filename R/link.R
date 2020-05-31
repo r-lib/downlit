@@ -1,16 +1,15 @@
 #' Automatically link inline code
 #'
 #' @param text String of code to highlight and link.
-#' @return If `text` is linkable, an HTML link. Otherwise, `NULL`.
+#' @return If `text` is linkable, an HTML link. Otherwise, `NA`.
 #' @export
 #' @examples
 #' autolink("stats::median()")
 #' autolink("vignette('grid', package = 'grid')")
 autolink <- function(text) {
-
   href <- href_string(text)
-  if (is.null(href)) {
-    return(NULL)
+  if (identical(href, NA_character_)) {
+    return(NA_character_)
   }
 
   paste0("<a href='", href, "'>", escape_html(text), "</a>")
@@ -25,7 +24,7 @@ href_string <- function(text) {
 
   expr <- safe_parse(text)[[1]]
   if (is.null(expr)) {
-    return()
+    return(NA_character_)
   }
 
   href_expr(expr)
@@ -41,7 +40,7 @@ href_expr <- function(expr) {
     if (is_infix(as.character(expr))) {
       href_topic(as.character(expr))
     } else {
-      NULL
+      NA_character_
     }
   } else if (is_call(expr)) {
     fun <- expr[[1]]
@@ -54,21 +53,21 @@ href_expr <- function(expr) {
     }
 
     if (!is_symbol(fun))
-      return(NULL)
+      return(NA_character_)
 
     fun_name <- as.character(fun)
 
     # we need to include the `::` and `?` infix operators
     # so that `?build_site()` and `pkgdown::build_site()` are linked
     if (!is_prefix(fun_name) && !fun_name %in% c("::", "?")) {
-      return(NULL)
+      return(NA_character_)
     }
 
     n_args <- length(expr) - 1
 
     if (fun_name %in% c("library", "require", "requireNamespace")) {
       if (length(expr) == 1) {
-        return(NULL)
+        return(NA_character_)
       }
       pkg <- as.character(expr[[2]])
       href_package(pkg)
@@ -79,7 +78,7 @@ href_expr <- function(expr) {
       if (topic_ok && package_ok) {
         href_article(expr$topic, expr$package)
       } else {
-        NULL
+        NA_character_
       }
     } else if (fun_name == "?") {
       if (n_args == 1) {
@@ -91,7 +90,7 @@ href_expr <- function(expr) {
           # ?x
           href_topic(as.character(expr[[2]]))
         } else {
-          NULL
+          NA_character_
         }
       } else if (n_args == 2) {
         # package?x
@@ -106,7 +105,7 @@ href_expr <- function(expr) {
       } else if (is.null(expr$topic) && !is.null(expr$package)) {
         href_package(as.character(expr$package))
       } else {
-        NULL
+        NA_character_
       }
     } else if (fun_name == "::") {
       href_topic(as.character(expr[[3]]), as.character(expr[[2]]))
@@ -114,7 +113,7 @@ href_expr <- function(expr) {
       href_topic(fun_name, pkg)
     }
   } else {
-    NULL
+    NA_character_
   }
 }
 
@@ -147,7 +146,7 @@ href_topic_local <- function(topic) {
     # Check attached packages
     loc <- find_rdname_attached(topic)
     if (is.null(loc)) {
-      return()
+      return(NA_character_)
     } else {
       return(href_topic_remote(topic, loc$package))
     }
@@ -161,7 +160,7 @@ href_topic_local <- function(topic) {
     exports <- .getNamespaceInfo(ns, "exports")
 
     if (!env_has(exports, topic)) {
-      return()
+      return(NA_character_)
     } else {
       obj <- env_get(ns, topic, inherit = TRUE)
       package <- find_reexport_source(obj, ns, topic)
@@ -170,7 +169,7 @@ href_topic_local <- function(topic) {
   }
 
   if (rdname == context_get("rdname")) {
-    return()
+    return(NA_character_)
   }
 
 
@@ -184,7 +183,7 @@ href_topic_local <- function(topic) {
 href_topic_remote <- function(topic, package) {
   rdname <- find_rdname(package, topic)
   if (is.null(rdname)) {
-    return()
+    return(NA_character_)
   }
 
   paste0(href_package(package), "/", rdname, ".html")
@@ -216,14 +215,14 @@ href_article <- function(article, package = NULL) {
   if (is_package_local(package)) {
     path <- find_article(NULL, article)
     if (is.null(path)) {
-      return()
+      return(NA_character_)
     }
 
     paste0(up_path(context_get("depth")), "articles/", path)
   } else {
     path <- find_article(package, article)
     if (is.null(path)) {
-      return()
+      return(NA_character_)
     }
 
     base_url <- remote_package_article_url(package)

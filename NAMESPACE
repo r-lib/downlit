@@ -3,5 +3,7 @@
 export(autolink)
 export(classes_chroma)
 export(classes_pandoc)
+export(downlit_html)
+export(downlit_xml_node)
 export(highlight)
 import(rlang)
