@@ -69,3 +69,11 @@ invert_index <- function(x) {
 
   split(key, val)
 }
+
+safe_parse <- function(text) {
+  text <- gsub("\r", "", text)
+  tryCatch(
+    parse(text = text, keep.source = TRUE),
+    error = function(e) NULL
+  )
+}

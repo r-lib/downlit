@@ -79,13 +79,7 @@ replace_in_place <- function(str, start, end, replacement) {
 parse_data <- function(text) {
   stopifnot(is.character(text), length(text) == 1)
 
-  text <- gsub("\r", "", text)
-  expr <- tryCatch(
-    parse(text = text, keep.source = TRUE),
-    error = function(e) NULL
-  )
-
-  # Failed to parse, or yielded empty expression
+  expr <- safe_parse(text)
   if (is.null(expr)) {
     return(NULL)
   }

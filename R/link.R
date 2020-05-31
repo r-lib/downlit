@@ -1,13 +1,31 @@
-href_string <- function(x) {
-  if (is_infix(x)) {
-    # backticks are needed for the parse call, otherwise get:
-    # Error: unexpected SPECIAL in "href_expr_(%in%"
-    x <- paste0("`", x, "`")
+#' Automatically link inline code
+#'
+#' @param text String of code to highlight and link.
+#' @return If `text` is linkable, an HTML link. Otherwise, `NULL`.
+#' @export
+#' @examples
+#' autolink("stats::median()")
+#' autolink("vignette('grid', package = 'grid')")
+autolink <- function(text) {
+
+  href <- href_string(text)
+  if (is.null(href)) {
+    return(NULL)
   }
 
-  expr <- tryCatch(parse(text = x)[[1]], error = function(e) NULL)
+  paste0("<a href='", href, "'>", escape_html(text), "</a>")
+}
+
+href_string <- function(text) {
+  if (is_infix(text)) {
+    # backticks are needed for the parse call, otherwise get:
+    # Error: unexpected SPECIAL in "href_expr_(%in%"
+    text <- paste0("`", text, "`")
+  }
+
+  expr <- safe_parse(text)[[1]]
   if (is.null(expr)) {
-    return(NA_character_)
+    return()
   }
 
   href_expr(expr)
@@ -23,7 +41,7 @@ href_expr <- function(expr) {
     if (is_infix(as.character(expr))) {
       href_topic(as.character(expr))
     } else {
-      NA_character_
+      NULL
     }
   } else if (is_call(expr)) {
     fun <- expr[[1]]
@@ -36,21 +54,21 @@ href_expr <- function(expr) {
     }
 
     if (!is_symbol(fun))
-      return(NA_character_)
+      return(NULL)
 
     fun_name <- as.character(fun)
 
     # we need to include the `::` and `?` infix operators
     # so that `?build_site()` and `pkgdown::build_site()` are linked
     if (!is_prefix(fun_name) && !fun_name %in% c("::", "?")) {
-      return(NA_character_)
+      return(NULL)
     }
 
     n_args <- length(expr) - 1
 
     if (fun_name %in% c("library", "require", "requireNamespace")) {
       if (length(expr) == 1) {
-        return(NA_character_)
+        return(NULL)
       }
       pkg <- as.character(expr[[2]])
       href_package(pkg)
@@ -61,7 +79,7 @@ href_expr <- function(expr) {
       if (topic_ok && package_ok) {
         href_article(expr$topic, expr$package)
       } else {
-        NA_character_
+        NULL
       }
     } else if (fun_name == "?") {
       if (n_args == 1) {
@@ -73,7 +91,7 @@ href_expr <- function(expr) {
           # ?x
           href_topic(as.character(expr[[2]]))
         } else {
-          NA_character_
+          NULL
         }
       } else if (n_args == 2) {
         # package?x
@@ -88,7 +106,7 @@ href_expr <- function(expr) {
       } else if (is.null(expr$topic) && !is.null(expr$package)) {
         href_package(as.character(expr$package))
       } else {
-        NA_character_
+        NULL
       }
     } else if (fun_name == "::") {
       href_topic(as.character(expr[[3]]), as.character(expr[[2]]))
@@ -96,7 +114,7 @@ href_expr <- function(expr) {
       href_topic(fun_name, pkg)
     }
   } else {
-    NA_character_
+    NULL
   }
 }
 
@@ -129,7 +147,7 @@ href_topic_local <- function(topic) {
     # Check attached packages
     loc <- find_rdname_attached(topic)
     if (is.null(loc)) {
-      return(NA_character_)
+      return()
     } else {
       return(href_topic_remote(topic, loc$package))
     }
@@ -143,7 +161,7 @@ href_topic_local <- function(topic) {
     exports <- .getNamespaceInfo(ns, "exports")
 
     if (!env_has(exports, topic)) {
-      return(NA_character_)
+      return()
     } else {
       obj <- env_get(ns, topic, inherit = TRUE)
       package <- find_reexport_source(obj, ns, topic)
@@ -152,7 +170,7 @@ href_topic_local <- function(topic) {
   }
 
   if (rdname == context_get("rdname")) {
-    return(NA_character_)
+    return()
   }
 
 
@@ -166,7 +184,7 @@ href_topic_local <- function(topic) {
 href_topic_remote <- function(topic, package) {
   rdname <- find_rdname(package, topic)
   if (is.null(rdname)) {
-    return(NA_character_)
+    return()
   }
 
   paste0(href_package(package), "/", rdname, ".html")
@@ -195,18 +213,17 @@ is_base_package <- function(x) {
 # Articles ----------------------------------------------------------------
 
 href_article <- function(article, package = NULL) {
-  local <- is.null(package) || package == context_get("package")
-  if (local) {
+  if (is_package_local(package)) {
     path <- find_article(NULL, article)
     if (is.null(path)) {
-      return(NA_character_)
+      return()
     }
 
     paste0(up_path(context_get("depth")), "articles/", path)
   } else {
     path <- find_article(package, article)
     if (is.null(path)) {
-      return(NA_character_)
+      return()
     }
 
     base_url <- remote_package_article_url(package)
