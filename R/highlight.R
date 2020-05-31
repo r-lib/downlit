@@ -1,5 +1,21 @@
-#' @return Either `NULL` if `text` is not valid R code, or an HTML
-#'   string representing a code block.
+#' Highlight and link a code block
+#'
+#' @description
+#' This function:
+#' * syntax highlights code
+#' * links function calls to their documentation (where possible)
+#' * in comments, translates ANSI escapes in to HTML equivalents.
+#'
+#' @export
+#' @param text String of code to highlight and link.
+#' @param classes A mapping between token names and CSS class names.
+#'   Bundled `classes_pandoc()` and `classes_chroma()` provide mappings
+#'   that (roughly) match Pandoc and chroma (used by hugo) classes so you
+#'   can use existing themes.
+#' @return If `text` is valid R code, an HTML formatted string. Otherwise,
+#'   `NULL`.
+#' @examples
+#' cat(highlight("1 + 1"))
 highlight <- function(text, classes = classes_pandoc()) {
   parsed <- parse_data(text)
   if (is.null(parsed)) {
@@ -106,6 +122,8 @@ token_type <- function(x) {
 #
 # Default syntax highlighting def for R:
 # https://github.com/KDE/syntax-highlighting/blob/master/data/syntax/r.xml
+#' @export
+#' @rdname highlight
 classes_pandoc <- function() {
   c(
     "NUM_CONST" = "fl",
@@ -123,6 +141,8 @@ classes_pandoc <- function() {
 }
 
 # Derived from https://github.com/ropensci/roweb2/blob/master/themes/ropensci/static/css/pygments.css
+#' @export
+#' @rdname highlight
 classes_chroma <- function() {
   c(
     "NUM_CONST" = "m",
