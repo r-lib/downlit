@@ -21,6 +21,9 @@ test_that("can link to external topics that use ::", {
     cat(highlight("x %in% y"))
     cat(highlight("if (FALSE) 1"))
     cat(highlight("f <- function(x = 'a') {}"))
+
+    "ansi escapes"
+    cat(highlight("# \033[34mblue\033[39m"))
   })
 })
 
@@ -35,4 +38,6 @@ test_that("can parse code with carriage returns", {
 
 test_that("unparsable code returns NULL", {
   expect_equal(highlight("<"), NULL)
+  # but pure comments still highlighted
+  expect_equal(highlight("#"), "<span class='co'>#</span>")
 })

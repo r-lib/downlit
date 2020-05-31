@@ -16,7 +16,7 @@ highlight <- function(text, classes = classes_pandoc()) {
   out <- parsed$data
   out$class <- token_class(out$token, classes)
   out$href <- token_href(out$token, out$text)
-  out$escaped <- escape_html(out$text)
+  out$escaped <- token_escape(out$token, out$text)
 
   # Update input - basic idea from prettycode
   changed <- !is.na(out$href) | !is.na(out$class) | out$text != out$escaped
@@ -70,7 +70,7 @@ parse_data <- function(text) {
   )
 
   # Failed to parse, or yielded empty expression
-  if (length(expr) == 0) {
+  if (is.null(expr)) {
     return(NULL)
   }
 
@@ -159,6 +159,15 @@ map2_chr <- function(.x, .y, .f, ...) {
 }
 
 # Escaping ----------------------------------------------------------------
+
+token_escape <- function(token, text) {
+  text <- escape_html(text)
+
+  is_comment <- token == "COMMENT"
+  text[is_comment] <- fansi::sgr_to_html(text[is_comment])
+
+  text
+}
 
 escape_html <- function(x) {
   x <- gsub("&", "&amp;", x)
