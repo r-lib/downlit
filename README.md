@@ -25,3 +25,11 @@ The following forms of inline code are recognised and automatically linked:
 * `help("fun")`, `help("fun", package = "package")`, `help(package = "package")`.
 * `vignette("name")`, `vignette("name", package = "package")`.
 * `library(pacakge)`, `require(package)`, `requireNamespace("package")`.
+
+## Test for inline html
+
+<ul>
+  <li><a href="http://google.com">A link</a></li>
+  <li><span class="foo">Span with class</class></li>
+</ul>
+
