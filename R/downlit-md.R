@@ -43,7 +43,7 @@ md2ast <- function(path, out_path, format = "gfm") {
     input = path,
     output = out_path,
     from = format,
-    to = "json",
+    to = "json"
   )
   invisible(out_path)
 }
@@ -53,7 +53,7 @@ ast2md <- function(path, out_path, format = "gfm") {
     output = out_path,
     from = "json",
     to = format,
-    options = "--wrap=none"
+    options = c("--wrap=none", "--eol=lf")
   )
   invisible(out_path)
 }
