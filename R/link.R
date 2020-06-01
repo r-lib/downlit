@@ -206,7 +206,11 @@ href_package <- function(package) {
 }
 
 is_base_package <- function(x) {
-  x %in% as.vector(utils::installed.packages(priority = "base")[, "Package"])
+  x %in% c(
+    "base", "compiler", "datasets", "graphics", "grDevices", "grid",
+    "methods", "parallel", "splines", "stats", "stats4", "tcltk",
+    "tools", "utils"
+  )
 }
 
 # Articles ----------------------------------------------------------------
