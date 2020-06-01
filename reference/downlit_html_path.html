@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • downlit</title>
+<title>Syntax highlight and link an HTML page — downlit_html_path • downlit</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,19 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Syntax highlight and link an HTML page — downlit_html_path" />
+<meta property="og:description" content="
+
+Code blocks, identified by &amp;lt;pre&amp;gt; tags with class sourceCode and r,
+processed with highlight().
+Inline code, identified by &amp;lt;code&amp;gt; tags that contain only text
+(and don't have a header tag (e.g. &amp;lt;h1&amp;gt;) or &amp;lt;a&amp;gt; as an ancestor)
+are processed processed with autolink().
+
+
+Use downlit_html_path() to process an .html file on disk;
+use downlit_html_node() to process an in-memory xml_node as part of a
+larger pipeline." />
 
 
 
@@ -58,7 +70,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -105,60 +117,50 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Syntax highlight and link an HTML page</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/downlit/blob/master/R/downlit-html.R'><code>R/downlit-html.R</code></a></small>
+    <div class="hidden name"><code>downlit_html_path.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    
+<ul>
+<li><p>Code blocks, identified by <code>&lt;pre&gt;</code> tags with class <code>sourceCode</code> and <code>r</code>,
+processed with <code><a href='highlight.html'>highlight()</a></code>.</p></li>
+<li><p>Inline code, identified by <code>&lt;code&gt;</code> tags that contain only text
+(and don't have a header tag (e.g. <code>&lt;h1&gt;</code>) or <code>&lt;a&gt;</code> as an ancestor)
+are processed processed with <code><a href='autolink.html'>autolink()</a></code>.</p></li>
+</ul>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+<p>Use <code>downlit_html_path()</code> to process an <code>.html</code> file on disk;
+use <code>downlit_html_node()</code> to process an in-memory <code>xml_node</code> as part of a
+larger pipeline.</p>
+    </div>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="autolink.html">autolink()</a></code> </p>
-        </td>
-        <td><p>Automatically link inline code</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="downlit_html_path.html">downlit_html_path()</a></code> <code><a href="downlit_html_path.html">downlit_html_node()</a></code> </p>
-        </td>
-        <td><p>Syntax highlight and link an HTML page</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="downlit_md_path.html">downlit_md_path()</a></code> <code><a href="downlit_md_path.html">downlit_md_string()</a></code> </p>
-        </td>
-        <td><p>Syntax highlight and link a md document</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="highlight.html">highlight()</a></code> <code><a href="highlight.html">classes_pandoc()</a></code> <code><a href="highlight.html">classes_chroma()</a></code> </p>
-        </td>
-        <td><p>Highlight and link a code block</p></td>
-      </tr>
-    </tbody>
+    <pre class="usage"><span class='fu'>downlit_html_path</span>(<span class='no'>in_path</span>, <span class='no'>out_path</span>)
+
+<span class='fu'>downlit_html_node</span>(<span class='no'>x</span>)</pre>
+
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>in_path, out_path</th>
+      <td><p>Input and output paths for HTML file</p></td>
+    </tr>
+    <tr>
+      <th>x</th>
+      <td><p>An <code>xml2::xml_node</code></p></td>
+    </tr>
     </table>
-  </div>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>Invisibly returns <code>output_path</code>.</p>
+
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>
