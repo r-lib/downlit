@@ -1,0 +1,46 @@
+> # Bare code
+> cat(downlit_md_string("`base::t`"))
+[`base::t`](https://rdrr.io/r/base/t.html)
+
+> cat(downlit_md_string("```\nbase::t(1)\n```"))
+<pre class='downlit'>
+<span class='kw'>base</span>::<span class='fu'><a href='https://rdrr.io/r/base/t.html'>t</a></span>(<span class='fl'>1</span>)
+</pre>
+
+> # Nested in inline
+> cat(downlit_md_string("*`base::t`*"))
+*[`base::t`](https://rdrr.io/r/base/t.html)*
+
+> cat(downlit_md_string("<span class='x'>`base::t`</span>"))
+<span class='x'>[`base::t`](https://rdrr.io/r/base/t.html)</span>
+
+> # Nested in block
+> cat(downlit_md_string("* `base::t`"))
+  - [`base::t`](https://rdrr.io/r/base/t.html)
+
+> cat(downlit_md_string("| `base::t`"))
+| [`base::t`](https://rdrr.io/r/base/t.html)
+
+> cat(downlit_md_string("1. `base::t`"))
+1.  [`base::t`](https://rdrr.io/r/base/t.html)
+
+> # Complex blocks
+> cat(downlit_md_string(brio::read_lines(test_path("markdown-table.md"))))
+Table: Caption [`base::t`](https://rdrr.io/r/base/t.html)
+
+| [`base::t`](https://rdrr.io/r/base/t.html) | xx |
+| -----------------------------------------: | :- |
+| [`base::t`](https://rdrr.io/r/base/t.html) | yy |
+
+> cat(downlit_md_string(brio::read_lines(test_path("markdown-definition.md"))))
+Term 1 ([`base::t()`](https://rdrr.io/r/base/t.html))
+
+: Definition 1 ([`base::t()`](https://rdrr.io/r/base/t.html))
+
+> # No transforms
+> cat(downlit_md_string("## `base::t`"))
+## `base::t`
+
+> cat(downlit_md_string("[`base::t`](http://google.com)"))
+[`base::t`](http://google.com)
+

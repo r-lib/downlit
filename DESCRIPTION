@@ -14,11 +14,14 @@ Description: Syntax highlight of R code, specifically designed
 License: MIT + file LICENSE
 Depends: R (>= 3.2.0)
 Imports: 
+    brio,
     fansi,
     memoise,
     rlang,
     yaml
-Suggests: 
+Suggests:
+    rmarkdown,
+    jsonlite,
     MASS,
     testthat,
     covr,
