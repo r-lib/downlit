@@ -1,4 +1,4 @@
-> out <- downlit_html(test_path("autolink.html"), tempfile())
+> out <- downlit_html_path(test_path("autolink.html"), tempfile())
 > cat(readLines(out), sep = "\n")
 <!DOCTYPE html>
 <html><body>

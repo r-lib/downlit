@@ -6,7 +6,7 @@
 #'
 #' Use `downlit_md_path()` to transform a file on disk; use
 #' `downlit_md_string()` to transform a string containing markdown as part
-#' of a bigger process.
+#' of a larger pipeline.
 #'
 #' @export
 #' @param in_path,out_path Input and output paths for markdown file.

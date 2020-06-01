@@ -1,50 +1,48 @@
-#' Automatically link references and articles in an HTML page
+#' Syntax highlight and link an HTML page
 #'
 #' @description
-#' The autolinker has two components built around two XPath expressions:
+#' * Code blocks, identified by `<pre>` tags with class `sourceCode` and `r`,
+#'   processed with [highlight()].
 #'
-#' * Multiline code blocks are identified by `<pre>` tags with
-#'   class `sourceCode` and `r`, and are processed with [highlight()].
+#' * Inline code, identified by `<code>` tags that contain only text
+#'   (and don't have a header tag (e.g. `<h1>`) or `<a>` as an ancestor)
+#'   are processed processed with [autolink()].
 #'
-#' * Inline code is identified by `<code>` tags that contain only text,
-#'   don't have a header tag (e.g. `<h1>`) or `<a>` as an ancestor,
-#'   and are porcessed processed with [autolink()].
+#' Use `downlit_html_path()` to process an `.html` file on disk;
+#' use `downlit_html_node()` to process an in-memory `xml_node` as part of a
+#' larger pipeline.
 #'
-#' Use `downlit_html()` to process an `.html` file on disk;
-#' use `downlit_xml_node()` to process an `xml_node` as part of a larger
-#' pipeline.
-#'
-#' @param input_path,output_path Input and output paths for HTML file
-#' @param node An `xml2::xml_node`
+#' @param in_path,out_path Input and output paths for HTML file
+#' @param x An `xml2::xml_node`
 #' @return Invisibly returns `output_path`.
 #' @export
-downlit_html <- function(input_path, output_path) {
+downlit_html_path <- function(in_path, out_path) {
   if (!is_installed("xml2")) {
-    abort("`xml2` package required for `download_html()`")
+    abort("xml2 package required .html transformation")
   }
 
-  html <- xml2::read_html(input_path, encoding = "UTF-8")
-  downlit_xml_node(html)
-  xml2::write_html(html, output_path, format = FALSE)
+  html <- xml2::read_html(in_path, encoding = "UTF-8")
+  downlit_html_node(html)
+  xml2::write_html(html, out_path, format = FALSE)
 
-  invisible(output_path)
+  invisible(out_path)
 }
 
 #' @export
-#' @rdname downlit_html
-downlit_xml_node <- function(node) {
-  stopifnot(inherits(node, "xml_node"))
+#' @rdname downlit_html_path
+downlit_html_node <- function(x) {
+  stopifnot(inherits(x, "xml_node"))
 
   # <pre class="sourceCode r">
   xpath_block <- ".//pre[contains(@class, 'sourceCode r')]"
-  tweak_children(node, xpath_block, highlight, replace = "node")
+  tweak_children(x, xpath_block, highlight, replace = "node")
 
   # Identify <code> containing only text (i.e. no children) that are
   # are not descendants of a header or link
   bad_ancestor <- c("h1", "h2", "h3", "h4", "h5", "a")
   bad_ancestor <- paste0("ancestor::", bad_ancestor, collapse = "|")
   xpath_inline <- paste0(".//code[count(*) = 0 and not(", bad_ancestor, ")]")
-  tweak_children(node, xpath_inline, autolink, replace = "contents")
+  tweak_children(x, xpath_inline, autolink, replace = "contents")
 
   invisible()
 }
