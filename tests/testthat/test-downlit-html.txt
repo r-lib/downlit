@@ -1,5 +1,5 @@
 > out <- downlit_html_path(test_path("autolink.html"), tempfile())
-> cat(readLines(out), sep = "\n")
+> cat(brio::read_file(out))
 <!DOCTYPE html>
 <html><body>
 
