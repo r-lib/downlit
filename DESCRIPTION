@@ -16,7 +16,6 @@ Depends: R (>= 3.2.0)
 Imports: 
     brio,
     fansi,
-    memoise,
     rlang,
     yaml
 Suggests:

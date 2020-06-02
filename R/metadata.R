@@ -18,8 +18,23 @@ remote_package_article_url <- function(package) {
   remote_urls(package)$article
 }
 
+# Retrieve remote metadata ------------------------------------------------
 
-remote_metadata <- memoise::memoise(function(package) {
+remote_metadata <- function(package) {
+  tempdir <- Sys.getenv("RMARKDOWN_PREVIEW_DIR", unset = tempdir())
+  dir.create(file.path(tempdir, "downlit"), showWarnings = FALSE)
+  cache_path <- file.path(tempdir, "downlit", package)
+
+  if (file.exists(cache_path)) {
+    readRDS(cache_path)
+  } else {
+    meta <- remote_metadata_slow(package)
+    saveRDS(meta, cache_path)
+    meta
+  }
+}
+
+remote_metadata_slow <- function(package) {
   urls <- package_urls(package)
 
   for (url in urls) {
@@ -34,7 +49,7 @@ remote_metadata <- memoise::memoise(function(package) {
   }
 
   NULL
-})
+}
 
 fetch_yaml <- function(url) {
   path <- tempfile()
