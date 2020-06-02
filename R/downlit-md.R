@@ -13,6 +13,8 @@
 #' @param x A string containing markdown.
 #' @param format Pandoc format.
 downlit_md_path <- function(in_path, out_path, format = "gfm") {
+  check_packages()
+
   ast_path <- tempfile()
   on.exit(unlink(ast_path))
 
@@ -28,6 +30,8 @@ downlit_md_path <- function(in_path, out_path, format = "gfm") {
 #' @export
 #' @rdname downlit_md_path
 downlit_md_string <- function(x, format = "gfm") {
+  check_packages()
+
   path <- tempfile()
   on.exit(unlink(path))
 
