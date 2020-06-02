@@ -9,7 +9,11 @@ The goal of downlit is to provide syntax highlighting and automatic linking of R
 
 ## Features
 
-downlit has two slightly different highlighting/linking engines, one for multiline code blocks (focussed primarily on highlighting), and one for inline code (focussed primarily on linking).
+downlit has two slightly different highlighting/linking engines:
+
+* `highlight()` works with multiline code blocks and does syntax higlighting,
+  function linking, and comment styling.
+* `autolink()` works with inline code and only does linking.
 
 Multiline code blocks have:
 
@@ -61,3 +65,7 @@ If pkgdown can find a pkgdown site for the remote package, it will link to it; o
     ```
 
 So when you build a pkgdown site that links to the dplyr documentation (e.g., `dplyr::mutate()`), pkgdown looks first in dplyr's `DESCRIPTION` to find its website, then it looks for `pkgdown.yml`, and uses the metadata to generate the correct links.
+
+## Usage
+
+downlit is designed to be used by other packages, and I expect most uses of downlit will use it via another package (e.g. [hugodown](http://github.com/r-lib/hugodown)). If you want to use it in your own package, you'll typically want to apply it as part of some bigger transformation process. You can get some sense of this this might work by reading the source code of `downlit_html()` and `downlit_md()`, which transform HTML and markdown documents respectively.
