@@ -1,7 +1,3 @@
-a <- function(text, href) {
-  ifelse(is.na(href), text, paste0("<a href='", href, "'>", text, "</a>"))
-}
-
 up_path <- function(depth) {
   paste(rep.int("../", depth), collapse = "")
 }
