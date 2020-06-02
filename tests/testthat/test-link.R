@@ -65,8 +65,8 @@ test_that("can link to remote pkgdown sites", {
   scoped_package_context("test", c(foo = "bar"))
 
   # use autolink() to avoid R CMD check NOTE
-  expect_equal(href_string("pkgdown::add_slug"), href_topic_remote("pkgdown", "add_slug"))
-  expect_equal(href_string("pkgdown::add_slug(1)"), href_topic_remote("pkgdown", "add_slug"))
+  expect_equal(autolink_url("pkgdown::add_slug"), href_topic_remote("pkgdown", "add_slug"))
+  expect_equal(autolink_url("pkgdown::add_slug(1)"), href_topic_remote("pkgdown", "add_slug"))
 })
 
 test_that("or local sites, if registered", {
@@ -75,8 +75,8 @@ test_that("or local sites, if registered", {
 })
 
 test_that("only links bare symbols if they're infix functions", {
-  expect_equal(href_string("%in%"), "https://rdrr.io/r/base/match.html")
-  expect_equal(href_string("foo"), NA_character_)
+  expect_equal(autolink_url("%in%"), "https://rdrr.io/r/base/match.html")
+  expect_equal(autolink_url("foo"), NA_character_)
 })
 
 # help --------------------------------------------------------------------

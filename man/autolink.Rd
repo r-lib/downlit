@@ -2,15 +2,20 @@
 % Please edit documentation in R/link.R
 \name{autolink}
 \alias{autolink}
+\alias{autolink_url}
 \title{Automatically link inline code}
 \usage{
 autolink(text)
+
+autolink_url(text)
 }
 \arguments{
 \item{text}{String of code to highlight and link.}
 }
 \value{
-If \code{text} is linkable, an HTML link. Otherwise, \code{NA}.
+If \code{text} is linkable, an HTML link for \code{autolink()}, and or just
+the URL for \code{autolink_url()}. Both return \code{NA} if the text is not
+linkable.
 }
 \description{
 Automatically link inline code
@@ -18,4 +23,6 @@ Automatically link inline code
 \examples{
 autolink("stats::median()")
 autolink("vignette('grid', package = 'grid')")
+
+autolink_url("stats::median()")
 }

@@ -82,7 +82,7 @@ transform_code <- function(x) {
     lapply(x, transform_code)
   } else {
     if (x$t == "Code") {
-      href <- href_string(x$c[[2]])
+      href <- autolink_url(x$c[[2]])
       if (!is.na(href)) {
         x <- pandoc_link(pandoc_attr(), list(x), pandoc_target(href))
       }

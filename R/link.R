@@ -1,13 +1,18 @@
 #' Automatically link inline code
 #'
 #' @param text String of code to highlight and link.
-#' @return If `text` is linkable, an HTML link. Otherwise, `NA`.
+#' @return
+#'   If `text` is linkable, an HTML link for `autolink()`, and or just
+#'   the URL for `autolink_url()`. Both return `NA` if the text is not
+#'   linkable.
 #' @export
 #' @examples
 #' autolink("stats::median()")
 #' autolink("vignette('grid', package = 'grid')")
+#'
+#' autolink_url("stats::median()")
 autolink <- function(text) {
-  href <- href_string(text)
+  href <- autolink_url(text)
   if (identical(href, NA_character_)) {
     return(NA_character_)
   }
@@ -15,7 +20,10 @@ autolink <- function(text) {
   paste0("<a href='", href, "'>", escape_html(text), "</a>")
 }
 
-href_string <- function(text) {
+
+#' @export
+#' @rdname autolink
+autolink_url <- function(text) {
   if (is_infix(text)) {
     # backticks are needed for the parse call, otherwise get:
     # Error: unexpected SPECIAL in "href_expr_(%in%"
