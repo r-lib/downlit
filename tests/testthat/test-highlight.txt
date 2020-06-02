@@ -1,6 +1,6 @@
 > # explicit package
 > cat(highlight("MASS::addterm()"))
-<span class='k'>MASS</span>::<span class='kr'><a href='https://rdrr.io/pkg/MASS/man/addterm.html'>addterm</a></span>()
+<span class='k'>MASS</span>::<span class='nf'><a href='https://rdrr.io/pkg/MASS/man/addterm.html'>addterm</a></span>()
 
 > cat(highlight("MASS::addterm"))
 <span class='k'>MASS</span>::<span class='k'><a href='https://rdrr.io/pkg/MASS/man/addterm.html'>addterm</a></span>
@@ -10,17 +10,17 @@
 
 > # implicit package
 > cat(highlight("library(MASS)"))
-<span class='kr'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='k'><a href='https://rdrr.io/pkg/MASS/man'>MASS</a></span>)
+<span class='nf'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='k'><a href='https://rdrr.io/pkg/MASS/man'>MASS</a></span>)
 
 > cat(highlight("addterm()"))
-<span class='kr'><a href='https://rdrr.io/pkg/MASS/man/addterm.html'>addterm</a></span>()
+<span class='nf'><a href='https://rdrr.io/pkg/MASS/man/addterm.html'>addterm</a></span>()
 
 > cat(highlight("median()"))
-<span class='kr'><a href='https://rdrr.io/r/stats/median.html'>median</a></span>()
+<span class='nf'><a href='https://rdrr.io/r/stats/median.html'>median</a></span>()
 
 > # local package
 > cat(highlight("test::foo()"))
-<span class='k'>test</span>::<span class='kr'><a href='bar.html'>foo</a></span>()
+<span class='k'>test</span>::<span class='nf'><a href='bar.html'>foo</a></span>()
 
 > # operators / special syntax
 > cat(highlight("1 + 2 * 3"))
