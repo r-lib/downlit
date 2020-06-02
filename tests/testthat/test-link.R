@@ -132,6 +132,7 @@ test_that("can link to remote articles", {
     href_expr_(vignette("sha1", "digest")),
     "https://cran.rstudio.com/web/packages/digest/vignettes/sha1.html"
   )
+  expect_equal(href_expr_(vignette("blah1", "digest")), NA_character_)
 
   expect_equal(
     href_expr_(vignette(package = "digest", "sha1")),
