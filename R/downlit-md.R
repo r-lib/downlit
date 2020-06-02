@@ -40,8 +40,8 @@ downlit_md_string <- function(x, format = "gfm") {
 
 md2ast <- function(path, out_path, format = "gfm") {
   rmarkdown::pandoc_convert(
-    input = path,
-    output = out_path,
+    input = normalizePath(path, mustWork = FALSE),
+    output = normalizePath(out_path, mustWork = FALSE),
     from = format,
     to = "json"
   )
@@ -49,8 +49,8 @@ md2ast <- function(path, out_path, format = "gfm") {
 }
 ast2md <- function(path, out_path, format = "gfm") {
   rmarkdown::pandoc_convert(
-    input = path,
-    output = out_path,
+    input = normalizePath(path, mustWork = FALSE),
+    output = normalizePath(out_path, mustWork = FALSE),
     from = "json",
     to = format,
     options = c("--wrap=none", "--eol=lf")
