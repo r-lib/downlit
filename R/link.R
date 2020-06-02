@@ -160,26 +160,13 @@ href_topic_local <- function(topic) {
     }
   }
 
-  # If it's a re-exported function, we need to work a little harder to
-  # find out its source so that we can link to it. .getNamespaceInfo()
-  # is only available in R 3.2.0 and above.
-  if (rdname == "reexports" && getRversion() >= "3.1.0") {
-    ns <- ns_env(context_get("package"))
-    exports <- .getNamespaceInfo(ns, "exports")
-
-    if (!env_has(exports, topic)) {
-      return(NA_character_)
-    } else {
-      obj <- env_get(ns, topic, inherit = TRUE)
-      package <- find_reexport_source(obj, ns, topic)
-      return(href_topic_remote(topic, package))
-    }
+  if (rdname == "reexports") {
+    return(href_topic_reexported(topic, context_get("package")))
   }
 
   if (rdname == context_get("rdname")) {
     return(NA_character_)
   }
-
 
   if (context_get("rdname") != "") {
     paste0(rdname, ".html")
@@ -194,7 +181,45 @@ href_topic_remote <- function(topic, package) {
     return(NA_character_)
   }
 
+  if (rdname == "reexports") {
+    return(href_topic_reexported(topic, package))
+  }
+
   paste0(href_package(package), "/", rdname, ".html")
+}
+
+# If it's a re-exported function, we need to work a little harder to
+# find out its source so that we can link to it.
+href_topic_reexported <- function(topic, package) {
+  ns <- ns_env(package)
+  exports <- .getNamespaceInfo(ns, "exports")
+
+  if (!env_has(exports, topic)) {
+    NA_character_
+  } else {
+    obj <- env_get(ns, topic, inherit = TRUE)
+    package <- find_reexport_source(obj, ns, topic)
+    href_topic_remote(topic, package)
+  }
+}
+
+find_reexport_source <- function(obj, ns, topic) {
+  if (is.function(obj)) {
+    ## For functions, we can just take their environment.
+    ns_env_name(get_env(obj))
+  } else {
+    ## For other objects, we need to check the import env of the package,
+    ## to see where 'topic' is coming from. The import env has redundant
+    ## information. It seems that we just need to find a named list
+    ## entry that contains `topic`. We take the last match, in case imports
+    ## have name clashes.
+    imp <- getNamespaceImports(ns)
+    imp <- imp[names(imp) != ""]
+    wpkgs <- vapply(imp, `%in%`, x = topic, FUN.VALUE = logical(1))
+    if (!any(wpkgs)) stop("Cannot find reexport source for `", topic, "`")
+    pkgs <- names(wpkgs)[wpkgs]
+    pkgs[[length(pkgs)]]
+  }
 }
 
 # Packages ----------------------------------------------------------------

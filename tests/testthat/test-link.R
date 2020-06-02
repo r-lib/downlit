@@ -52,8 +52,7 @@ test_that("can link to functions in base packages", {
 })
 
 test_that("links to home of re-exported functions", {
-  # can't easily access exports in 3.1
-  expect_equal(href_expr_(addterm()), href_topic_remote("addterm", "MASS"))
+  expect_equal(href_expr_(testthat::`%>%`), href_topic_remote("%>%", "magrittr"))
 })
 
 test_that("fails gracely if can't find re-exported function", {
