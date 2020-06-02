@@ -117,7 +117,9 @@
     <p>Automatically link inline code</p>
     </div>
 
-    <pre class="usage"><span class='fu'>autolink</span>(<span class='no'>text</span>)</pre>
+    <pre class="usage"><span class='fu'>autolink</span>(<span class='no'>text</span>)
+
+<span class='fu'>autolink_url</span>(<span class='no'>text</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -130,10 +132,13 @@
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>If <code>text</code> is linkable, an HTML link. Otherwise, <code>NA</code>.</p>
+    <p>If <code>text</code> is linkable, an HTML link for <code>autolink()</code>, and or just
+the URL for <code>autolink_url()</code>. Both return <code>NA</code> if the text is not
+linkable.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>autolink</span>(<span class='st'>"stats::median()"</span>)</div><div class='output co'>#&gt; [1] "&lt;a href='https://rdrr.io/r/stats/median.html'&gt;stats::median()&lt;/a&gt;"</div><div class='input'><span class='fu'>autolink</span>(<span class='st'>"vignette('grid', package = 'grid')"</span>)</div><div class='output co'>#&gt; [1] "&lt;a href='https://cran.rstudio.com/web/packages/grid/vignettes/grid.pdf'&gt;vignette('grid', package = 'grid')&lt;/a&gt;"</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>autolink</span>(<span class='st'>"stats::median()"</span>)</div><div class='output co'>#&gt; [1] "&lt;a href='https://rdrr.io/r/stats/median.html'&gt;stats::median()&lt;/a&gt;"</div><div class='input'><span class='fu'>autolink</span>(<span class='st'>"vignette('grid', package = 'grid')"</span>)</div><div class='output co'>#&gt; [1] "&lt;a href='https://cran.rstudio.com/web/packages/grid/vignettes/grid.pdf'&gt;vignette('grid', package = 'grid')&lt;/a&gt;"</div><div class='input'>
+<span class='fu'>autolink_url</span>(<span class='st'>"stats::median()"</span>)</div><div class='output co'>#&gt; [1] "https://rdrr.io/r/stats/median.html"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

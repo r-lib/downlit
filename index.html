@@ -77,7 +77,13 @@
 <div id="features" class="section level2">
 <h2 class="hasAnchor">
 <a href="#features" class="anchor"></a>Features</h2>
-<p>downlit has two slightly different highlighting/linking engines, one for multiline code blocks (focussed primarily on highlighting), and one for inline code (focussed primarily on linking).</p>
+<p>downlit has two slightly different highlighting/linking engines:</p>
+<ul>
+<li>
+<code><a href="reference/highlight.html">highlight()</a></code> works with multiline code blocks and does syntax higlighting, function linking, and comment styling.</li>
+<li>
+<code><a href="reference/autolink.html">autolink()</a></code> works with inline code and only does linking.</li>
+</ul>
 <p>Multiline code blocks have:</p>
 <ul>
 <li>Code syntax highlighted using R’s parser.</li>
@@ -123,6 +129,11 @@
 </ul>
 <p>So when you build a pkgdown site that links to the dplyr documentation (e.g., <code>dplyr::mutate()</code>), pkgdown looks first in dplyr’s <code>DESCRIPTION</code> to find its website, then it looks for <code>pkgdown.yml</code>, and uses the metadata to generate the correct links.</p>
 </div>
+</div>
+<div id="usage" class="section level2">
+<h2 class="hasAnchor">
+<a href="#usage" class="anchor"></a>Usage</h2>
+<p>downlit is designed to be used by other packages, and I expect most uses of downlit will use it via another package (e.g. <a href="http://github.com/r-lib/hugodown">hugodown</a>). If you want to use it in your own package, you’ll typically want to apply it as part of some bigger transformation process. You can get some sense of this this might work by reading the source code of <code>downlit_html()</code> and <code>downlit_md()</code>, which transform HTML and markdown documents respectively.</p>
 </div>
 </div>
   </div>
