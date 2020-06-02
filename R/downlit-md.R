@@ -87,7 +87,7 @@ transform_code <- function(x) {
         x <- pandoc_link(pandoc_attr(), list(x), pandoc_target(href))
       }
     } else if (x$t == "CodeBlock") {
-      out <- highlight(x$c[[2]])
+      out <- highlight(x$c[[2]], pre_class = "chroma")
       if (!is.na(out)) {
         x <- pandoc_raw_block("html", out)
       }

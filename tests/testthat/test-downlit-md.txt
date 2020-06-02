@@ -3,8 +3,8 @@
 [`base::t`](https://rdrr.io/r/base/t.html)
 
 > cat(downlit_md_string("```\nbase::t(1)\n```"))
-<pre class='downlit'>
-<span class='kw'>base</span>::<span class='fu'><a href='https://rdrr.io/r/base/t.html'>t</a></span>(<span class='fl'>1</span>)
+<pre class='chroma'>
+<span class='k'>base</span>::<span class='kr'><a href='https://rdrr.io/r/base/t.html'>t</a></span>(<span class='m'>1</span>)
 </pre>
 
 > # Nested in inline

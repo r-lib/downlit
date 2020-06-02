@@ -32,8 +32,8 @@ test_that("can parse code with carriage returns", {
 
   lines <- strsplit(highlight("1\r\n2"), "\n")[[1]]
 
-  expect_equal(lines[[2]], "<span class='fl'>1</span>")
-  expect_equal(lines[[3]], "<span class='fl'>2</span>")
+  expect_equal(lines[[1]], "<span class='m'>1</span>")
+  expect_equal(lines[[2]], "<span class='m'>2</span>")
 })
 
 test_that("unparsable code returns NULL", {
@@ -41,6 +41,6 @@ test_that("unparsable code returns NULL", {
   # but pure comments still highlighted
   expect_equal(
     highlight("#"),
-    "<pre class='downlit'>\n<span class='co'>#</span>\n</pre>"
+    "<span class='c'>#</span>"
   )
 })

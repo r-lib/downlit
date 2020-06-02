@@ -17,7 +17,7 @@
 #'   `NA`.
 #' @examples
 #' cat(highlight("1 + 1"))
-highlight <- function(text, classes = classes_pandoc(), pre_class = "downlit") {
+highlight <- function(text, classes = classes_chroma(), pre_class = NULL) {
   parsed <- parse_data(text)
   if (is.null(parsed)) {
     return(NA_character_)
@@ -53,6 +53,9 @@ highlight <- function(text, classes = classes_pandoc(), pre_class = "downlit") {
     )
   }
   out <- paste0(lines, collapse = "\n")
+  if (is.null(pre_class)) {
+    return(out)
+  }
 
   paste0(
     "<pre class='", paste0(pre_class, collapse = " "), "'>\n",
@@ -153,7 +156,7 @@ classes_chroma <- function() {
     "special" = "kr",
     "infix" = "o",
     "SYMBOL" = "k",
-    "SYMBOL_FUNCTION_CALL" = "kr",
+    "SYMBOL_FUNCTION_CALL" = "nf",
     "SYMBOL_PACKAGE" = "k",
     "SYMBOL_FORMALS" = "k",
     "COMMENT" = "c"

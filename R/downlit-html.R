@@ -35,7 +35,11 @@ downlit_html_node <- function(x) {
 
   # <pre class="sourceCode r">
   xpath_block <- ".//pre[contains(@class, 'sourceCode r')]"
-  tweak_children(x, xpath_block, highlight, replace = "node")
+  tweak_children(x, xpath_block, highlight,
+    pre_class = "downlit",
+    classes = classes_pandoc(),
+    replace = "node"
+  )
 
   # Identify <code> containing only text (i.e. no children) that are
   # are not descendants of a header or link
@@ -47,13 +51,13 @@ downlit_html_node <- function(x) {
   invisible()
 }
 
-tweak_children <- function(node, xpath, fun, replace = c("node", "contents")) {
+tweak_children <- function(node, xpath, fun, ..., replace = c("node", "contents")) {
   replace <- arg_match(replace)
 
   nodes <- xml2::xml_find_all(node, xpath)
 
   text <- xml2::xml_text(nodes)
-  replacement <- map_chr(text, fun)
+  replacement <- map_chr(text, fun, ...)
   to_update <- !is.na(replacement)
 
   old <- nodes[to_update]

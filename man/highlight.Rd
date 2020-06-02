@@ -6,7 +6,7 @@
 \alias{classes_chroma}
 \title{Highlight and link a code block}
 \usage{
-highlight(text, classes = classes_pandoc(), pre_class = "downlit")
+highlight(text, classes = classes_chroma(), pre_class = NULL)
 
 classes_pandoc()
 
