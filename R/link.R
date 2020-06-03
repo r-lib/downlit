@@ -211,13 +211,16 @@ find_reexport_source <- function(obj, ns, topic) {
     ## For other objects, we need to check the import env of the package,
     ## to see where 'topic' is coming from. The import env has redundant
     ## information. It seems that we just need to find a named list
-    ## entry that contains `topic`. We take the last match, in case imports
-    ## have name clashes.
+    ## entry that contains `topic`.
     imp <- getNamespaceImports(ns)
     imp <- imp[names(imp) != ""]
     wpkgs <- vapply(imp, `%in%`, x = topic, FUN.VALUE = logical(1))
-    if (!any(wpkgs)) stop("Cannot find reexport source for `", topic, "`")
+
+    if (!any(wpkgs)) {
+      return(NA_character_)
+    }
     pkgs <- names(wpkgs)[wpkgs]
+    # Take the last match, in case imports have name clashes.
     pkgs[[length(pkgs)]]
   }
 }
