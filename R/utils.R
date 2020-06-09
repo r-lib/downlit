@@ -50,7 +50,7 @@ invert_index <- function(x) {
 safe_parse <- function(text) {
   text <- gsub("\r", "", text)
   tryCatch(
-    parse(text = text, keep.source = TRUE),
+    parse(text = text, keep.source = TRUE, encoding = "UTF-8"),
     error = function(e) NULL
   )
 }
