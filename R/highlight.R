@@ -53,6 +53,8 @@ highlight <- function(text, classes = classes_chroma(), pre_class = NULL) {
     )
   }
   out <- paste0(lines, collapse = "\n")
+  Encoding(out) <- "UTF-8"
+
   if (is.null(pre_class)) {
     return(out)
   }
