@@ -39,6 +39,3 @@
 > cat(highlight("# \033[34mblue\033[39m"))
 <span class='c'># <span style='color: #0000BB;'>blue</span></span>
 
-> cat(highlight("# ✔"))
-<span class='c'># ✔</span>
-

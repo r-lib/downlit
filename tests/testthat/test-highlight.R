@@ -24,8 +24,11 @@ test_that("can link to external topics that use ::", {
 
     "ansi escapes + unicode"
     cat(highlight("# \033[34mblue\033[39m"))
-    cat(highlight("# \u2714"))
   })
+})
+
+test_that("unicode is not mangled", {
+  expect_equal(highlight("# \u2714"), "<span class='c'># \u2714</span>")
 })
 
 test_that("can parse code with carriage returns", {
