@@ -35,7 +35,10 @@
 > cat(highlight("f <- function(x = 'a') {}"))
 <span class='k'>f</span> <span class='o'>&lt;-</span> <span class='nf'>function</span>(<span class='k'>x</span> = <span class='s'>'a'</span>) {}
 
-> # ansi escapes
+> # ansi escapes + unicode
 > cat(highlight("# \033[34mblue\033[39m"))
 <span class='c'># <span style='color: #0000BB;'>blue</span></span>
+
+> cat(highlight("# ✔"))
+<span class='c'># ✔</span>
 

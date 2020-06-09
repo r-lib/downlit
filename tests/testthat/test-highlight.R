@@ -22,8 +22,9 @@ test_that("can link to external topics that use ::", {
     cat(highlight("if (FALSE) 1"))
     cat(highlight("f <- function(x = 'a') {}"))
 
-    "ansi escapes"
+    "ansi escapes + unicode"
     cat(highlight("# \033[34mblue\033[39m"))
+    cat(highlight("# \u2714"))
   })
 })
 
