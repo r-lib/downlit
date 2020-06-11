@@ -30,7 +30,6 @@ scoped_package_context <- function(package,
                                    topic_index = NULL,
                                    article_index = NULL,
                                    local_packages = character(),
-                                   figures = list(),
                                    scope = parent.frame()) {
   stopifnot(is.character(local_packages))
 
@@ -41,7 +40,6 @@ scoped_package_context <- function(package,
   context_set_scoped("topic_index", topic_index, scope = scope)
   context_set_scoped("article_index", article_index, scope = scope)
   context_set_scoped("local_packages", local_packages, scope = scope)
-  context_set_scoped("figures", figures, scope = scope)
 }
 
 scoped_file_context <- function(rdname = "",
