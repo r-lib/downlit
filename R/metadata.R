@@ -72,9 +72,14 @@ package_urls <- function(package) {
   if (is.na(desc_url)) {
     return(character())
   }
+  parse_urls(desc_url)
+}
 
-  urls <- strsplit(desc_url, ", ?")[[1]]
+parse_urls <- function(x) {
+  urls <- trimws(strsplit(trimws(x), "[,\\s]+", perl = TRUE)[[1]])
+  urls <- urls[grepl("^http", urls)]
   urls <- sub("/$", "", urls)
+
   sub_special_cases(urls)
 }
 
