@@ -1,7 +1,6 @@
 test_that("NULL package uses context", {
-  scoped_package_context("test", topic_index = c(a = "a"))
-
-  expect_equal(topic_index(NULL), c(a = "a"))
+  scoped_package_context("test", c(foo = "bar"))
+  expect_equal(topic_index(NULL), c(foo = "bar"))
 })
 
 test_that("can capture index from in-development package", {

@@ -25,8 +25,6 @@ test_that("respects href_topic_local args", {
 })
 
 test_that("can link remote objects", {
-  scoped_package_context("test")
-
   expect_equal(href_expr_(MASS::abbey), href_topic_remote("abbey", "MASS"))
   expect_equal(href_expr_(MASS::addterm()), href_topic_remote("addterm", "MASS"))
   expect_equal(href_expr_(MASS::addterm.default()), href_topic_remote("addterm", "MASS"))
@@ -36,7 +34,6 @@ test_that("can link remote objects", {
 })
 
 test_that("can link to functions in registered packages", {
-  scoped_package_context("test")
   register_attached_packages("MASS")
 
   expect_equal(href_expr_(addterm()), href_topic_remote("addterm", "MASS"))
@@ -44,9 +41,6 @@ test_that("can link to functions in registered packages", {
 })
 
 test_that("can link to functions in base packages", {
-  scoped_package_context("test")
-  scoped_file_context() # package registry maintained on per-file basis
-
   expect_equal(href_expr_(abbreviate()), href_topic_remote("abbreviate", "base"))
   expect_equal(href_expr_(median()), href_topic_remote("median", "stats"))
 })
@@ -61,15 +55,13 @@ test_that("fails gracely if can't find re-exported function", {
 })
 
 test_that("can link to remote pkgdown sites", {
-  scoped_package_context("test", c(foo = "bar"))
-
   # use autolink() to avoid R CMD check NOTE
   expect_equal(autolink_url("pkgdown::add_slug"), href_topic_remote("pkgdown", "add_slug"))
   expect_equal(autolink_url("pkgdown::add_slug(1)"), href_topic_remote("pkgdown", "add_slug"))
 })
 
 test_that("or local sites, if registered", {
-  scoped_package_context("pkgdown", local_packages = c("MASS" = "MASS"))
+  scoped_package_context("test", local_packages = c("MASS" = "MASS"))
   expect_equal(href_expr_(MASS::abbey), "MASS/reference/abbey.html")
 })
 
@@ -105,7 +97,6 @@ test_that("can link help calls", {
 
 test_that("library() linked to package reference", {
   skip_on_os("solaris")
-  scoped_package_context("test", c(foo = "bar"))
 
   expect_equal(href_expr_(library()), NA_character_)
   expect_equal(href_expr_(library(rlang)), "https://rlang.r-lib.org/reference")
@@ -116,7 +107,6 @@ test_that("library() linked to package reference", {
 
 test_that("can link to local articles", {
   scoped_package_context("test", article_index = c(x = "y.html"))
-  scoped_file_context(depth = 0)
 
   expect_equal(href_expr_(vignette("x")), "articles/y.html")
   expect_equal(href_expr_(vignette("x", package = "test")), "articles/y.html")
@@ -125,7 +115,6 @@ test_that("can link to local articles", {
 
 test_that("can link to remote articles", {
   skip_on_cran()
-  scoped_package_context("test")
 
   expect_equal(
     href_expr_(vignette("sha1", "digest")),
@@ -145,13 +134,11 @@ test_that("can link to remote articles", {
 })
 
 test_that("or local sites, if registered", {
-  scoped_package_context("pkgdown", local_packages = c("digest" = "digest"))
+  scoped_package_context("test", local_packages = c("digest" = "digest"))
   expect_equal(href_expr_(vignette("sha1", "digest")), "digest/articles/sha1.html")
 })
 
 test_that("fail gracefully with non-working calls", {
-  scoped_package_context("test")
-
   expect_equal(href_expr_(vignette()), NA_character_)
   expect_equal(href_expr_(vignette(package = package)), NA_character_)
   expect_equal(href_expr_(vignette(1, 2)), NA_character_)
@@ -159,8 +146,6 @@ test_that("fail gracefully with non-working calls", {
 })
 
 test_that("spurious functions are not linked (#889)", {
-  scoped_package_context("test")
-
   expect_equal(href_expr_(Authors@R), NA_character_)
   expect_equal(href_expr_(content-home.html), NA_character_)
   expect_equal(href_expr_(toc: depth), NA_character_)

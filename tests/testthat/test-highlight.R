@@ -32,8 +32,6 @@ test_that("unicode is not mangled", {
 })
 
 test_that("can parse code with carriage returns", {
-  scoped_package_context("test")
-
   lines <- strsplit(highlight("1\r\n2"), "\n")[[1]]
 
   expect_equal(lines[[1]], "<span class='m'>1</span>")
