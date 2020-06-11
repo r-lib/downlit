@@ -113,11 +113,12 @@ test_that("can link help calls", {
 # library and friends -----------------------------------------------------
 
 test_that("library() linked to package reference", {
+  skip_on_cran() # in case URLs change
   skip_on_os("solaris")
 
   expect_equal(href_expr_(library()), NA_character_)
-  expect_equal(href_expr_(library(rlang)), "https://rlang.r-lib.org/reference")
-  expect_equal(href_expr_(library(MASS)), "https://rdrr.io/pkg/MASS/man")
+  expect_equal(href_expr_(library(rlang)), "http://rlang.r-lib.org")
+  expect_equal(href_expr_(library(MASS)), "http://www.stats.ox.ac.uk/pub/MASS4")
 })
 
 # vignette ----------------------------------------------------------------

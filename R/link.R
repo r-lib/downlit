@@ -111,7 +111,7 @@ href_expr <- function(expr) {
       } else if (!is.null(expr$topic) && is.null(expr$package)) {
         href_topic(as.character(expr$topic))
       } else if (is.null(expr$topic) && !is.null(expr$package)) {
-        href_package(as.character(expr$package))
+        href_package_ref(as.character(expr$package))
       } else {
         NA_character_
       }
@@ -185,7 +185,7 @@ href_topic_remote <- function(topic, package) {
     return(href_topic_reexported(topic, package))
   }
 
-  paste0(href_package(package), "/", rdname, ".html")
+  paste0(href_package_ref(package), "/", rdname, ".html")
 }
 
 # If it's a re-exported function, we need to work a little harder to
@@ -228,7 +228,17 @@ find_reexport_source <- function(obj, ns, topic) {
 # Packages ----------------------------------------------------------------
 
 href_package <- function(package) {
+  urls <- package_urls(package)
+  if (length(urls) == 0) {
+    NA
+  } else {
+    urls[[1]]
+  }
+}
+
+href_package_ref <- function(package) {
   reference_url <- remote_package_reference_url(package)
+
   if (!is.null(reference_url)) {
     reference_url
   } else {
