@@ -1,6 +1,5 @@
 test_that("NULL package uses context", {
-  scoped_package_context("test", article_index = c(a = "a"))
-
+  local_options("downlit.article_index" = c(a = "a"))
   expect_equal(article_index(NULL), c(a = "a"))
 })
 

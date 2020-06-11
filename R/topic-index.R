@@ -4,7 +4,7 @@
 
 topic_index <- function(package) {
   if (is.null(package)) {
-    context_get2("topic_index", NULL)
+    getOption("downlit.topic_index")
   } else if (devtools_loaded(package)) {
     # Use live docs for in-development packages
     topic_index_source(package)
@@ -50,7 +50,7 @@ find_rdname <- function(package, topic, warn_if_not_found = FALSE) {
 
 find_rdname_attached <- function(topic) {
   packages <- c(
-    context_get("packages"),
+    getOption("downlit.attached"),
     c("datasets", "utils", "grDevices", "graphics", "stats", "base")
   )
 

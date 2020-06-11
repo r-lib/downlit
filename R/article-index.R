@@ -1,6 +1,6 @@
 article_index <- function(package) {
   if (is.null(package)) {
-    context_get("article_index")
+    getOption("downlit.article_index")
   } else if (devtools_loaded(package)) {
     # Use live docs for in-development packages
     article_index_source(package)

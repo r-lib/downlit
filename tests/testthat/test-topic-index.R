@@ -1,11 +1,10 @@
 test_that("NULL package uses context", {
-  scoped_package_context("test", c(foo = "bar"))
+  local_options("downlit.topic_index" = c(foo = "bar"))
   expect_equal(topic_index(NULL), c(foo = "bar"))
 })
 
 test_that("can capture index from in-development package", {
   local_devtools_package(test_path("index"))
-
   expect_equal(topic_index("index"), c("a" = "a", "b" = "b", "c" = "b"))
 })
 
@@ -29,7 +28,7 @@ test_that("can find topic in specified package", {
 })
 
 test_that("can find topic in attached packages", {
-  context_set_scoped("packages", "grid")
+  local_options("downlit.attached" = "grid")
   expect_equal(find_rdname_attached("unit"), list(rdname = "unit", package = "grid"))
   expect_equal(find_rdname_attached("DOESNOTEXIST"), NULL)
 })

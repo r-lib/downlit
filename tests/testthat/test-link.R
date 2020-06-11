@@ -1,6 +1,8 @@
 test_that("can link function calls", {
-  scoped_package_context("test", c(foo = "bar"))
-  scoped_file_context("test")
+  local_options(
+    "downlit.package" = "test",
+    "downlit.topic_index" = c(foo = "bar")
+  )
 
   expect_equal(href_expr_(foo()), "bar.html")
   expect_equal(href_expr_(foo(1, 2, 3)), "bar.html")
@@ -18,14 +20,19 @@ test_that("base function calls linked", {
   expect_equal(href_expr_(median()), href_topic_remote("median", "stats"))
 })
 
-test_that("respects href_topic_local args", {
-  scoped_package_context("test", c(foo = "bar"))
-  scoped_file_context()
-  expect_equal(href_expr_(foo()), "reference/bar.html")
-  expect_equal(href_expr_(barbar()), NA_character_)
+test_that("respects options that define current location", {
+  local_options(
+    "downlit.topic_index" = c(bar = "bar"),
+    "downlit.topic_path" = "myref/"
+  )
 
-  scoped_file_context("bar")
-  expect_equal(href_expr_(foo()), NA_character_)
+  # when not in an Rd file, link with topic_path
+  local_options("downlit.rdname" = "")
+  expect_equal(href_expr_(bar()), "myref/bar.html")
+
+  # don't link to self
+  local_options("downlit.rdname" = "bar")
+  expect_equal(href_expr_(bar()), NA_character_)
 })
 
 test_that("can link remote objects", {
@@ -38,7 +45,7 @@ test_that("can link remote objects", {
 })
 
 test_that("can link to functions in registered packages", {
-  register_attached_packages("MASS")
+  local_options("downlit.attached" = "MASS")
 
   expect_equal(href_expr_(addterm()), href_topic_remote("addterm", "MASS"))
   expect_equal(href_expr_(addterm.default()), href_topic_remote("addterm", "MASS"))
@@ -54,7 +61,10 @@ test_that("links to home of re-exported functions", {
 })
 
 test_that("fails gracely if can't find re-exported function", {
-  scoped_package_context("downlit", c(foo = "reexports"))
+  local_options(
+    "downlit.package" = "downlit",
+    "downlit.topic_index" = c(foo = "reexports")
+  )
   expect_equal(href_expr_(foo()), NA_character_)
 })
 
@@ -65,7 +75,7 @@ test_that("can link to remote pkgdown sites", {
 })
 
 test_that("or local sites, if registered", {
-  scoped_package_context("test", local_packages = c("MASS" = "MASS"))
+  local_options("downlit.local_packages" = c("MASS" = "MASS"))
   expect_equal(href_expr_(MASS::abbey), "MASS/reference/abbey.html")
 })
 
@@ -77,8 +87,10 @@ test_that("only links bare symbols if they're infix functions", {
 # help --------------------------------------------------------------------
 
 test_that("can link ? calls", {
-  scoped_package_context("test", c(foo = "foo", "foo-package" = "foo-package"))
-  scoped_file_context("bar")
+  local_options(
+    "downlit.package" = "test",
+    "downlit.topic_index" = c(foo = "foo", "foo-package" = "foo-package")
+  )
 
   expect_equal(href_expr_(?foo), "foo.html")
   expect_equal(href_expr_(?"foo"), "foo.html")
@@ -87,15 +99,16 @@ test_that("can link ? calls", {
 })
 
 test_that("can link help calls", {
-  scoped_package_context("test", c(foo = "foo", "foo-package" = "foo-package"))
-  scoped_file_context("bar")
+  local_options(
+    "downlit.package" = "test",
+    "downlit.topic_index" = c(foo = "foo", "foo-package" = "foo-package")
+  )
 
   expect_equal(href_expr_(help("foo")), "foo.html")
   expect_equal(href_expr_(help("foo", "test")), "foo.html")
   expect_equal(href_expr_(help(package = "MASS")), "https://rdrr.io/pkg/MASS/man")
   expect_equal(href_expr_(help()), NA_character_)
 })
-
 
 # library and friends -----------------------------------------------------
 
@@ -110,10 +123,14 @@ test_that("library() linked to package reference", {
 # vignette ----------------------------------------------------------------
 
 test_that("can link to local articles", {
-  scoped_package_context("test", article_index = c(x = "y.html"))
+  local_options(
+    "downlit.package" = "test",
+    "downlit.article_index" = c(x = "y.html"),
+    "downlit.article_path" = "my_path/",
+  )
 
-  expect_equal(href_expr_(vignette("x")), "articles/y.html")
-  expect_equal(href_expr_(vignette("x", package = "test")), "articles/y.html")
+  expect_equal(href_expr_(vignette("x")), "my_path/y.html")
+  expect_equal(href_expr_(vignette("x", package = "test")), "my_path/y.html")
   expect_equal(href_expr_(vignette("y")), NA_character_)
 })
 
@@ -138,7 +155,7 @@ test_that("can link to remote articles", {
 })
 
 test_that("or local sites, if registered", {
-  scoped_package_context("test", local_packages = c("digest" = "digest"))
+  local_options("downlit.local_packages" = c("digest" = "digest"))
   expect_equal(href_expr_(vignette("sha1", "digest")), "digest/articles/sha1.html")
 })
 

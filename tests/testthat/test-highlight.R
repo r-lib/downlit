@@ -1,6 +1,8 @@
 test_that("can link to external topics that use ::", {
-  scoped_package_context("test", c(foo = "bar"))
-  scoped_file_context("test")
+  local_options(
+    "downlit.package" = "test",
+    "downlit.topic_index" = c(foo = "bar")
+  )
 
   verify_output(test_path("test-highlight.txt"), {
     "explicit package"

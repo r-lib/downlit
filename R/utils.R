@@ -1,7 +1,3 @@
-up_path <- function(depth) {
-  paste(rep.int("../", depth), collapse = "")
-}
-
 is_infix <- function(x) {
   ops <- c(
     "::", ":::", "$", "@", "[", "[[", "^", "-", "+", ":", "*", "/",

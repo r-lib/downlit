@@ -25,6 +25,5 @@ extract_package_attach_ <- function(expr) {
 }
 
 register_attached_packages <- function(packages) {
-  packages <- union(packages, context_get("packages"))
-  context_set("packages", packages)
+  options("downlit.attached" = union(packages, getOption("downlit.attached")))
 }

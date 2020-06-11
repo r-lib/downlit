@@ -139,13 +139,12 @@ is_package_local <- function(package) {
   if (is.null(package)) {
     return(TRUE)
   }
-  cur <- context_get2("package", NULL)
+  cur <- getOption("downlit.package")
   if (is.null(cur)) {
     return(FALSE)
   }
 
   package == cur
-
 }
 
 href_topic_local <- function(topic) {
@@ -161,17 +160,18 @@ href_topic_local <- function(topic) {
   }
 
   if (rdname == "reexports") {
-    return(href_topic_reexported(topic, context_get("package")))
+    return(href_topic_reexported(topic, getOption("downlit.package")))
   }
 
-  if (rdname == context_get("rdname")) {
+  cur_rdname <- getOption("downlit.rdname", "")
+  if (rdname == cur_rdname) {
     return(NA_character_)
   }
 
-  if (context_get("rdname") != "") {
+  if (cur_rdname != "") {
     paste0(rdname, ".html")
   } else {
-    paste0(up_path(context_get("depth")), "reference/", rdname, ".html")
+    paste0(getOption("downlit.topic_path"), rdname, ".html")
   }
 }
 
@@ -258,7 +258,7 @@ href_article <- function(article, package = NULL) {
       return(NA_character_)
     }
 
-    paste0(up_path(context_get("depth")), "articles/", path)
+    paste0(getOption("downlit.article_path"), path)
   } else {
     path <- find_article(package, article)
     if (is.null(path)) {
