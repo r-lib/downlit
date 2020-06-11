@@ -30,7 +30,7 @@
 <span class='k'>x</span> <span class='o'>%in%</span> <span class='k'>y</span>
 
 > cat(highlight("if (FALSE) 1"))
-<span class='kr'>if</span> (<span class='m'>FALSE</span>) <span class='m'>1</span>
+<span class='kr'>if</span> (<span class='kc'>FALSE</span>) <span class='m'>1</span>
 
 > cat(highlight("f <- function(x = 'a') {}"))
 <span class='k'>f</span> <span class='o'>&lt;-</span> <span class='nf'>function</span>(<span class='k'>x</span> = <span class='s'>'a'</span>) {}

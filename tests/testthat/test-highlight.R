@@ -33,6 +33,11 @@ test_that("unicode is not mangled", {
   expect_equal(highlight("# \u2714"), "<span class='c'># \u2714</span>")
 })
 
+test_that("distinguish logical and numeric",{
+  expect_equal(highlight("TRUE"), "<span class='kc'>TRUE</span>")
+  expect_equal(highlight("FALSE"), "<span class='kc'>FALSE</span>")
+  expect_equal(highlight("1"), "<span class='m'>1</span>")
+})
 test_that("can parse code with carriage returns", {
   lines <- strsplit(highlight("1\r\n2"), "\n")[[1]]
 
