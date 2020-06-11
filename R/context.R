@@ -47,12 +47,6 @@ scoped_file_context <- function(rdname = "",
                                 packages = character(),
                                 scope = parent.frame()) {
 
-  # Base packages are always attached
-  packages <- union(
-    packages,
-    c("base", "stats", "graphics", "grDevices", "utils", "datasets")
-  )
-
   context_set_scoped("rdname", rdname, scope = scope)
   context_set_scoped("depth", depth, scope = scope)
   context_set_scoped("packages", packages, scope = scope)

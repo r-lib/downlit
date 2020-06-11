@@ -14,6 +14,10 @@ test_that("can link function calls", {
   expect_equal(href_expr_(if (TRUE) 1), NA_character_)
 })
 
+test_that("base function calls linked", {
+  expect_equal(href_expr_(median()), href_topic_remote("median", "stats"))
+})
+
 test_that("respects href_topic_local args", {
   scoped_package_context("test", c(foo = "bar"))
   scoped_file_context()

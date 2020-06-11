@@ -49,9 +49,12 @@ find_rdname <- function(package, topic, warn_if_not_found = FALSE) {
 }
 
 find_rdname_attached <- function(topic) {
-  # Deliberately ignore base packages here; as don't want to link every
-  # single function invocation
-  for (package in context_get("packages")) {
+  packages <- c(
+    context_get("packages"),
+    c("datasets", "utils", "grDevices", "graphics", "stats", "base")
+  )
+
+  for (package in packages) {
     rdname <- find_rdname(package, topic)
     if (!is.null(rdname)) {
       return(list(rdname = rdname, package = package))
