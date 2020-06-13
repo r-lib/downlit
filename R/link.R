@@ -127,6 +127,12 @@ href_expr <- function(expr) {
 
 # Topics ------------------------------------------------------------------
 
+#' Generate url for topic/article
+#'
+#' @param topic,article Topic/article name
+#' @param package Optional package name
+#' @keywords internal
+#' @export
 href_topic <- function(topic, package = NULL) {
   if (is_package_local(package)) {
     href_topic_local(topic)
@@ -225,6 +231,33 @@ find_reexport_source <- function(obj, ns, topic) {
   }
 }
 
+# Articles ----------------------------------------------------------------
+
+#' @export
+#' @rdname href_topic
+href_article <- function(article, package = NULL) {
+  if (is_package_local(package)) {
+    path <- find_article(NULL, article)
+    if (is.null(path)) {
+      return(NA_character_)
+    }
+
+    paste0(getOption("downlit.article_path"), path)
+  } else {
+    path <- find_article(package, article)
+    if (is.null(path)) {
+      return(NA_character_)
+    }
+
+    base_url <- remote_package_article_url(package)
+    if (is.null(base_url)) {
+      paste0("https://cran.rstudio.com/web/packages/", package, "/vignettes/", path)
+    } else {
+      paste0(base_url, "/", path)
+    }
+  }
+}
+
 # Packages ----------------------------------------------------------------
 
 href_package <- function(package) {
@@ -257,29 +290,4 @@ is_base_package <- function(x) {
     "methods", "parallel", "splines", "stats", "stats4", "tcltk",
     "tools", "utils"
   )
-}
-
-# Articles ----------------------------------------------------------------
-
-href_article <- function(article, package = NULL) {
-  if (is_package_local(package)) {
-    path <- find_article(NULL, article)
-    if (is.null(path)) {
-      return(NA_character_)
-    }
-
-    paste0(getOption("downlit.article_path"), path)
-  } else {
-    path <- find_article(package, article)
-    if (is.null(path)) {
-      return(NA_character_)
-    }
-
-    base_url <- remote_package_article_url(package)
-    if (is.null(base_url)) {
-      paste0("https://cran.rstudio.com/web/packages/", package, "/vignettes/", path)
-    } else {
-      paste0(base_url, "/", path)
-    }
-  }
 }
