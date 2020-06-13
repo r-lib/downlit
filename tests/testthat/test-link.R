@@ -84,6 +84,12 @@ test_that("only links bare symbols if they're infix functions", {
   expect_equal(autolink_url("foo"), NA_character_)
 })
 
+test_that("returns NA for bad inputs", {
+  expect_equal(autolink_url(""), NA_character_)
+  expect_equal(autolink_url("a; b"), NA_character_)
+  expect_equal(autolink_url("1"), NA_character_)
+})
+
 # help --------------------------------------------------------------------
 
 test_that("can link ? calls", {

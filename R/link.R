@@ -30,12 +30,12 @@ autolink_url <- function(text) {
     text <- paste0("`", text, "`")
   }
 
-  expr <- safe_parse(text)[[1]]
-  if (is.null(expr)) {
+  expr <- safe_parse(text)
+  if (length(expr) == 0) {
     return(NA_character_)
   }
 
-  href_expr(expr)
+  href_expr(expr[[1]])
 }
 
 # Helper for testing
