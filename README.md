@@ -28,7 +28,7 @@ The following forms of inline code are recognised and automatically linked:
 * `?fun`, `pkg::fun`, `type?topic`.
 * `help("fun")`, `help("fun", package = "package")`, `help(package = "package")`.
 * `vignette("name")`, `vignette("name", package = "package")`.
-* `library(pacakge)`, `require(package)`, `requireNamespace("package")`.
+* `library(package)`, `require(package)`, `requireNamespace("package")`.
 
 ### Cross-package links
 
