@@ -263,7 +263,7 @@ href_article <- function(article, package = NULL) {
 href_package <- function(package) {
   urls <- package_urls(package)
   if (length(urls) == 0) {
-    NA
+    NA_character_
   } else {
     urls[[1]]
   }
