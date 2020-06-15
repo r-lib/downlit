@@ -186,3 +186,7 @@ test_that("autolink generates HTML if linkable", {
   )
   expect_equal(autolink("1 +"), NA_character_)
 })
+
+test_that("href_package can handle non-existing packages", {
+  expect_equal(href_package("NotAPackage"), NA_character_)
+})
