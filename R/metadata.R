@@ -53,7 +53,7 @@ remote_metadata_slow <- function(package) {
   local_path <- system.file("pkgdown.yml", package = package)
   if (local_path != "") {
     yaml <- tryCatch(yaml::read_yaml(local_path), error = NULL)
-    of (is.list(yaml)) {
+    if (is.list(yaml)) {
       if (has_name(yaml, "articles")) {
         yaml$articles <- unlist(yaml$articles)
       }
