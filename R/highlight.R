@@ -18,6 +18,7 @@
 #' @examples
 #' cat(highlight("1 + 1"))
 highlight <- function(text, classes = classes_chroma(), pre_class = NULL) {
+  text <- gsub("\t", "  ", text)
   parsed <- parse_data(text)
   if (is.null(parsed)) {
     return(NA_character_)
