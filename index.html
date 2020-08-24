@@ -101,12 +101,12 @@
 <li>
 <code>vignette("name")</code>, <code>vignette("name", package = "package")</code>.</li>
 <li>
-<code><a href="https://rdrr.io/pkg/package/man">library(package)</a></code>, <code><a href="https://rdrr.io/pkg/package/man">require(package)</a></code>, <code><a href="https://rdrr.io/pkg/package/man">requireNamespace("package")</a></code>.</li>
+<code>library(package)</code>, <code>require(package)</code>, <code>requireNamespace("package")</code>.</li>
 </ul>
 <div id="cross-package-links" class="section level3">
 <h3 class="hasAnchor">
 <a href="#cross-package-links" class="anchor"></a>Cross-package links</h3>
-<p>If pkgdown can find a pkgdown site for the remote package, it will link to it; otherwise it will link to <a href="http://rdrr.io/" class="uri">http://rdrr.io/</a> for documentation, and CRAN for vignettes. In order for a pkgdown site to be findable, it needs to be listed in two places:</p>
+<p>If downlit can find a pkgdown site for the remote package, it will link to it; otherwise it will link to <a href="http://rdrr.io/" class="uri">http://rdrr.io/</a> for documentation, and CRAN for vignettes. In order for a pkgdown site to be findable, it needs to be listed in two places:</p>
 <ul>
 <li>
 <p>In the <code>URL</code> field in the <code>DESCRIPTION</code>, as in <a href="https://github.com/tidyverse/dplyr/blob/85faf79c1fd74f4b4f95319e5be6a124a8075502/DESCRIPTION#L15">dplyr</a>:</p>
