@@ -5,7 +5,6 @@ test_that("common across multiple versions", {
   verify_output(test_path("test-downlit-md.txt"), {
     "Bare code"
     cat(downlit_md_string("`base::t`"))
-    cat(downlit_md_string("```\nbase::t(1)\n```"))
 
     "No transforms"
     cat(downlit_md_string("## `base::t`"))
@@ -29,6 +28,7 @@ test_that("pandoc AST v1.20", {
 
   verify_output(test_path("test-downlit-md-v20.txt"), {
     cat(downlit_md_string("* `base::t`"))
+    cat(downlit_md_string("```\nbase::t(1)\n```"))
     cat(downlit_md_string(brio::read_lines(test_path("markdown-table.md"))))
   })
 })
@@ -38,6 +38,7 @@ test_that("pandoc AST v1.21", {
 
   verify_output(test_path("test-downlit-md-v21.txt"), {
     cat(downlit_md_string("* `base::t`"))
+    cat(downlit_md_string("```\nbase::t(1)\n```"))
     cat(downlit_md_string(brio::read_lines(test_path("markdown-table.md"))))
   })
 })
