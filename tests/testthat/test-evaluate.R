@@ -11,7 +11,9 @@ test_that("evaluate_and_highlight works", {
 
     "Plots"
     fig_save <- function(plot, id) list(path = paste0(id, ".png"), width = 10, height = 10)
-    cat(evaluate_and_highlight("plot(1)\nlines(0:2, 0:2)", fig_save = fig_save))
+    f1 <- function() plot(1)
+    f2 <- function() lines(0:2, 0:2)
+    cat(evaluate_and_highlight("f1()\nf2()", fig_save = fig_save, env = environment()))
   })
 })
 

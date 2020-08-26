@@ -20,7 +20,9 @@
 > # Plots
 > fig_save <- (function(plot, id) list(path = paste0(id, ".png"), width = 10,
 + height = 10))
-> cat(evaluate_and_highlight("plot(1)\nlines(0:2, 0:2)", fig_save = fig_save))
-<div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='fl'>1</span>)
-</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span>(<span class='fl'>0</span><span class='op'>:</span><span class='fl'>2</span>, <span class='fl'>0</span><span class='op'>:</span><span class='fl'>2</span>)</div><div class='img'><img src='1.png' alt='' width='10' height='10' /></div>
+> f1 <- (function() plot(1))
+> f2 <- (function() lines(0:2, 0:2))
+> cat(evaluate_and_highlight("f1()\nf2()", fig_save = fig_save, env = environment()))
+<div class='input'><span class='fu'>f1</span>()
+</div><div class='input'><span class='fu'>f2</span>()</div><div class='img'><img src='1.png' alt='' width='10' height='10' /></div>
 
