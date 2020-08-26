@@ -190,3 +190,15 @@ test_that("autolink generates HTML if linkable", {
 test_that("href_package can handle non-existing packages", {
   expect_equal(href_package("NotAPackage"), NA_character_)
 })
+
+# find_reexport_source ----------------------------------------------------
+
+test_that("can find functions", {
+  expect_equal(find_reexport_source(is.null), "base")
+  expect_equal(find_reexport_source(mean), "base")
+})
+
+test_that("can find other objects", {
+  expect_equal(find_reexport_source(na_cpl, "downlit", "na_cpl"), "rlang")
+  expect_equal(find_reexport_source(na_cpl, "downlit", "MISSING"), NA_character_)
+})

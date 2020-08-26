@@ -210,7 +210,10 @@ href_topic_reexported <- function(topic, package) {
 }
 
 find_reexport_source <- function(obj, ns, topic) {
-  if (is.function(obj)) {
+  if (is.primitive(obj)) {
+    # primitive functions all live in base
+    "base"
+  } else if (is.function(obj)) {
     ## For functions, we can just take their environment.
     ns_env_name(get_env(obj))
   } else {
