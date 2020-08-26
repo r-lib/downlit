@@ -1,0 +1,26 @@
+> # Parsing failure
+> cat(evaluate_and_highlight("1 + "))
+<div class='input'>NA</div><div class='output co'>#&gt; <span class='error'>Error: &lt;text&gt;:2:0: unexpected end of input</span>
+#&gt; <span class='error'>1: 1 + </span>
+#&gt; <span class='error'>   ^</span></div>
+
+> # Basic ouput
+> cat(evaluate_and_highlight("# comment"))
+<div class='input'><span class='co'># comment</span></div>
+
+> cat(evaluate_and_highlight("message('x')"))
+<div class='input'><span class='fu'><a href='https://rdrr.io/r/base/message.html'>message</a></span>(<span class='st'>'x'</span>)</div><div class='output co'>#&gt; <span class='message'>x</span></div>
+
+> cat(evaluate_and_highlight("warning('x')"))
+<div class='input'><span class='fu'><a href='https://rdrr.io/r/base/warning.html'>warning</a></span>(<span class='st'>'x'</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: x</span></div>
+
+> cat(evaluate_and_highlight("stop('x', call. = FALSE)"))
+<div class='input'><span class='fu'><a href='https://rdrr.io/r/base/stop.html'>stop</a></span>(<span class='st'>'x'</span>, call. = <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='error'>Error: x</span></div>
+
+> # Plots
+> fig_save <- (function(plot, id) list(path = paste0(id, ".png"), width = 10,
++ height = 10))
+> cat(evaluate_and_highlight("plot(1)\nlines(0:2, 0:2)", fig_save = fig_save))
+<div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='fl'>1</span>)
+</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span>(<span class='fl'>0</span><span class='op'>:</span><span class='fl'>2</span>, <span class='fl'>0</span><span class='op'>:</span><span class='fl'>2</span>)</div><div class='img'><img src='1.png' alt='' width='10' height='10' /></div>
+

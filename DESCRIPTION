@@ -17,6 +17,8 @@ License: MIT + file LICENSE
 Depends: R (>= 3.2.0)
 Imports: 
     brio,
+    digest,
+    evaluate,
     fansi,
     rlang,
     vctrs,
