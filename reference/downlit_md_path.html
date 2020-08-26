@@ -125,9 +125,9 @@ It applies <code><a href='highlight.html'>highlight()</a></code> to <code>CodeBl
 of a larger pipeline.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>downlit_md_path</span>(<span class='kw'>in_path</span>, <span class='kw'>out_path</span>, format = <span class='st'>"gfm"</span>)
+    <pre class="usage"><span class='fu'>downlit_md_path</span>(<span class='kw'>in_path</span>, <span class='kw'>out_path</span>, format = <span class='kw'>NULL</span>)
 
-<span class='fu'>downlit_md_string</span>(<span class='kw'>x</span>, format = <span class='st'>"gfm"</span>)</pre>
+<span class='fu'>downlit_md_string</span>(<span class='kw'>x</span>, format = <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -138,7 +138,8 @@ of a larger pipeline.</p>
     </tr>
     <tr>
       <th>format</th>
-      <td><p>Pandoc format.</p></td>
+      <td><p>Pandoc format; defaults to "gfm" if you have pandoc 2.0.0 or
+greater, otherwise "markdown_github".</p></td>
     </tr>
     <tr>
       <th>x</th>
