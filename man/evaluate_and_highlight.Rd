@@ -32,3 +32,6 @@ This function runs \code{code} and captures the output using
 \code{\link[evaluate:evaluate]{evaluate::evaluate()}}. It syntax highlights code with \code{\link[=highlight]{highlight()}},
 and combines all results into a single HTML div.
 }
+\examples{
+evaluate_and_highlight("1 + 2")
+}

@@ -30,3 +30,11 @@ Use \code{downlit_html_path()} to process an \code{.html} file on disk;
 use \code{downlit_html_node()} to process an in-memory \code{xml_node} as part of a
 larger pipeline.
 }
+\examples{
+node <- xml2::read_xml("<p><code>base::t()</code></p>")
+node
+
+# node is modified in place
+downlit_html_node(node)
+node
+}

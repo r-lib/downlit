@@ -36,4 +36,8 @@ This function:
 }
 \examples{
 cat(highlight("1 + 1"))
+cat(highlight("base::t(1:3)"))
+
+# Unparseable R code returns NA
+cat(highlight("base::t("))
 }

@@ -16,6 +16,13 @@
 #' @param x An `xml2::xml_node`
 #' @return Invisibly returns `output_path`.
 #' @export
+#' @examples
+#' node <- xml2::read_xml("<p><code>base::t()</code></p>")
+#' node
+#'
+#' # node is modified in place
+#' downlit_html_node(node)
+#' node
 downlit_html_path <- function(in_path, out_path) {
   if (!is_installed("xml2")) {
     abort("xml2 package required .html transformation")

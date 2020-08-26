@@ -13,6 +13,8 @@
 #'   defaults to a child of the global environment.
 #' @inheritParams highlight
 #' @export
+#' @examples
+#' evaluate_and_highlight("1 + 2")
 evaluate_and_highlight <- function(code,
                                    fig_save,
                                    classes = downlit::classes_pandoc(),

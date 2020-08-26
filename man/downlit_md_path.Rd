@@ -24,3 +24,11 @@ Use \code{downlit_md_path()} to transform a file on disk; use
 \code{downlit_md_string()} to transform a string containing markdown as part
 of a larger pipeline.
 }
+\examples{
+downlit_md_string("`base::t()`")
+downlit_md_string("`base::t`")
+downlit_md_string("* `base::t`")
+
+# But don't highlight in headings
+downlit_md_string("## `base::t`")
+}

@@ -12,6 +12,13 @@
 #' @param in_path,out_path Input and output paths for markdown file.
 #' @param x A string containing markdown.
 #' @param format Pandoc format.
+#' @examples
+#' downlit_md_string("`base::t()`")
+#' downlit_md_string("`base::t`")
+#' downlit_md_string("* `base::t`")
+#'
+#' # But don't highlight in headings
+#' downlit_md_string("## `base::t`")
 downlit_md_path <- function(in_path, out_path, format = "gfm") {
   check_packages()
 

@@ -17,6 +17,10 @@
 #'   `NA`.
 #' @examples
 #' cat(highlight("1 + 1"))
+#' cat(highlight("base::t(1:3)"))
+#'
+#' # Unparseable R code returns NA
+#' cat(highlight("base::t("))
 highlight <- function(text, classes = classes_chroma(), pre_class = NULL) {
   text <- gsub("\t", "  ", text, fixed = TRUE)
   text <- gsub("\r", "", text, fixed = TRUE)
