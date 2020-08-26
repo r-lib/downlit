@@ -11,7 +11,8 @@
 #' @export
 #' @param in_path,out_path Input and output paths for markdown file.
 #' @param x A string containing markdown.
-#' @param format Pandoc format.
+#' @param format Pandoc format; defaults to "gfm" if you have pandoc 2.0.0 or
+#'   greater, otherwise "markdown_github".
 #' @return `downlit_md_path()` invisibly returns `output_path`;
 #'   `downlit_md_string()` returns a string containing markdown.
 #' @examples
@@ -21,7 +22,7 @@
 #'
 #' # But don't highlight in headings
 #' downlit_md_string("## `base::t`")
-downlit_md_path <- function(in_path, out_path, format = "gfm") {
+downlit_md_path <- function(in_path, out_path, format = NULL) {
   check_packages()
 
   ast_path <- tempfile()
@@ -39,7 +40,7 @@ downlit_md_path <- function(in_path, out_path, format = "gfm") {
 
 #' @export
 #' @rdname downlit_md_path
-downlit_md_string <- function(x, format = "gfm") {
+downlit_md_string <- function(x, format = NULL) {
   check_packages()
 
   path <- tempfile()
@@ -52,7 +53,8 @@ downlit_md_string <- function(x, format = "gfm") {
 
 # Markdown <-> pandoc AST -------------------------------------------------
 
-md2ast <- function(path, out_path, format = "gfm") {
+md2ast <- function(path, out_path, format = NULL) {
+  format <- format %||% md_format()
   rmarkdown::pandoc_convert(
     input = normalizePath(path, mustWork = FALSE),
     output = normalizePath(out_path, mustWork = FALSE),
@@ -61,13 +63,21 @@ md2ast <- function(path, out_path, format = "gfm") {
   )
   invisible(out_path)
 }
-ast2md <- function(path, out_path, format = "gfm") {
+ast2md <- function(path, out_path, format = NULL) {
+  format <- format %||% md_format()
+
+  options <- c(
+    if (rmarkdown::pandoc_available("2.0")) "--eol=lf",
+    if (rmarkdown::pandoc_available("1.9")) "--atx-headers",
+    "--wrap=none" # 1.16
+  )
+
   rmarkdown::pandoc_convert(
     input = normalizePath(path, mustWork = FALSE),
     output = normalizePath(out_path, mustWork = FALSE),
     from = "json",
     to = format,
-    options = c("--wrap=none", "--eol=lf", "--atx-headers")
+    options = options
   )
   invisible(out_path)
 }
@@ -75,6 +85,14 @@ ast2md <- function(path, out_path, format = "gfm") {
 ast_version <- function(ast) {
   string <- paste(unlist(ast$`pandoc-api-version`), collapse = ".")
   package_version(string)
+}
+
+md_format <- function() {
+  if (rmarkdown::pandoc_available("2.0.0")) {
+    "gfm"
+  } else {
+    "markdown_github"
+  }
 }
 
 # Code transformation -----------------------------------------------------

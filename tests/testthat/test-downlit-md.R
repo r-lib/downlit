@@ -2,6 +2,8 @@
 # rmarkdown::find_pandoc(cache = FALSE)
 
 test_that("common across multiple versions", {
+  skip_if_not(rmarkdown::pandoc_version() > "2.0.0")
+
   verify_output(test_path("test-downlit-md.txt"), {
     "Bare code"
     cat(downlit_md_string("`base::t`"))
@@ -24,6 +26,7 @@ test_that("common across multiple versions", {
 })
 
 test_that("pandoc AST v1.20", {
+  skip_if_not(rmarkdown::pandoc_version() > "2.0.0")
   skip_if_not(rmarkdown::pandoc_version() < "2.10")
 
   verify_output(test_path("test-downlit-md-v20.txt"), {

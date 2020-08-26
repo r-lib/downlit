@@ -5,14 +5,15 @@
 \alias{downlit_md_string}
 \title{Syntax highlight and link a md document}
 \usage{
-downlit_md_path(in_path, out_path, format = "gfm")
+downlit_md_path(in_path, out_path, format = NULL)
 
-downlit_md_string(x, format = "gfm")
+downlit_md_string(x, format = NULL)
 }
 \arguments{
 \item{in_path, out_path}{Input and output paths for markdown file.}
 
-\item{format}{Pandoc format.}
+\item{format}{Pandoc format; defaults to "gfm" if you have pandoc 2.0.0 or
+greater, otherwise "markdown_github".}
 
 \item{x}{A string containing markdown.}
 }
