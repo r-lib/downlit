@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>downlit: Syntax Highlighting and Automatic Linking — downlit-package • downlit</title>
+<title>Evaluate code and syntax highlight the results — evaluate_and_highlight • downlit</title>
 
 
 <!-- jquery -->
@@ -39,12 +39,10 @@
 
 
 
-<meta property="og:title" content="downlit: Syntax Highlighting and Automatic Linking — downlit-package" />
-<meta property="og:description" content="Syntax highlight of R code, specifically designed
-    for the needs of RMarkdown packages like pkgdown, hugodown, and
-    bookdown. It includes linking of function calls to their documentation
-    on the web, and automatic translation of ANSI escapes in output to the
-    equivalent HTML." />
+<meta property="og:title" content="Evaluate code and syntax highlight the results — evaluate_and_highlight" />
+<meta property="og:description" content="This function runs code and captures the output using
+evaluate::evaluate(). It syntax highlights code with highlight(),
+and combines all results into a single HTML div." />
 
 
 
@@ -112,59 +110,56 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>downlit: Syntax Highlighting and Automatic Linking</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/downlit/blob/master/R/downlit-package.R'><code>R/downlit-package.R</code></a></small>
-    <div class="hidden name"><code>downlit-package.Rd</code></div>
+    <h1>Evaluate code and syntax highlight the results</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/downlit/blob/master/R/evaluate.R'><code>R/evaluate.R</code></a></small>
+    <div class="hidden name"><code>evaluate_and_highlight.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Syntax highlight of R code, specifically designed
-    for the needs of RMarkdown packages like pkgdown, hugodown, and
-    bookdown. It includes linking of function calls to their documentation
-    on the web, and automatic translation of ANSI escapes in output to the
-    equivalent HTML.</p>
+    <p>This function runs <code>code</code> and captures the output using
+<code><a href='https://rdrr.io/pkg/evaluate/man/evaluate.html'>evaluate::evaluate()</a></code>. It syntax highlights code with <code><a href='highlight.html'>highlight()</a></code>,
+and combines all results into a single HTML div.</p>
     </div>
 
+    <pre class="usage"><span class='fu'>evaluate_and_highlight</span>(
+  <span class='kw'>code</span>,
+  <span class='kw'>fig_save</span>,
+  classes = <span class='kw'>downlit</span>::<span class='fu'><a href='highlight.html'>classes_pandoc</a></span>(),
+  env = <span class='kw'>NULL</span>
+)</pre>
+
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>code</th>
+      <td><p>Code to evaluate (as a string).</p></td>
+    </tr>
+    <tr>
+      <th>fig_save</th>
+      <td><p>A function with arguments <code>plot</code> and <code>id</code> that is
+responsible for saving <code>plot</code> to a file (using <code>id</code> to disambiguate
+multiple plots in the same chunk). It should return a list with
+components <code>path</code>, <code>width</code>, and <code>height</code>.</p></td>
+    </tr>
+    <tr>
+      <th>classes</th>
+      <td><p>A mapping between token names and CSS class names.
+Bundled <code><a href='highlight.html'>classes_pandoc()</a></code> and <code><a href='highlight.html'>classes_chroma()</a></code> provide mappings
+that (roughly) match Pandoc and chroma (used by hugo) classes so you
+can use existing themes.</p></td>
+    </tr>
+    <tr>
+      <th>env</th>
+      <td><p>Environment in which to evaluate code; if not supplied,
+defaults to a child of the global environment.</p></td>
+    </tr>
+    </table>
 
 
-    <h2 class="hasAnchor" id="options"><a class="anchor" href="#options"></a>Options</h2>
-
-    
-
-
-<p>downlit provides a number of options to control the details of the linking.
-They are particularly important if you want to generate "local" links.</p><ul>
-<li><p><code>downlit.package</code>: name of the current package. Determines when
-<code>topic_index</code> and <code>article_index</code></p></li>
-<li><p><code>downlit.topic_index</code> and <code>downlit.article_index</code>: named character
-vector that maps from topic/article name to path.</p></li>
-<li><p><code>downlit.rdname</code>: name of current Rd file being documented (if any);
-used to avoid self-links.</p></li>
-<li><p><code>downlit.attached</code>: character vector of currently attached R packages.</p></li>
-<li><p><code>downlit.local_packages</code>: named character vector providing relative
-paths (value) to packages (name) that can be reached with relative links
-from the target HTML document.</p></li>
-<li><p><code>downlit.topic_path</code> and <code>downlit.article_path</code>: paths to reference
-topics and articles/vignettes relative to the "current" file.</p></li>
-</ul>
-
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p>Useful links:</p><ul>
-<li><p><a href='https://github.com/r-lib/downlit'>https://github.com/r-lib/downlit</a></p></li>
-<li><p>Report bugs at <a href='https://github.com/r-lib/downlit/issues'>https://github.com/r-lib/downlit/issues</a></p></li>
-</ul>
-
-</div>
-    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
-
-    <p><strong>Maintainer</strong>: Hadley Wickham <a href='mailto:hadley@rstudio.com'>hadley@rstudio.com</a></p>
-<p>Other contributors:</p><ul>
-<li><p>RStudio [copyright holder]</p></li>
-</ul>
-
-
-
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'>evaluate_and_highlight</span>(<span class='st'>"1 + 2"</span>)
+</div><div class='output co'>#&gt; [1] "&lt;div class='input'&gt;&lt;span class='fl'&gt;1&lt;/span&gt; &lt;span class='op'&gt;+&lt;/span&gt; &lt;span class='fl'&gt;2&lt;/span&gt;&lt;/div&gt;&lt;div class='output co'&gt;#&amp;gt; [1] 3&lt;/div&gt;"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
