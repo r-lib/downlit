@@ -53,3 +53,11 @@ test_that("unparsable code returns NULL", {
     "<span class='c'>#</span>"
   )
 })
+
+test_that("code with tab is not mangled", {
+  expect_equal(highlight("\tmean(1:3)"),
+               "  <span class='nf'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='m'>1</span><span class='o'>:</span><span class='m'>3</span>)")
+
+  expect_equal(highlight("  mean(1:3)"),
+               "  <span class='nf'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='m'>1</span><span class='o'>:</span><span class='m'>3</span>)")
+})
