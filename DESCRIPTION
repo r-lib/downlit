@@ -17,6 +17,7 @@ Imports:
     brio,
     fansi,
     rlang,
+    vctrs,
     yaml
 Suggests:
     rmarkdown,

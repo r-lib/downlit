@@ -45,6 +45,11 @@ test_that("can parse code with carriage returns", {
   expect_equal(lines[[2]], "<span class='m'>2</span>")
 })
 
+test_that("syntax can span multiple lines", {
+  expect_equal(highlight("f(\n\n)"), "<span class='nf'>f</span>(\n\n)")
+  expect_equal(highlight("'\n\n'"), "<span class='s'>'\n\n'</span>")
+})
+
 test_that("unparsable code returns NULL", {
   expect_equal(highlight("<"), NA_character_)
   # but pure comments still highlighted

@@ -18,7 +18,8 @@
 #' @examples
 #' cat(highlight("1 + 1"))
 highlight <- function(text, classes = classes_chroma(), pre_class = NULL) {
-  text <- gsub("\t", "  ", text)
+  text <- gsub("\t", "  ", text, fixed = TRUE)
+  text <- gsub("\r", "", text, fixed = TRUE)
   parsed <- parse_data(text)
   if (is.null(parsed)) {
     return(NA_character_)
@@ -39,21 +40,13 @@ highlight <- function(text, classes = classes_chroma(), pre_class = NULL) {
   # Update input - basic idea from prettycode
   changed <- !is.na(out$href) | !is.na(out$class) | out$text != out$escaped
   changes <- out[changed, , drop = FALSE]
-  changes_by_line <- split(changes, changes$line1)
-  lines <- strsplit(text, "\r?\n")[[1]]
 
-  for (change in changes_by_line) {
-    i <- change$line1[[1]]
-    new <- style_token(change$escaped, change$href, change$class)
+  loc <- line_col(text)
+  start <- vctrs::vec_match(data.frame(line = changes$line1, col = changes$col1), loc)
+  end <- vctrs::vec_match(data.frame(line = changes$line2, col = changes$col2), loc)
 
-    lines[[i]] <- replace_in_place(
-      lines[[i]],
-      start = change$col1,
-      end = change$col2,
-      replacement = new
-    )
-  }
-  out <- paste0(lines, collapse = "\n")
+  new <- style_token(changes$escaped, changes$href, changes$class)
+  out <- replace_in_place(text, start, end, replacement = new)
 
   if (is.null(pre_class)) {
     return(out)
@@ -86,6 +79,16 @@ replace_in_place <- function(str, start, end, replacement) {
   pieces[even] <- replacement
   pieces[odd] <- keep
   paste0(pieces, collapse = "")
+}
+
+line_col <- function(x) {
+  char <- strsplit(x, "")[[1]]
+
+  nl <- char == "\n"
+  line <- cumsum(c(TRUE, nl[-length(char)]))
+  col <- sequence(rle(line)$lengths)
+
+  data.frame(line, col)
 }
 
 parse_data <- function(text) {
