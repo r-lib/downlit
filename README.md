@@ -11,7 +11,7 @@ The goal of downlit is to provide syntax highlighting and automatic linking of R
 
 downlit has two slightly different highlighting/linking engines:
 
-* `highlight()` works with multiline code blocks and does syntax higlighting,
+* `highlight()` works with multiline code blocks and does syntax highlighting,
   function linking, and comment styling.
 * `autolink()` works with inline code and only does linking.
 
@@ -22,7 +22,7 @@ Multiline code blocks have:
 * Comments styled by transforming ANSI escapes sequences to their HTML 
   equivalents (thanks [fansi](https://github.com/brodieG/fansi) package).
 
-The following forms of inline code are recognised and automatically linked:
+The following forms of inline code are recognized and automatically linked:
 
 * `fun()`, `pkg::fun()`.
 * `?fun`, `pkg::fun`, `type?topic`.
