@@ -28,10 +28,7 @@ test_that("can capture index of installed package (vignettes + pkgdown)", {
   # Requires internet + number of vignettes might change
   skip_on_cran()
 
-  expect_equal(
-    article_index("testthat"),
-    c("custom-expectation" = "custom-expectation.html" )
-  )
+  expect_true("custom-expectation.html" %in% article_index("testthat"))
 })
 
 test_that("can capture index of installed package (vignettes + pkgdown)", {

@@ -21,8 +21,9 @@ downlit_md_path <- function(in_path, out_path, format = "gfm") {
   md2ast(in_path, ast_path, format = format)
 
   ast <- jsonlite::read_json(ast_path)
-  ast$blocks <- transform_code(ast$blocks)
-  jsonlite::write_json(ast, ast_path, auto_unbox = TRUE)
+  ast$blocks <- transform_code(ast$blocks, ast_version(ast))
+
+  jsonlite::write_json(ast, ast_path, auto_unbox = TRUE, null = "null")
 
   ast2md(ast_path, out_path, format = format)
 }
@@ -57,24 +58,36 @@ ast2md <- function(path, out_path, format = "gfm") {
     output = normalizePath(out_path, mustWork = FALSE),
     from = "json",
     to = format,
-    options = c("--wrap=none", "--eol=lf")
+    options = c("--wrap=none", "--eol=lf", "--atx-headers")
   )
   invisible(out_path)
+}
+
+ast_version <- function(ast) {
+  string <- paste(unlist(ast$`pandoc-api-version`), collapse = ".")
+  package_version(string)
 }
 
 # Code transformation -----------------------------------------------------
 
 # Data types at
 # https://hackage.haskell.org/package/pandoc-types-1.20/docs/Text-Pandoc-Definition.html
-transform_code <- function(x) {
+transform_code <- function(x, version) {
   stopifnot(is.list(x))
 
-  simple <- c(
+  # Blocks that are a list of blocks
+  block_list <- c(
     # Block
     "Plain", "Para", "LineBlock", "BlockQuote", "BulletList",
     # Inline
     "Emph", "Strong", "Strikeout", "Superscript", "Subscript",
-    "SmallCaps", "Note"
+    "SmallCaps", "Note", "Underline"
+  )
+  # Blocks that have a list of blocks as second child
+  block_list2 <- c(
+    "OrderedList", "Quoted",
+    "Div", "Span",
+    "Caption", "TableHead", "TableFoot", "Row"
   )
   skip <- c(
     "Header", "CodeBlock", "RawBlock", "HorizontalRule", "Null",
@@ -83,7 +96,7 @@ transform_code <- function(x) {
   )
 
   if (!is_named(x)) {
-    lapply(x, transform_code)
+    lapply(x, transform_code, version = version)
   } else {
     if (x$t == "Code") {
       href <- autolink_url(x$c[[2]])
@@ -95,7 +108,7 @@ transform_code <- function(x) {
       if (!is.na(out)) {
         x <- pandoc_raw_block("html", out)
       }
-    } else if (x$t %in% simple) {
+    } else if (x$t %in% block_list) {
       # Plain [Inline]
       # Para [Inline]
       # LineBlock [[Inline]]
@@ -108,19 +121,39 @@ transform_code <- function(x) {
       # Subscript [Inline]
       # SmallCaps [Inline]
       # Note [Block]
-      x$c <- lapply(x$c, transform_code)
-    } else if (x$t %in% c("OrderedList", "Quoted", "Div", "Span")) {
+      # Underline [Inline] <v1.21>
+      x$c <- lapply(x$c, transform_code, version = version)
+    } else if (x$t %in% block_list2) {
       # OrderedList ListAttributes [[Block]]
       # Quoted QuoteType [Inline]
       # Div Attr [Block]
       # Span Attr [Inline]
-      x$c[[2]] <- lapply(x$c[[2]], transform_code)
+      # TableHead Attr [Row] <v1.21>
+      # TableFoot Attr [Row] <v1.21>
+      # Caption (Maybe ShortCaption) [Block] <v1.21>
+      x$c[[2]] <- lapply(x$c[[2]], transform_code, version = version)
     } else if (x$t %in% "Table") {
-      # [Inline] [Alignment] [Double] [TableCell] [[TableCell]]
-      x$c[c(1, 4, 5)] <- lapply(x$c[c(1, 4, 5)], transform_code)
+      if (version >= "1.21") {
+        # Attr Caption [ColSpec] TableHead [TableBody] TableFoot
+        x$c[c(2, 4, 5, 6)] <- lapply(x$c[c(2, 4, 5, 6)], transform_code, version = version)
+      } else {
+        # [Inline] [Alignment] [Double] [TableCell] [[TableCell]]
+        x$c[c(1, 4, 5)] <- lapply(x$c[c(1, 4, 5)], transform_code, version = version)
+      }
+    } else if (x$t %in% "TableBody") {
+      # Attr RowHeadColumns [Row] [Row] <v1.21>
+      x$c[c(3, 4)] <- lapply(x$c[c(3, 4)], transform_code, version = version)
+    } else if (x$t %in% "Cell") {
+      # Attr Alignment RowSpan ColSpan [Block]
+      x$c[[5]] <- lapply(x$c[[5]], transform_code, version = version)
     } else if (x$t %in% "DefinitionList") {
       # DefinitionList [([Inline], [[Block]])]
-      x$c <- lapply(x$c, function(x) transform_code(x[[1]]), transform_code(x[[2]]))
+      x$c <- lapply(x$c,
+        function(x) list(
+          transform_code(x[[1]], version = version),
+          transform_code(x[[2]], version = version)
+        )
+      )
     } else if (x$t %in% skip) {
 
     } else {
@@ -137,9 +170,11 @@ pandoc_node <- function(type, ...) {
   list(t = type, c = list(...))
 }
 pandoc_raw_block <- function(format, text) {
+  # Format Text
   pandoc_node("RawBlock", format, text)
 }
 pandoc_link <- function(attr, contents, target) {
+  # Attr [Inline] Target
   pandoc_node("Link", attr, contents, target)
 }
 
