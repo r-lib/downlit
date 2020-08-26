@@ -158,7 +158,7 @@ classes_chroma <- function() {
     "logical" = "kc",
     "NUM_CONST" = "m",
     "STR_CONST" = "s",
-    "NULL_CONST" = "kr",
+    "NULL_CONST" = "l",
     "FUNCTION" = "nf",
     "special" = "kr",
     "infix" = "o",
