@@ -11,6 +11,7 @@
 #'   components `path`, `width`, and `height`.
 #' @param env Environment in which to evaluate code; if not supplied,
 #'   defaults to a child of the global environment.
+#' @return An string containing HTML.
 #' @inheritParams highlight
 #' @export
 #' @examples

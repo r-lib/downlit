@@ -12,6 +12,8 @@
 #' @param in_path,out_path Input and output paths for markdown file.
 #' @param x A string containing markdown.
 #' @param format Pandoc format.
+#' @return `downlit_md_path()` invisibly returns `output_path`;
+#'   `downlit_md_string()` returns a string containing markdown.
 #' @examples
 #' downlit_md_string("`base::t()`")
 #' downlit_md_string("`base::t`")

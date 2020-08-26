@@ -15,6 +15,8 @@
 #' @param pre_class Class(es) to give output `<pre>`.
 #' @return If `text` is valid R code, an HTML `<pre>` tag. Otherwise,
 #'   `NA`.
+#' @return A string containing syntax highlighted HTML or `NA` (if `text`
+#'   isn't parseable).
 #' @examples
 #' cat(highlight("1 + 1"))
 #' cat(highlight("base::t(1:3)"))

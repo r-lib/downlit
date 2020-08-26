@@ -15,7 +15,8 @@ downlit_html_node(x)
 \item{x}{An \code{xml2::xml_node}}
 }
 \value{
-Invisibly returns \code{output_path}.
+\code{downlit_html_path()} invisibly returns \code{output_path};
+\code{downlit_html_node()} modifies \code{x} in place and returns nothing.
 }
 \description{
 \itemize{

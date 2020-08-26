@@ -27,6 +27,9 @@ can use existing themes.}
 \item{env}{Environment in which to evaluate code; if not supplied,
 defaults to a child of the global environment.}
 }
+\value{
+An string containing HTML.
+}
 \description{
 This function runs \code{code} and captures the output using
 \code{\link[evaluate:evaluate]{evaluate::evaluate()}}. It syntax highlights code with \code{\link[=highlight]{highlight()}},

@@ -25,6 +25,9 @@ can use existing themes.}
 \value{
 If \code{text} is valid R code, an HTML \verb{<pre>} tag. Otherwise,
 \code{NA}.
+
+A string containing syntax highlighted HTML or \code{NA} (if \code{text}
+isn't parseable).
 }
 \description{
 This function:

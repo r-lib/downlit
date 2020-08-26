@@ -133,6 +133,10 @@ href_expr <- function(expr) {
 #' @param package Optional package name
 #' @keywords internal
 #' @export
+#' @return URL topic or article; `NA` if can't find one.
+#' @examples
+#' href_topic("t")
+#' href_topic("DOESN'T EXIST")
 href_topic <- function(topic, package = NULL) {
   if (is_package_local(package)) {
     href_topic_local(topic)

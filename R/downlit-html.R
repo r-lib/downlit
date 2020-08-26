@@ -14,7 +14,8 @@
 #'
 #' @param in_path,out_path Input and output paths for HTML file
 #' @param x An `xml2::xml_node`
-#' @return Invisibly returns `output_path`.
+#' @return `downlit_html_path()` invisibly returns `output_path`;
+#'   `downlit_html_node()` modifies `x` in place and returns nothing.
 #' @export
 #' @examples
 #' node <- xml2::read_xml("<p><code>base::t()</code></p>")
