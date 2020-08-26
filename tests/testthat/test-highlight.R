@@ -50,6 +50,11 @@ test_that("syntax can span multiple lines", {
   expect_equal(highlight("'\n\n'"), "<span class='s'>'\n\n'</span>")
 })
 
+test_that("code with tab is not mangled", {
+  expect_equal(highlight("\tf()"), "  <span class='nf'>f</span>()")
+  expect_equal(highlight("'\t'"), "<span class='s'>'  '</span>")
+})
+
 test_that("unparsable code returns NULL", {
   expect_equal(highlight("<"), NA_character_)
   # but pure comments still highlighted
@@ -57,12 +62,4 @@ test_that("unparsable code returns NULL", {
     highlight("#"),
     "<span class='c'>#</span>"
   )
-})
-
-test_that("code with tab is not mangled", {
-  expect_equal(highlight("\tmean(1:3)"),
-               "  <span class='nf'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='m'>1</span><span class='o'>:</span><span class='m'>3</span>)")
-
-  expect_equal(highlight("  mean(1:3)"),
-               "  <span class='nf'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='m'>1</span><span class='o'>:</span><span class='m'>3</span>)")
 })
