@@ -108,11 +108,11 @@
 <div id="cross-package-links" class="section level3">
 <h3 class="hasAnchor">
 <a href="#cross-package-links" class="anchor"></a>Cross-package links</h3>
-<p>If downlit can find a pkgdown site for the remote package, it will link to it; otherwise it will link to <a href="http://rdrr.io/" class="uri">http://rdrr.io/</a> for documentation, and CRAN for vignettes. In order for a pkgdown site to be findable, it needs to be listed in two places:</p>
+<p>If downlit can find a pkgdown site for the remote package, it will link to it; otherwise it will link to <a href="https://rdrr.io/" class="uri">https://rdrr.io/</a> for documentation, and CRAN for vignettes. In order for a pkgdown site to be findable, it needs to be listed in two places:</p>
 <ul>
 <li>
 <p>In the <code>URL</code> field in the <code>DESCRIPTION</code>, as in <a href="https://github.com/tidyverse/dplyr/blob/85faf79c1fd74f4b4f95319e5be6a124a8075502/DESCRIPTION#L15">dplyr</a>:</p>
-<pre><code>URL: http://dplyr.tidyverse.org, https://github.com/tidyverse/dplyr</code></pre>
+<pre><code>URL: https://dplyr.tidyverse.org, https://github.com/tidyverse/dplyr</code></pre>
 </li>
 <li>
 <p>In the <code>url</code> field in <code>_pkgdown.yml</code>, as in <a href="https://github.com/tidyverse/dplyr/blob/master/_pkgdown.yml#L1">dplyr</a></p>
@@ -135,7 +135,7 @@
 <div id="usage" class="section level2">
 <h2 class="hasAnchor">
 <a href="#usage" class="anchor"></a>Usage</h2>
-<p>downlit is designed to be used by other packages, and I expect most uses of downlit will use it via another package (e.g. <a href="http://github.com/r-lib/hugodown">hugodown</a>). If you want to use it in your own package, you’ll typically want to apply it as part of some bigger transformation process. You can get some sense of this this might work by reading the source code of <code>downlit_html()</code> and <code>downlit_md()</code>, which transform HTML and markdown documents respectively.</p>
+<p>downlit is designed to be used by other packages, and I expect most uses of downlit will use it via another package (e.g. <a href="https://github.com/r-lib/hugodown">hugodown</a>). If you want to use it in your own package, you’ll typically want to apply it as part of some bigger transformation process. You can get some sense of this this might work by reading the source code of <code>downlit_html()</code> and <code>downlit_md()</code>, which transform HTML and markdown documents respectively.</p>
 </div>
 </div>
   </div>
