@@ -28,6 +28,8 @@ It applies \code{\link[=highlight]{highlight()}} to \code{CodeBlock}s and \code{
 Use \code{downlit_md_path()} to transform a file on disk; use
 \code{downlit_md_string()} to transform a string containing markdown as part
 of a larger pipeline.
+
+Needs pandoc 1.19 or later.
 }
 \examples{
 downlit_md_string("`base::t()`")
