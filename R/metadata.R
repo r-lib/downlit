@@ -25,13 +25,16 @@ remote_metadata <- function(package) {
   dir.create(file.path(tempdir, "downlit"), showWarnings = FALSE)
   cache_path <- file.path(tempdir, "downlit", package)
 
+  meta <- NULL
+
   if (file.exists(cache_path)) {
-    readRDS(cache_path)
-  } else {
-    meta <- remote_metadata_slow(package)
-    saveRDS(meta, cache_path)
-    meta
-  }
+    meta <- readRDS(cache_path)
+  } else if (!rlang::is_empty(meta <- local_metadata(package))) {
+  } else if (!rlang::is_empty(meta <- remote_metadata_slow(package))) {
+  } else return(NULL)
+
+  saveRDS(meta, cache_path)
+  meta
 }
 
 remote_metadata_slow <- function(package) {
@@ -49,6 +52,10 @@ remote_metadata_slow <- function(package) {
     }
   }
 
+  NULL
+}
+
+local_metadata <- function(package) {
   # See if the metadata has been installed to the package bundle, and try to use that.
   local_path <- system.file("pkgdown.yml", package = package)
   if (local_path != "") {
@@ -60,7 +67,6 @@ remote_metadata_slow <- function(package) {
       return(yaml)
     }
   }
-
   NULL
 }
 
