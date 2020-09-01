@@ -7,6 +7,14 @@
 
 The goal of downlit is to provide syntax highlighting and automatic linking of R code in a way that is easily used from RMarkdown packages like [pkgdown](https://pkgdown.r-lib.org/), [bookdown](https://bookdown.org), and [hugodown](https://hugodown.r-lib.org/).
 
+## Installation
+
+Install downlit from CRAN with:
+
+```{r, eval = FALSE}
+install.packages("downlit")
+```
+
 ## Features
 
 downlit has two slightly different highlighting/linking engines:
