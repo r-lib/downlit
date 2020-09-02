@@ -29,9 +29,19 @@ remote_metadata <- function(package) {
 
   if (file.exists(cache_path)) {
     meta <- readRDS(cache_path)
-  } else if (!rlang::is_empty(meta <- local_metadata(package))) {
-  } else if (!rlang::is_empty(meta <- remote_metadata_slow(package))) {
-  } else return(NULL)
+  }
+
+  if (rlang::is_empty(meta)) {
+    meta <- local_metadata(package)
+  }
+
+  if (rlang::is_empty(meta)) {
+    meta <- remote_metadata_slow(package)
+  }
+
+  if (rlang::is_empty(meta)) {
+    return(NULL)
+  }
 
   saveRDS(meta, cache_path)
   meta
