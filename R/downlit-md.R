@@ -30,8 +30,8 @@ downlit_md_path <- function(in_path, out_path, format = NULL) {
   ast_path <- tempfile()
   on.exit(unlink(ast_path))
 
-  in_path <- fs::path_abs(in_path)
-  out_path <- fs::path_abs(out_path)
+  in_path <- path_abs(in_path)
+  out_path <- path_abs(out_path)
 
   md2ast(in_path, ast_path, format = format)
 
@@ -61,8 +61,8 @@ downlit_md_string <- function(x, format = NULL) {
 md2ast <- function(path, out_path, format = NULL) {
   format <- format %||% md_format()
   rmarkdown::pandoc_convert(
-    input = path,
-    output = out_path,
+    input = normalizePath(path, mustWork = FALSE),
+    output = normalizePath(out_path, mustWork = FALSE),
     from = format,
     to = "json"
   )
@@ -78,8 +78,8 @@ ast2md <- function(path, out_path, format = NULL) {
   )
 
   rmarkdown::pandoc_convert(
-    input = path,
-    output = out_path,
+    input = normalizePath(path, mustWork = FALSE),
+    output = normalizePath(out_path, mustWork = FALSE),
     from = "json",
     to = format,
     options = options
@@ -223,4 +223,8 @@ check_packages <- function() {
   if (!is_installed("rmarkdown") || !is_installed("jsonlite")) {
     abort("rmarkdown and jsonlite required for .md transformation")
   }
+}
+
+path_abs <- function(path) {
+  file.path(normalizePath(dirname(path), mustWork = TRUE), basename(path))
 }
