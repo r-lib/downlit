@@ -124,7 +124,7 @@ test_that("library() linked to package reference", {
 
   expect_equal(href_expr_(library()), NA_character_)
   expect_equal(href_expr_(library(rlang)), "http://rlang.r-lib.org")
-  expect_equal(href_expr_(library(MASS)), "http://www.stats.ox.ac.uk/pub/MASS4")
+  expect_equal(href_expr_(library(MASS)), "http://www.stats.ox.ac.uk/pub/MASS4/")
 })
 
 # vignette ----------------------------------------------------------------
