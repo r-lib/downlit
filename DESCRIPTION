@@ -20,6 +20,7 @@ Imports:
     digest,
     evaluate,
     fansi,
+    fs,
     rlang,
     vctrs,
     yaml

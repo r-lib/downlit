@@ -30,6 +30,9 @@ downlit_md_path <- function(in_path, out_path, format = NULL) {
   ast_path <- tempfile()
   on.exit(unlink(ast_path))
 
+  in_path <- fs::path_abs(in_path)
+  out_path <- fs::path_abs(out_path)
+
   md2ast(in_path, ast_path, format = format)
 
   ast <- jsonlite::read_json(ast_path)
@@ -58,8 +61,8 @@ downlit_md_string <- function(x, format = NULL) {
 md2ast <- function(path, out_path, format = NULL) {
   format <- format %||% md_format()
   rmarkdown::pandoc_convert(
-    input = normalizePath(path, mustWork = FALSE),
-    output = normalizePath(out_path, mustWork = FALSE),
+    input = path,
+    output = out_path,
     from = format,
     to = "json"
   )
@@ -75,8 +78,8 @@ ast2md <- function(path, out_path, format = NULL) {
   )
 
   rmarkdown::pandoc_convert(
-    input = normalizePath(path, mustWork = FALSE),
-    output = normalizePath(out_path, mustWork = FALSE),
+    input = path,
+    output = out_path,
     from = "json",
     to = format,
     options = options
