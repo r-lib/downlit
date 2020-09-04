@@ -126,18 +126,12 @@ transform_code <- function(x, version) {
     lapply(x, transform_code, version = version)
   } else {
     if (x$t == "Code") {
-      # packages à la {pkgname}
-      # regex adapted from https://github.com/r-lib/usethis/blob/d5857737b4780c3c3d8fe6fb44ef70e81796ac8e/R/description.R#L134
-      if(grepl("^\\{[a-zA-Z][a-zA-Z0-9.]+\\}$", x$c[[2]])) {
-        x$c[[2]] <- sub(
-          "\\{", "",
-          sub("\\}", "",
-              x$c[[2]]
-          )
-        )
+      package_name <- extract_curly_package(x$c[[2]])
 
-        href <- href_package(x$c[[2]])
-        x <-  list(t = "Str", c = x$c[[2]])
+      # packages à la {pkgname}
+      if(!is.na(package_name)) {
+        href <- href_package(package_name)
+        x <-  list(t = "Str", c = package_name)
       } else {
       # other cases
         href <- autolink_url(x$c[[2]])
