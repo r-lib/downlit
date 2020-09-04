@@ -54,6 +54,15 @@ downlit_html_node <- function(x) {
   bad_ancestor <- c("h1", "h2", "h3", "h4", "h5", "a")
   bad_ancestor <- paste0("ancestor::", bad_ancestor, collapse = "|")
   xpath_inline <- paste0(".//code[count(*) = 0 and not(", bad_ancestor, ")]")
+
+  # replace inline code "{packagename}" (to simple text, linked if possible)
+  tweak_children(x, xpath_inline, autolink_curly, replace = "node")
+  new_spans <- xml2::xml_find_all(x, ".//downlitspan")
+  if (length(new_spans)) {
+   lapply(new_spans, remove_useless_span)
+  }
+
+  # handle remaining inline code
   tweak_children(x, xpath_inline, autolink, replace = "contents")
 
   invisible()
@@ -76,6 +85,19 @@ tweak_children <- function(node, xpath, fun, ..., replace = c("node", "contents"
   xml2::xml_replace(old, new, .copy = FALSE)
 
   invisible()
+}
+
+remove_useless_span <- function(node) {
+
+  text <- as.character(xml2::xml_parent(node))
+  # remove span opening
+  text <- gsub("<.?downlitspan>", "", text)
+  xml2::xml_replace(
+    xml2::xml_parent(node),
+    xml2::read_xml(text)
+    )
+  xml2::xml_remove(node)
+
 }
 
 as_xml <- function(x) {

@@ -7,3 +7,16 @@ test_that("can highlight html file", {
     cat(brio::read_lines(out), sep = "\n")
   })
 })
+
+test_that("Special package string gets linked", {
+  node <- xml2::read_xml("<p><code>{downlit}</code> is a nice package.</p>")
+  downlit_html_node(node)
+  expect_equal(xml2::xml_attr(xml2::xml_find_first(node, ".//a"), "href"),
+               "https://github.com/r-lib/downlit")
+
+  node2 <- xml2::read_xml("<p><code>{notapkgnamebutwhoknows}</code> is a nice package. <code>{notapkgnamebutwhoknows}</code> is cool too.</p>")
+  downlit_html_node(node2)
+  # xml2::xml_contents(node2) is still wrong! but as.character() isn't.
+  expect_equal(length(xml2::xml_find_first(node2, ".//code")),
+               0)
+})
