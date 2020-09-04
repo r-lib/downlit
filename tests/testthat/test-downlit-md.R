@@ -83,6 +83,7 @@ test_that("relative paths", {
 test_that("path_abs", {
   expect_equal(path_abs("."), file.path(getwd(), "."))
   expect_equal(path_abs(".."), file.path(getwd(), ".."))
+  expect_equal(path_abs("../bogus"), file.path(dirname(getwd()), "bogus"))
   expect_equal(path_abs("bogus"), file.path(getwd(), "bogus"))
   expect_equal(path_abs(getwd()), getwd())
   expect_equal(path_abs(file.path(getwd(), "bogus"), file.path(getwd(), "bogus")))
