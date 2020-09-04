@@ -312,7 +312,7 @@ autolink_curly <- function(text) {
   package_name <- extract_curly_package(text)
 
   if(is.na(package_name)) {
-    return(text)
+    return(paste0("<code>", text, "</code>"))
   }
 
   autolink_curly_package(package_name)
