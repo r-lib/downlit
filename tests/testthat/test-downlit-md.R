@@ -45,3 +45,45 @@ test_that("pandoc AST v1.21", {
     cat(downlit_md_string(brio::read_lines(test_path("markdown-table.md"))))
   })
 })
+
+test_that("relative paths", {
+  path <- tempfile("downlit")
+  dir.create(path)
+  withr::local_dir(path)
+
+  writeLines("Test", "in.md")
+
+  # Relative paths
+  downlit_md_path("in.md", "out1.md")
+  expect_equal(readLines("out1.md", "Test"))
+
+  # Directory must exist
+  expect_error(downlit_md_path("in.md", "bogus/out.md"))
+
+  # Subdirectory
+  dir.create("out3")
+  downlit_md_path("in.md", "out3/out3.md")
+  expect_equal(readLines("out3/out3.md", "Test"))
+
+  in_path <- normalizePath("in.md", mustWork = TRUE)
+
+  dir.create("out4")
+  withr::local_dir("out4")
+
+  # Paths are relative to current directory
+  downlit_md_path(in_path, "out5.md")
+  expect_equal(readLines("out5.md", "Test"))
+
+  # Absolute paths
+  out_path <- file.path(getwd(), "out6.md")
+  downlit_md_path(in_path, out_path)
+  expect_equal(readLines(out_path, "Test"))
+})
+
+test_that("path_abs", {
+  expect_equal(path_abs("."), file.path(getwd(), "."))
+  expect_equal(path_abs(".."), file.path(getwd(), ".."))
+  expect_equal(path_abs("bogus"), file.path(getwd(), "bogus"))
+  expect_equal(path_abs(getwd()), getwd())
+  expect_equal(path_abs(file.path(getwd(), "bogus"), file.path(getwd(), "bogus")))
+})
