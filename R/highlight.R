@@ -60,7 +60,7 @@ highlight <- function(text, classes = classes_chroma(), pre_class = NULL) {
 
   paste0(
     "<pre class='", paste0(pre_class, collapse = " "), "'>\n",
-    out, "\n",
+    out,
     "</pre>"
   )
 }
