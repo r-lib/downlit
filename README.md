@@ -29,7 +29,7 @@ The following forms of inline code are recognized and automatically linked:
 * `help("fun")`, `help("fun", package = "package")`, `help(package = "package")`.
 * `vignette("name")`, `vignette("name", package = "package")`.
 * `library(package)`, `require(package)`, `requireNamespace("package")`.
-* `{package}` gets linked _and formatted as plain text_. 
+* `{package}` gets linked (if possible) _and formatted as plain text_. 
 
 ### Cross-package links
 
