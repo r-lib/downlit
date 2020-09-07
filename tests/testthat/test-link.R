@@ -122,7 +122,7 @@ test_that("library() linked to package reference", {
   skip_on_cran() # in case URLs change
   skip_on_os("solaris")
 
-  expect_equal(href_expr_(library()), NA_character_)
+  expect_equal(href_expr_(library()), "https://rdrr.io/r/base/library.html")
   expect_equal(href_expr_(library(rlang)), "http://rlang.r-lib.org")
   expect_equal(href_expr_(library(MASS)), "http://www.stats.ox.ac.uk/pub/MASS4/")
 })
@@ -167,7 +167,7 @@ test_that("or local sites, if registered", {
 })
 
 test_that("fail gracefully with non-working calls", {
-  expect_equal(href_expr_(vignette()), NA_character_)
+  expect_equal(href_expr_(vignette()), "https://rdrr.io/r/utils/vignette.html")
   expect_equal(href_expr_(vignette(package = package)), NA_character_)
   expect_equal(href_expr_(vignette(1, 2)), NA_character_)
   expect_equal(href_expr_(vignette(, )), NA_character_)
