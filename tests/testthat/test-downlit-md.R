@@ -48,5 +48,7 @@ test_that("pandoc AST v1.21", {
 
 test_that("Special package string gets linked", {
   expect_equal(downlit_md_string("`{downlit}`"),
-               "[downlit](https://github.com/r-lib/downlit)\n")
+               "[downlit](https://downlit.r-lib.org/)\n")
+  expect_equal(downlit_md_string("`{thisisrealltnotapackagename}`"),
+               "thisisrealltnotapackagename\n")
 })
