@@ -12,7 +12,7 @@ test_that("Special package string gets linked", {
   node <- xml2::read_xml("<p><code>{downlit}</code> is a nice package.</p>")
   downlit_html_node(node)
   expect_equal(xml2::xml_attr(xml2::xml_find_first(node, ".//a"), "href"),
-               "thisisrealltnotapackagename")
+               "https://downlit.r-lib.org/")
 
   node2 <- xml2::read_xml("<p><code>{notapkgnamebutwhoknows}</code> is a nice package. <code>{notapkgnamebutwhoknows}</code> is cool too.</p>")
   downlit_html_node(node2)
