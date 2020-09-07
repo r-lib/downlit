@@ -25,7 +25,7 @@ readme_document <- function(...) {
   old_options <- NULL
 
   format$pre_knit <- function(...) {
-    old_options <<- options(crayon.enabled = TRUE)
+    old_options <<- options(crayon.enabled = TRUE, pillar.bold = TRUE)
 
     # Run preknit at end
     if (!is.null(format_pre_knit)) {
