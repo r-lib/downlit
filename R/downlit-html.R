@@ -57,10 +57,7 @@ downlit_html_node <- function(x) {
 
   # replace inline code "{packagename}" (to simple text, linked if possible)
   tweak_children(x, xpath_inline, autolink_curly, replace = "node")
-  new_spans <- xml2::xml_find_all(x, ".//downlitspan")
-  if (length(new_spans)) {
-   lapply(new_spans, remove_useless_span)
-  }
+  remove_placeholders(x)
 
   # handle remaining inline code
   tweak_children(x, xpath_inline, autolink, replace = "contents")
@@ -87,16 +84,23 @@ tweak_children <- function(node, xpath, fun, ..., replace = c("node", "contents"
   invisible()
 }
 
-remove_useless_span <- function(node) {
+remove_placeholders <- function(x) {
 
-  text <- as.character(xml2::xml_parent(node))
-  # remove span opening
-  text <- gsub("<.?downlitspan>", "", text)
-  xml2::xml_replace(
-    xml2::xml_parent(node),
-    xml2::read_xml(text)
-    )
-  xml2::xml_remove(node)
+  new_spans <- xml2::xml_find_all(x, ".//downlitspan")
+  if (length(new_spans)) {
+    lapply(rev(new_spans), remove_useless_span)
+  }
+
+  invisible()
+}
+
+remove_useless_span <- function(placeholder) {
+
+  contents <- xml2::xml_contents(placeholder)
+  for (node in contents) {
+    xml2::xml_add_sibling(placeholder, node, .where = "before")
+  }
+  xml2::xml_remove(placeholder)
 
 }
 
