@@ -10,7 +10,7 @@
 
 > # implicit package
 > cat(highlight("library(MASS)"))
-<span class='nf'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='k'><a href='http://www.stats.ox.ac.uk/pub/MASS4'>MASS</a></span>)
+<span class='nf'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='k'><a href='http://www.stats.ox.ac.uk/pub/MASS4/'>MASS</a></span>)
 
 > cat(highlight("addterm()"))
 <span class='nf'><a href='https://rdrr.io/pkg/MASS/man/addterm.html'>addterm</a></span>()

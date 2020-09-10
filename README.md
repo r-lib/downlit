@@ -3,9 +3,18 @@
 <!-- badges: start -->
 [![R build status](https://github.com/r-lib/downlit/workflows/R-CMD-check/badge.svg)](https://github.com/r-lib/downlit/actions)
 [![Codecov test coverage](https://codecov.io/gh/r-lib/downlit/branch/master/graph/badge.svg)](https://codecov.io/gh/r-lib/downlit?branch=master)
+[![CRAN status](https://www.r-pkg.org/badges/version/downlit)](https://CRAN.R-project.org/package=downlit)
 <!-- badges: end -->
 
 The goal of downlit is to provide syntax highlighting and automatic linking of R code in a way that is easily used from RMarkdown packages like [pkgdown](https://pkgdown.r-lib.org/), [bookdown](https://bookdown.org), and [hugodown](https://hugodown.r-lib.org/).
+
+## Installation
+
+Install downlit from CRAN with:
+
+```{r, eval = FALSE}
+install.packages("downlit")
+```
 
 ## Features
 
@@ -33,13 +42,13 @@ The following forms of inline code are recognized and automatically linked:
 
 ### Cross-package links
 
-If downlit can find a pkgdown site for the remote package, it will link to it; otherwise it will link to <http://rdrr.io/> for documentation, and CRAN for vignettes. In order for a pkgdown site to be findable, it needs to be listed in two places:
+If downlit can find a pkgdown site for the remote package, it will link to it; otherwise it will link to <https://rdrr.io/> for documentation, and CRAN for vignettes. In order for a pkgdown site to be findable, it needs to be listed in two places:
 
 *   In the `URL` field in the `DESCRIPTION`, as in
     [dplyr](https://github.com/tidyverse/dplyr/blob/85faf79c1fd74f4b4f95319e5be6a124a8075502/DESCRIPTION#L15):
   
     ```
-    URL: http://dplyr.tidyverse.org, https://github.com/tidyverse/dplyr
+    URL: https://dplyr.tidyverse.org, https://github.com/tidyverse/dplyr
     ```
 
 *   In the `url` field in `_pkgdown.yml`, as in 
@@ -69,4 +78,4 @@ So when you build a pkgdown site that links to the dplyr documentation (e.g., `d
 
 ## Usage
 
-downlit is designed to be used by other packages, and I expect most uses of downlit will use it via another package (e.g. [hugodown](http://github.com/r-lib/hugodown)). If you want to use it in your own package, you'll typically want to apply it as part of some bigger transformation process. You can get some sense of this this might work by reading the source code of `downlit_html()` and `downlit_md()`, which transform HTML and markdown documents respectively.
+downlit is designed to be used by other packages, and I expect most uses of downlit will use it via another package (e.g. [hugodown](https://github.com/r-lib/hugodown)). If you want to use it in your own package, you'll typically want to apply it as part of some bigger transformation process. You can get some sense of this this might work by reading the source code of `downlit_html()` and `downlit_md()`, which transform HTML and markdown documents respectively.

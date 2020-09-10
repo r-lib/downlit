@@ -4,7 +4,7 @@ test_that("can extract urls for package", {
 
   expect_equal(package_urls("base"), character())
   expect_equal(package_urls("packagethatdoesn'texist"), character())
-  expect_equal(package_urls("MASS"), "http://www.stats.ox.ac.uk/pub/MASS4")
+  expect_equal(package_urls("MASS"), "http://www.stats.ox.ac.uk/pub/MASS4/")
 })
 
 test_that("handle common url formats", {

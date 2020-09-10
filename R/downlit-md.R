@@ -8,6 +8,8 @@
 #' `downlit_md_string()` to transform a string containing markdown as part
 #' of a larger pipeline.
 #'
+#' Needs pandoc 1.19 or later.
+#'
 #' @export
 #' @param in_path,out_path Input and output paths for markdown file.
 #' @param x A string containing markdown.

@@ -21,7 +21,7 @@ jobs:
           - {pandoc: '2.10.1'}
           - {pandoc: '2.9.2.1'}
           - {pandoc: '2.7.3'}
-          - {pandoc: '1.19'}
+          # - {pandoc: '1.19'} # fails to install cleanly
 
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
