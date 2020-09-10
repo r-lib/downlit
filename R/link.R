@@ -298,22 +298,3 @@ is_base_package <- function(x) {
     "tools", "utils"
   )
 }
-
-autolink_curly_package <- function(package_name) {
-  href <- href_package(package_name)
-  if(!is.na(href)) {
-    return(paste0("<a href='", href, "'>", package_name, "</a>"))
-  } else {
-    return(paste0('<downlitspan>', package_name, "</downlitspan>"))
-  }
-}
-
-autolink_curly <- function(text) {
-  package_name <- extract_curly_package(text)
-
-  if(is.na(package_name)) {
-    return(paste0("<code>", text, "</code>"))
-  }
-
-  autolink_curly_package(package_name)
-}
