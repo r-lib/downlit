@@ -50,5 +50,5 @@ test_that("Special package string gets linked", {
   expect_equal(downlit_md_string("`{downlit}`"),
                "[downlit](https://downlit.r-lib.org/)\n")
   expect_equal(downlit_md_string("`{thisisrealltnotapackagename}`"),
-               "thisisrealltnotapackagename\n")
+               "`{thisisrealltnotapackagename}`\n")
 })
