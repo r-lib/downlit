@@ -42,7 +42,7 @@ downlit_html_node <- function(x) {
   stopifnot(inherits(x, "xml_node"))
 
   # <pre class="sourceCode r">
-  xpath_block <- ".//pre[contains(@class, 'sourceCode r')]"
+  xpath_block <- ".//pre[contains(@class, 'sourceCode r')] | .//pre[@class='r']"
   tweak_children(x, xpath_block, highlight,
     pre_class = "downlit",
     classes = classes_pandoc(),
