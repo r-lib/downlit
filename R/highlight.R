@@ -196,6 +196,7 @@ token_href <- function(token, text) {
   # earlier library() statements to affect the highlighting of later blocks
   fun <- which(token %in% "SYMBOL_FUNCTION_CALL")
   fun <- setdiff(fun, ns_fun)
+  fun <- fun[token[fun-1] != "'$'"]
   href[fun] <- map_chr(text[fun], href_topic_local)
 
   # Highlight packages
