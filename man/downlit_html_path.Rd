@@ -5,12 +5,14 @@
 \alias{downlit_html_node}
 \title{Syntax highlight and link an HTML page}
 \usage{
-downlit_html_path(in_path, out_path)
+downlit_html_path(in_path, out_path, classes = classes_pandoc())
 
-downlit_html_node(x)
+downlit_html_node(x, classes)
 }
 \arguments{
 \item{in_path, out_path}{Input and output paths for HTML file}
+
+\item{classes}{Either \code{classes_pandoc()} or \code{classes_chroma()}}
 
 \item{x}{An \code{xml2::xml_node}}
 }

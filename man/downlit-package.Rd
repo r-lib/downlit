@@ -36,6 +36,7 @@ topics and articles/vignettes relative to the "current" file.
 \seealso{
 Useful links:
 \itemize{
+  \item \url{https://downlit.r-lib.org/}
   \item \url{https://github.com/r-lib/downlit}
   \item Report bugs at \url{https://github.com/r-lib/downlit/issues}
 }
