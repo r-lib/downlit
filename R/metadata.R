@@ -21,25 +21,24 @@ remote_package_article_url <- function(package) {
 # Retrieve remote metadata ------------------------------------------------
 
 remote_metadata <- function(package) {
-  # First, see if the metadata has been installed with the package
+  # Is the metadata installed with the package?
   meta <- local_metadata(package)
   if (!is.null(meta)) {
     return(meta)
   }
 
-  # Next, try the cache
+  # Otherwise, look in package websites, caching since this is a slow operation
   tempdir <- Sys.getenv("RMARKDOWN_PREVIEW_DIR", unset = tempdir())
   dir.create(file.path(tempdir, "downlit"), showWarnings = FALSE)
   cache_path <- file.path(tempdir, "downlit", package)
 
   if (file.exists(cache_path)) {
-    return(readRDS(cache_path))
+    readRDS(cache_path)
+  } else {
+    meta <- remote_metadata_slow(package)
+    saveRDS(meta, cache_path)
+    meta
   }
-
-  # Finally, look up in on the package website, saving to the cache
-  meta <- remote_metadata_slow(package)
-  saveRDS(meta, cache_path)
-  meta
 }
 
 local_metadata <- function(package) {
