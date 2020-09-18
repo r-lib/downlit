@@ -7,12 +7,15 @@
 \usage{
 downlit_html_path(in_path, out_path, classes = classes_pandoc())
 
-downlit_html_node(x, classes)
+downlit_html_node(x, classes = classes_pandoc())
 }
 \arguments{
 \item{in_path, out_path}{Input and output paths for HTML file}
 
-\item{classes}{Either \code{classes_pandoc()} or \code{classes_chroma()}}
+\item{classes}{A mapping between token names and CSS class names.
+Bundled \code{classes_pandoc()} and \code{classes_chroma()} provide mappings
+that (roughly) match Pandoc and chroma (used by hugo) classes so you
+can use existing themes.}
 
 \item{x}{An \code{xml2::xml_node}}
 }

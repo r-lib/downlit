@@ -13,7 +13,7 @@
 #' larger pipeline.
 #'
 #' @param in_path,out_path Input and output paths for HTML file
-#' @param classes Either `classes_pandoc()` or `classes_chroma()`
+#' @inheritParams highlight
 #' @param x An `xml2::xml_node`
 #' @return `downlit_html_path()` invisibly returns `output_path`;
 #'   `downlit_html_node()` modifies `x` in place and returns nothing.
@@ -39,7 +39,7 @@ downlit_html_path <- function(in_path, out_path, classes = classes_pandoc()) {
 
 #' @export
 #' @rdname downlit_html_path
-downlit_html_node <- function(x, classes) {
+downlit_html_node <- function(x, classes = classes_pandoc()) {
   stopifnot(inherits(x, "xml_node"))
 
   # <pre class="sourceCode r">
