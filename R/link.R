@@ -75,11 +75,14 @@ href_expr <- function(expr) {
 
     if (fun_name %in% c("library", "require", "requireNamespace")) {
       if (length(expr) == 1) {
-        return(NA_character_)
+        return(href_topic(fun_name))
       }
       pkg <- as.character(expr[[2]])
       href_package(pkg)
     } else if (fun_name == "vignette") {
+      if (length(expr) == 1) {
+        return(href_topic(fun_name))
+      }
       expr <- call_standardise(expr)
       topic_ok <- is.character(expr$topic)
       package_ok <- is.character(expr$package) || is.null(expr$package)
@@ -133,6 +136,10 @@ href_expr <- function(expr) {
 #' @param package Optional package name
 #' @keywords internal
 #' @export
+#' @return URL topic or article; `NA` if can't find one.
+#' @examples
+#' href_topic("t")
+#' href_topic("DOESN'T EXIST")
 href_topic <- function(topic, package = NULL) {
   if (is_package_local(package)) {
     href_topic_local(topic)
@@ -210,7 +217,10 @@ href_topic_reexported <- function(topic, package) {
 }
 
 find_reexport_source <- function(obj, ns, topic) {
-  if (is.function(obj)) {
+  if (is.primitive(obj)) {
+    # primitive functions all live in base
+    "base"
+  } else if (is.function(obj)) {
     ## For functions, we can just take their environment.
     ns_env_name(get_env(obj))
   } else {

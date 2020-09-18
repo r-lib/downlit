@@ -15,9 +15,17 @@
 #' @param pre_class Class(es) to give output `<pre>`.
 #' @return If `text` is valid R code, an HTML `<pre>` tag. Otherwise,
 #'   `NA`.
+#' @return A string containing syntax highlighted HTML or `NA` (if `text`
+#'   isn't parseable).
 #' @examples
 #' cat(highlight("1 + 1"))
+#' cat(highlight("base::t(1:3)"))
+#'
+#' # Unparseable R code returns NA
+#' cat(highlight("base::t("))
 highlight <- function(text, classes = classes_chroma(), pre_class = NULL) {
+  text <- gsub("\t", "  ", text, fixed = TRUE)
+  text <- gsub("\r", "", text, fixed = TRUE)
   parsed <- parse_data(text)
   if (is.null(parsed)) {
     return(NA_character_)
@@ -38,21 +46,13 @@ highlight <- function(text, classes = classes_chroma(), pre_class = NULL) {
   # Update input - basic idea from prettycode
   changed <- !is.na(out$href) | !is.na(out$class) | out$text != out$escaped
   changes <- out[changed, , drop = FALSE]
-  changes_by_line <- split(changes, changes$line1)
-  lines <- strsplit(text, "\r?\n")[[1]]
 
-  for (change in changes_by_line) {
-    i <- change$line1[[1]]
-    new <- style_token(change$escaped, change$href, change$class)
+  loc <- line_col(text)
+  start <- vctrs::vec_match(data.frame(line = changes$line1, col = changes$col1), loc)
+  end <- vctrs::vec_match(data.frame(line = changes$line2, col = changes$col2), loc)
 
-    lines[[i]] <- replace_in_place(
-      lines[[i]],
-      start = change$col1,
-      end = change$col2,
-      replacement = new
-    )
-  }
-  out <- paste0(lines, collapse = "\n")
+  new <- style_token(changes$escaped, changes$href, changes$class)
+  out <- replace_in_place(text, start, end, replacement = new)
 
   if (is.null(pre_class)) {
     return(out)
@@ -60,7 +60,7 @@ highlight <- function(text, classes = classes_chroma(), pre_class = NULL) {
 
   paste0(
     "<pre class='", paste0(pre_class, collapse = " "), "'>\n",
-    out, "\n",
+    out,
     "</pre>"
   )
 }
@@ -87,6 +87,16 @@ replace_in_place <- function(str, start, end, replacement) {
   paste0(pieces, collapse = "")
 }
 
+line_col <- function(x) {
+  char <- strsplit(x, "")[[1]]
+
+  nl <- char == "\n"
+  line <- cumsum(c(TRUE, nl[-length(char)]))
+  col <- sequence(rle(line)$lengths)
+
+  data.frame(line, col)
+}
+
 parse_data <- function(text) {
   stopifnot(is.character(text), length(text) == 1)
 
@@ -109,11 +119,24 @@ token_class <- function(token, text, classes) {
 # for syntax highlighting
 # https://github.com/wch/r-source/blob/trunk/src/main/gram.c#L511
 token_type <- function(x, text) {
-  special <- c("IF", "ELSE", "REPEAT", "WHILE", "FOR", "IN", "NEXT", "BREAK")
+  special <- c(
+    "FUNCTION",
+    "FOR", "IN", "BREAK", "NEXT", "REPEAT", "WHILE",
+    "IF", "ELSE"
+  )
   infix <- c(
-    "'-'", "'+'", "'!'", "'~'", "'?'", "':'", "'*'", "'/'", "'^'", "'~'",
-    "SPECIAL", "LT", "GT", "EQ", "GE", "LE", "AND", "AND2", "OR",
-    "OR2", "LEFT_ASSIGN", "RIGHT_ASSIGN", "'$'", "'@'", "EQ_ASSIGN"
+    # algebra
+    "'-'", "'+'", "'~'", "'*'", "'/'", "'^'",
+    # comparison
+    "LT", "GT", "EQ", "GE", "LE", "NE",
+    # logical
+    "'!'", "AND", "AND2", "OR", "OR2",
+    # assignment / equals
+    "LEFT_ASSIGN", "RIGHT_ASSIGN", "EQ_ASSIGN", "EQ_FORMALS", "EQ_SUB",
+    # subsetting
+    "'$'", "LBB", "'['", "']'", "'@'",
+    # miscellaneous
+    "'~'", "'?'", "':'", "SPECIAL"
   )
 
   x[x %in% special] <- "special"
@@ -126,7 +149,10 @@ token_type <- function(x, text) {
 
 # Pandoc styles are based on KDE default styles:
 # https://docs.kde.org/stable5/en/applications/katepart/highlight.html#kate-highlight-default-styles
-# But are given a two letter abbreviations (presumably to reduce generated html size)
+# But in HTML use two letter abbreviations:
+# https://github.com/jgm/skylighting/blob/a1d02a0db6260c73aaf04aae2e6e18b569caacdc/skylighting-core/src/Skylighting/Format/HTML.hs#L117-L147
+# Summary at
+# https://docs.google.com/spreadsheets/d/1JhBtQSCtQ2eu2RepLTJONFdLEnhM3asUyMMLYE3tdYk/edit#gid=0
 #
 # Default syntax highlighting def for R:
 # https://github.com/KDE/syntax-highlighting/blob/master/data/syntax/r.xml
@@ -134,17 +160,23 @@ token_type <- function(x, text) {
 #' @rdname highlight
 classes_pandoc <- function() {
   c(
-    "logical" = "fl",
+    "logical" = "cn",
     "NUM_CONST" = "fl",
     "STR_CONST" = "st",
     "NULL_CONST" = "kw",
-    "FUNCTION" = "fu",
-    "special" = "co",
+
+    "special" = "kw",
     "infix" = "op",
-    "SYMBOL" = "kw",
+
+    "SLOT" = "va",
+    "SYMBOL" = "va",
+    "SYMBOL_FORMALS" = "va",
+
+    "NS_GET" = "fu",
+    "NS_GET_INT" = "fu",
     "SYMBOL_FUNCTION_CALL" = "fu",
-    "SYMBOL_PACKAGE" = "kw",
-    "SYMBOL_FORMALS" = "kw",
+    "SYMBOL_PACKAGE" = "fu",
+
     "COMMENT" = "co"
   )
 }
@@ -157,16 +189,33 @@ classes_chroma <- function() {
     "logical" = "kc",
     "NUM_CONST" = "m",
     "STR_CONST" = "s",
-    "NULL_CONST" = "kr",
-    "FUNCTION" = "nf",
+    "NULL_CONST" = "l",
+
     "special" = "kr",
     "infix" = "o",
-    "SYMBOL" = "k",
+
+    "SLOT" = "nv",
+    "SYMBOL" = "nv",
+    "SYMBOL_FORMALS" = "nv",
+
+    "NS_GET" = "nf",
+    "NS_GET_INT" = "nf",
     "SYMBOL_FUNCTION_CALL" = "nf",
-    "SYMBOL_PACKAGE" = "k",
-    "SYMBOL_FORMALS" = "k",
+    "SYMBOL_PACKAGE" = "nf",
+
     "COMMENT" = "c"
   )
+}
+
+classes_show <- function(x, classes = classes_pandoc()) {
+  text <- paste0(deparse(substitute(x)), collapse = "\n")
+  out <- parse_data(text)$data
+  out$class <- token_class(out$token, out$text, classes)
+  out$class[is.na(out$class)] <- ""
+
+  out <- out[out$terminal, c("token", "text", "class")]
+  rownames(out) <- NULL
+  out
 }
 
 # Linking -----------------------------------------------------------------

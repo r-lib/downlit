@@ -122,9 +122,9 @@ test_that("library() linked to package reference", {
   skip_on_cran() # in case URLs change
   skip_on_os("solaris")
 
-  expect_equal(href_expr_(library()), NA_character_)
+  expect_equal(href_expr_(library()), "https://rdrr.io/r/base/library.html")
   expect_equal(href_expr_(library(rlang)), "http://rlang.r-lib.org")
-  expect_equal(href_expr_(library(MASS)), "http://www.stats.ox.ac.uk/pub/MASS4")
+  expect_equal(href_expr_(library(MASS)), "http://www.stats.ox.ac.uk/pub/MASS4/")
 })
 
 # vignette ----------------------------------------------------------------
@@ -167,7 +167,7 @@ test_that("or local sites, if registered", {
 })
 
 test_that("fail gracefully with non-working calls", {
-  expect_equal(href_expr_(vignette()), NA_character_)
+  expect_equal(href_expr_(vignette()), "https://rdrr.io/r/utils/vignette.html")
   expect_equal(href_expr_(vignette(package = package)), NA_character_)
   expect_equal(href_expr_(vignette(1, 2)), NA_character_)
   expect_equal(href_expr_(vignette(, )), NA_character_)
@@ -189,4 +189,16 @@ test_that("autolink generates HTML if linkable", {
 
 test_that("href_package can handle non-existing packages", {
   expect_equal(href_package("NotAPackage"), NA_character_)
+})
+
+# find_reexport_source ----------------------------------------------------
+
+test_that("can find functions", {
+  expect_equal(find_reexport_source(is.null), "base")
+  expect_equal(find_reexport_source(mean), "base")
+})
+
+test_that("can find other objects", {
+  expect_equal(find_reexport_source(na_cpl, "downlit", "na_cpl"), "rlang")
+  expect_equal(find_reexport_source(na_cpl, "downlit", "MISSING"), NA_character_)
 })

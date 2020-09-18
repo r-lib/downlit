@@ -15,7 +15,8 @@ downlit_html_node(x)
 \item{x}{An \code{xml2::xml_node}}
 }
 \value{
-Invisibly returns \code{output_path}.
+\code{downlit_html_path()} invisibly returns \code{output_path};
+\code{downlit_html_node()} modifies \code{x} in place and returns nothing.
 }
 \description{
 \itemize{
@@ -29,4 +30,12 @@ are processed processed with \code{\link[=autolink]{autolink()}}.
 Use \code{downlit_html_path()} to process an \code{.html} file on disk;
 use \code{downlit_html_node()} to process an in-memory \code{xml_node} as part of a
 larger pipeline.
+}
+\examples{
+node <- xml2::read_xml("<p><code>base::t()</code></p>")
+node
+
+# node is modified in place
+downlit_html_node(node)
+node
 }

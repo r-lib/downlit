@@ -14,7 +14,14 @@ href_article(article, package = NULL)
 
 \item{package}{Optional package name}
 }
+\value{
+URL topic or article; \code{NA} if can't find one.
+}
 \description{
 Generate url for topic/article
+}
+\examples{
+href_topic("t")
+href_topic("DOESN'T EXIST")
 }
 \keyword{internal}

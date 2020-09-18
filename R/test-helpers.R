@@ -1,5 +1,5 @@
 local_devtools_package <- function(path, ..., env = parent.frame()) {
-  pkgload::load_all(path, ...)
+  pkgload::load_all(path, ..., quiet = TRUE)
   defer(pkgload::unload(pkgload::pkg_name(path)), scope = env)
 }
 

@@ -1,6 +1,6 @@
 Package: downlit
 Title: Syntax Highlighting and Automatic Linking
-Version: 0.0.0.9000
+Version: 0.1.0.9000
 Authors@R: 
     c(person(given = "Hadley",
              family = "Wickham",
@@ -8,15 +8,20 @@ Authors@R:
              email = "hadley@rstudio.com"),
       person(given = "RStudio",
              role = "cph"))
-Description: Syntax highlight of R code, specifically designed
-    for the needs of RMarkdown packages like pkgdown, hugodown, and
-    bookdown.
+Description: Syntax highlighting of R code, specifically designed
+    for the needs of 'RMarkdown' packages like 'pkgdown', 'hugodown', and
+    'bookdown'. It includes linking of function calls to their documentation
+    on the web, and automatic translation of ANSI escapes in output to the
+    equivalent HTML.
 License: MIT + file LICENSE
 Depends: R (>= 3.2.0)
 Imports: 
     brio,
+    digest,
+    evaluate,
     fansi,
     rlang,
+    vctrs,
     yaml
 Suggests:
     rmarkdown,
@@ -29,6 +34,7 @@ Suggests:
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.0
-URL: https://github.com/r-lib/downlit
+RoxygenNote: 7.1.1
+URL: https://downlit.r-lib.org/, https://github.com/r-lib/downlit
 BugReports: https://github.com/r-lib/downlit/issues
+Config/testthat/edition: 3
