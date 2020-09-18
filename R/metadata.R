@@ -21,30 +21,34 @@ remote_package_article_url <- function(package) {
 # Retrieve remote metadata ------------------------------------------------
 
 remote_metadata <- function(package) {
+  # First, see if the metadata has been installed with the package
+  meta <- local_metadata(package)
+  if (!is.null(meta)) {
+    return(meta)
+  }
+
+  # Next, try the cache
   tempdir <- Sys.getenv("RMARKDOWN_PREVIEW_DIR", unset = tempdir())
   dir.create(file.path(tempdir, "downlit"), showWarnings = FALSE)
   cache_path <- file.path(tempdir, "downlit", package)
 
-  meta <- NULL
-
   if (file.exists(cache_path)) {
-    meta <- readRDS(cache_path)
+    return(readRDS(cache_path))
   }
 
-  if (rlang::is_empty(meta)) {
-    meta <- local_metadata(package)
-  }
-
-  if (rlang::is_empty(meta)) {
-    meta <- remote_metadata_slow(package)
-  }
-
-  if (rlang::is_empty(meta)) {
-    return(NULL)
-  }
-
+  # Finally, look up in on the package website, saving to the cache
+  meta <- remote_metadata_slow(package)
   saveRDS(meta, cache_path)
   meta
+}
+
+local_metadata <- function(package) {
+  local_path <- system.file("pkgdown.yml", package = package)
+  if (local_path == "") {
+    NULL
+  } else {
+    yaml::read_yaml(local_path)
+  }
 }
 
 remote_metadata_slow <- function(package) {
@@ -62,21 +66,6 @@ remote_metadata_slow <- function(package) {
     }
   }
 
-  NULL
-}
-
-local_metadata <- function(package) {
-  # See if the metadata has been installed to the package bundle, and try to use that.
-  local_path <- system.file("pkgdown.yml", package = package)
-  if (local_path != "") {
-    yaml <- tryCatch(yaml::read_yaml(local_path), error = NULL)
-    if (is.list(yaml)) {
-      if (has_name(yaml, "articles")) {
-        yaml$articles <- unlist(yaml$articles)
-      }
-      return(yaml)
-    }
-  }
   NULL
 }
 
