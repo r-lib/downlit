@@ -56,7 +56,6 @@ remote_metadata_slow <- function(package) {
   for (url in urls) {
     url <- paste0(url, "/pkgdown.yml")
     yaml <- tryCatch(fetch_yaml(url), error = function(e) NULL)
-
     if (is.list(yaml)) {
       if (has_name(yaml, "articles")) {
         yaml$articles <- unlist(yaml$articles)
