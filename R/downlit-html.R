@@ -55,7 +55,7 @@ downlit_html_node <- function(x) {
   bad_ancestor <- paste0("ancestor::", bad_ancestor, collapse = "|")
   xpath_inline <- paste0(".//code[count(*) = 0 and not(", bad_ancestor, ")]")
 
-  # replace inline code "{packagename}" (to simple text, linked if possible)
+  # replace inline code "{packagename}" with linked text if possible
   tweak_children(x, xpath_inline, autolink_curly, replace = "node")
 
   # handle remaining inline code
