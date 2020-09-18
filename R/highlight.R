@@ -154,7 +154,7 @@ classes_pandoc <- function() {
     "SYMBOL" = "va",
     "SYMBOL_FUNCTION_CALL" = "fu",
     "SYMBOL_PACKAGE" = "kw",
-    "SYMBOL_FORMALS" = "kw",
+    "SYMBOL_FORMALS" = "va",
     "COMMENT" = "co"
   )
 }
@@ -174,7 +174,7 @@ classes_chroma <- function() {
     "SYMBOL" = "nv",
     "SYMBOL_FUNCTION_CALL" = "nf",
     "SYMBOL_PACKAGE" = "k",
-    "SYMBOL_FORMALS" = "k",
+    "SYMBOL_FORMALS" = "nv",
     "COMMENT" = "c"
   )
 }
