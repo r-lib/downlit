@@ -119,11 +119,24 @@ token_class <- function(token, text, classes) {
 # for syntax highlighting
 # https://github.com/wch/r-source/blob/trunk/src/main/gram.c#L511
 token_type <- function(x, text) {
-  special <- c("IF", "ELSE", "REPEAT", "WHILE", "FOR", "IN", "NEXT", "BREAK")
+  special <- c(
+    "FUNCTION",
+    "FOR", "IN", "BREAK", "NEXT", "REPEAT", "WHILE",
+    "IF", "ELSE"
+  )
   infix <- c(
-    "'-'", "'+'", "'!'", "'~'", "'?'", "':'", "'*'", "'/'", "'^'", "'~'",
-    "SPECIAL", "LT", "GT", "EQ", "GE", "LE", "AND", "AND2", "OR",
-    "OR2", "LEFT_ASSIGN", "RIGHT_ASSIGN", "'$'", "'@'", "EQ_ASSIGN"
+    # algebra
+    "'-'", "'+'", "'~'", "'*'", "'/'", "'^'",
+    # comparison
+    "LT", "GT", "EQ", "GE", "LE", "NE",
+    # logical
+    "'!'", "AND", "AND2", "OR", "OR2",
+    # assignment / equals
+    "LEFT_ASSIGN", "RIGHT_ASSIGN", "EQ_ASSIGN", "EQ_FORMALS", "EQ_SUB",
+    # subsetting
+    "'$'", "LBB", "'['", "']'", "'@'",
+    # miscellaneous
+    "'~'", "'?'", "':'", "SPECIAL"
   )
 
   x[x %in% special] <- "special"
@@ -136,7 +149,10 @@ token_type <- function(x, text) {
 
 # Pandoc styles are based on KDE default styles:
 # https://docs.kde.org/stable5/en/applications/katepart/highlight.html#kate-highlight-default-styles
-# But are given a two letter abbreviations (presumably to reduce generated html size)
+# But in HTML use two letter abbreviations:
+# https://github.com/jgm/skylighting/blob/a1d02a0db6260c73aaf04aae2e6e18b569caacdc/skylighting-core/src/Skylighting/Format/HTML.hs#L117-L147
+# Summary at
+# https://docs.google.com/spreadsheets/d/1JhBtQSCtQ2eu2RepLTJONFdLEnhM3asUyMMLYE3tdYk/edit#gid=0
 #
 # Default syntax highlighting def for R:
 # https://github.com/KDE/syntax-highlighting/blob/master/data/syntax/r.xml
@@ -144,17 +160,23 @@ token_type <- function(x, text) {
 #' @rdname highlight
 classes_pandoc <- function() {
   c(
-    "logical" = "fl",
+    "logical" = "cn",
     "NUM_CONST" = "fl",
     "STR_CONST" = "st",
     "NULL_CONST" = "kw",
-    "FUNCTION" = "kw",
+
     "special" = "kw",
     "infix" = "op",
+
+    "SLOT" = "va",
     "SYMBOL" = "va",
-    "SYMBOL_FUNCTION_CALL" = "fu",
-    "SYMBOL_PACKAGE" = "kw",
     "SYMBOL_FORMALS" = "va",
+
+    "NS_GET" = "fu",
+    "NS_GET_INT" = "fu",
+    "SYMBOL_FUNCTION_CALL" = "fu",
+    "SYMBOL_PACKAGE" = "fu",
+
     "COMMENT" = "co"
   )
 }
@@ -168,15 +190,32 @@ classes_chroma <- function() {
     "NUM_CONST" = "m",
     "STR_CONST" = "s",
     "NULL_CONST" = "l",
-    "FUNCTION" = "nf",
+
     "special" = "kr",
     "infix" = "o",
+
+    "SLOT" = "nv",
     "SYMBOL" = "nv",
-    "SYMBOL_FUNCTION_CALL" = "nf",
-    "SYMBOL_PACKAGE" = "k",
     "SYMBOL_FORMALS" = "nv",
+
+    "NS_GET" = "nf",
+    "NS_GET_INT" = "nf",
+    "SYMBOL_FUNCTION_CALL" = "nf",
+    "SYMBOL_PACKAGE" = "nf",
+
     "COMMENT" = "c"
   )
+}
+
+classes_show <- function(x, classes = classes_pandoc()) {
+  text <- paste0(deparse(substitute(x)), collapse = "\n")
+  out <- parse_data(text)$data
+  out$class <- token_class(out$token, out$text, classes)
+  out$class[is.na(out$class)] <- ""
+
+  out <- out[out$terminal, c("token", "text", "class")]
+  rownames(out) <- NULL
+  out
 }
 
 # Linking -----------------------------------------------------------------

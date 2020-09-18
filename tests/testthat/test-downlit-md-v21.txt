@@ -3,7 +3,7 @@
 
 > cat(downlit_md_string("```\nbase::t(1)\n```"))
 <pre class='chroma'>
-<span class='k'>base</span>::<span class='nf'><a href='https://rdrr.io/r/base/t.html'>t</a></span>(<span class='m'>1</span>)</pre>
+<span class='nf'>base</span><span class='nf'>::</span><span class='nf'><a href='https://rdrr.io/r/base/t.html'>t</a></span>(<span class='m'>1</span>)</pre>
 
 > cat(downlit_md_string(brio::read_lines(test_path("markdown-table.md"))))
 Table: Caption [`base::t`](https://rdrr.io/r/base/t.html)
