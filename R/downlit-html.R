@@ -13,6 +13,7 @@
 #' larger pipeline.
 #'
 #' @param in_path,out_path Input and output paths for HTML file
+#' @inheritParams highlight
 #' @param x An `xml2::xml_node`
 #' @return `downlit_html_path()` invisibly returns `output_path`;
 #'   `downlit_html_node()` modifies `x` in place and returns nothing.
@@ -24,13 +25,13 @@
 #' # node is modified in place
 #' downlit_html_node(node)
 #' node
-downlit_html_path <- function(in_path, out_path) {
+downlit_html_path <- function(in_path, out_path, classes = classes_pandoc()) {
   if (!is_installed("xml2")) {
     abort("xml2 package required .html transformation")
   }
 
   html <- xml2::read_html(in_path, encoding = "UTF-8")
-  downlit_html_node(html)
+  downlit_html_node(html, classes = classes)
   xml2::write_html(html, out_path, format = FALSE)
 
   invisible(out_path)
@@ -38,14 +39,16 @@ downlit_html_path <- function(in_path, out_path) {
 
 #' @export
 #' @rdname downlit_html_path
-downlit_html_node <- function(x) {
+downlit_html_node <- function(x, classes = classes_pandoc()) {
   stopifnot(inherits(x, "xml_node"))
 
   # <pre class="sourceCode r">
-  xpath_block <- ".//pre[contains(@class, 'sourceCode r')]"
+  # and <pre class="r"> which is needed when knitting a bookdown gitbook
+  # where highlight is set to NULL
+  xpath_block <- ".//pre[contains(@class, 'sourceCode r')] | .//pre[@class='r']"
   tweak_children(x, xpath_block, highlight,
     pre_class = "downlit",
-    classes = classes_pandoc(),
+    classes = classes,
     replace = "node"
   )
 
