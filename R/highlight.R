@@ -124,6 +124,15 @@ token_type <- function(x, text) {
     "FOR", "IN", "BREAK", "NEXT", "REPEAT", "WHILE",
     "IF", "ELSE"
   )
+  rstudio_special <- c(
+   "return", "switch", "try", "tryCatch", "stop",
+   "warning", "require", "library", "attach", "detach",
+   "source", "setMethod", "setGeneric", "setGroupGeneric",
+   "setClass", "setRefClass", "R6Class", "UseMethod", "NextMethod"
+  )
+  x[x %in% special] <- "special"
+  x[x == "SYMBOL_FUNCTION_CALL" & text %in% rstudio_special] <- "special"
+
   infix <- c(
     # algebra
     "'-'", "'+'", "'~'", "'*'", "'/'", "'^'",
@@ -136,12 +145,12 @@ token_type <- function(x, text) {
     # miscellaneous
     "'$'", "'@'","'~'", "'?'", "':'", "SPECIAL"
   )
-  parens <- c("LBB", "'['", "']'", "'('", "')'", "'{'", "'}'")
-
-  x[x %in% special] <- "special"
   x[x %in% infix] <- "infix"
+
+  parens <- c("LBB", "'['", "']'", "'('", "')'", "'{'", "'}'")
   x[x %in% parens] <- "parens"
 
+  # Matches treatment of constants in RStudio
   constant <- c(
     "NA", "Inf", "NaN", "TRUE", "FALSE",
     "NA_integer_", "NA_real_", "NA_character_", "NA_complex_"
