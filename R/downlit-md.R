@@ -128,9 +128,20 @@ transform_code <- function(x, version) {
     lapply(x, transform_code, version = version)
   } else {
     if (x$t == "Code") {
-      href <- autolink_url(x$c[[2]])
-      if (!is.na(href)) {
-        x <- pandoc_link(pandoc_attr(), list(x), pandoc_target(href))
+      package_name <- extract_curly_package(x$c[[2]])
+      # packages à la {pkgname}
+      if(!is.na(package_name)) {
+        href <- href_package(package_name)
+        if (!is.na(href)) {
+          x <-  list(t = "Str", c = package_name)
+          x <- pandoc_link(pandoc_attr(), list(x), pandoc_target(href))
+        } # otherwise we do not touch x
+      } else {
+      # other cases
+        href <- autolink_url(x$c[[2]])
+        if (!is.na(href)) {
+          x <- pandoc_link(pandoc_attr(), list(x), pandoc_target(href))
+        }
       }
     } else if (x$t == "CodeBlock") {
       out <- highlight(x$c[[2]], pre_class = "chroma")

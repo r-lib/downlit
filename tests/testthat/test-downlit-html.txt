@@ -8,7 +8,7 @@
 
 <span class="co"># This is a comment</span>
 
-<span class="kw">stats</span>::<span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span>()
+<span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span><span class="op">(</span><span class="op">)</span>
 </pre>
 <p><code><a href="https://rdrr.io/r/stats/median.html">stats::median()</a></code></p>
 
