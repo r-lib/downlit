@@ -142,9 +142,9 @@ use <code>downlit_html_node()</code> to process an in-memory <code>xml_node</cod
 larger pipeline.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>downlit_html_path</span><span class='op'>(</span><span class='va'>in_path</span>, <span class='va'>out_path</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>downlit_html_path</span><span class='op'>(</span><span class='va'>in_path</span>, <span class='va'>out_path</span>, classes <span class='op'>=</span> <span class='fu'><a href='highlight.html'>classes_pandoc</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='fu'>downlit_html_node</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
+<span class='fu'>downlit_html_node</span><span class='op'>(</span><span class='va'>x</span>, classes <span class='op'>=</span> <span class='fu'><a href='highlight.html'>classes_pandoc</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -152,6 +152,13 @@ larger pipeline.</p>
     <tr>
       <th>in_path, out_path</th>
       <td><p>Input and output paths for HTML file</p></td>
+    </tr>
+    <tr>
+      <th>classes</th>
+      <td><p>A mapping between token names and CSS class names.
+Bundled <code><a href='highlight.html'>classes_pandoc()</a></code> and <code><a href='highlight.html'>classes_chroma()</a></code> provide mappings
+that (roughly) match Pandoc and chroma (used by hugo) classes so you
+can use existing themes.</p></td>
     </tr>
     <tr>
       <th>x</th>
