@@ -1,7 +1,7 @@
 # downlit (development version)
 
-* Tweaked the XPath identifying R code blocks in `downlit_html_path()`, and 
-added a `classes` argument to `downlit_html_path()` (#53, @maelle, @cderv)
+* `downlit_html_path()` has a more flexible XPath identifying R code blocks in , and 
+a `classes` argument (#53, @maelle, @cderv)
 
 * `classes_pandoc()` and `classes_chroma()` have been tweaked to generate
   better class names.
