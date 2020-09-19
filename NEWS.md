@@ -2,6 +2,9 @@
 
 * R6 methods are no longer autolinked as if they were functions of the same name (#54, @maelle).
 
+* `downlit_html_path()` has a more flexible XPath identifying R code blocks, and 
+a `classes` argument (#53, @maelle, @cderv)
+
 * `classes_pandoc()` and `classes_chroma()` have been tweaked to generate
   better class names.
 
