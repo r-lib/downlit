@@ -63,3 +63,10 @@ test_that("unparsable code returns NULL", {
     "<span class='c'>#</span>"
   )
 })
+
+test_that("R6 methods don't get linked", {
+  expect_equal(
+    highlight("x$get()"),
+    "<span class='nv'>x</span><span class='o'>$</span><span class='nf'>get</span><span class='o'>(</span><span class='o'>)</span>"
+  )
+})
