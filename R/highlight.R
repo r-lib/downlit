@@ -133,14 +133,14 @@ token_type <- function(x, text) {
     "'!'", "AND", "AND2", "OR", "OR2",
     # assignment / equals
     "LEFT_ASSIGN", "RIGHT_ASSIGN", "EQ_ASSIGN", "EQ_FORMALS", "EQ_SUB",
-    # subsetting
-    "'$'", "LBB", "'['", "']'", "'@'",
     # miscellaneous
-    "'~'", "'?'", "':'", "SPECIAL"
+    "'$'", "'@'","'~'", "'?'", "':'", "SPECIAL"
   )
+  parens <- c("LBB", "'['", "']'", "'('", "')'", "'{'", "'}'")
 
   x[x %in% special] <- "special"
   x[x %in% infix] <- "infix"
+  x[x %in% parens] <- "parens"
 
   x[x == "NUM_CONST" & text %in% c("TRUE", "FALSE")] <- "logical"
 
@@ -166,6 +166,7 @@ classes_pandoc <- function() {
     "NULL_CONST" = "kw",
 
     "special" = "kw",
+    "parens" = "op",
     "infix" = "op",
 
     "SLOT" = "va",
@@ -192,6 +193,7 @@ classes_chroma <- function() {
     "NULL_CONST" = "l",
 
     "special" = "kr",
+    "parens" = "o",
     "infix" = "o",
 
     "SLOT" = "nv",
