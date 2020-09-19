@@ -175,11 +175,10 @@ token_type <- function(x, text) {
 #' @rdname highlight
 classes_pandoc <- function() {
   c(
+    "constant" = "cn",
     "NUM_CONST" = "fl",
     "STR_CONST" = "st",
-    "NULL_CONST" = "cn",
 
-    "constant" = "cn",
     "special" = "kw",
     "parens" = "op",
     "infix" = "op",
@@ -202,11 +201,10 @@ classes_pandoc <- function() {
 #' @rdname highlight
 classes_chroma <- function() {
   c(
+    "constant" = "kc",
     "NUM_CONST" = "m",
     "STR_CONST" = "s",
-    "NULL_CONST" = "l",
 
-    "constant" = "kc",
     "special" = "kr",
     "parens" = "o",
     "infix" = "o",
