@@ -43,6 +43,8 @@ downlit_html_node <- function(x, classes = classes_pandoc()) {
   stopifnot(inherits(x, "xml_node"))
 
   # <pre class="sourceCode r">
+  # and <pre class="r"> which is needed when knitting a bookdown gitbook
+  # where highlight is set to NULL
   xpath_block <- ".//pre[contains(@class, 'sourceCode r')] | .//pre[@class='r']"
   tweak_children(x, xpath_block, highlight,
     pre_class = "downlit",
