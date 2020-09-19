@@ -1,6 +1,6 @@
 # downlit (development version)
 
-* R6 methods are no longer autolinked as if they were functions of the same name (#54, @maelle)
+* R6 methods are no longer autolinked as if they were functions of the same name (#54, @maelle).
 
 * `classes_pandoc()` and `classes_chroma()` have been tweaked to generate
   better class names.
