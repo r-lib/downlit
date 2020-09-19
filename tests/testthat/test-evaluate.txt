@@ -9,13 +9,13 @@
 <div class='input'><span class='co'># comment</span></div>
 
 > cat(evaluate_and_highlight("message('x')"))
-<div class='input'><span class='fu'><a href='https://rdrr.io/r/base/message.html'>message</a></span>(<span class='st'>'x'</span>)</div><div class='output co'>#&gt; <span class='message'>x</span></div>
+<div class='input'><span class='fu'><a href='https://rdrr.io/r/base/message.html'>message</a></span><span class='op'>(</span><span class='st'>'x'</span><span class='op'>)</span></div><div class='output co'>#&gt; <span class='message'>x</span></div>
 
 > cat(evaluate_and_highlight("warning('x')"))
-<div class='input'><span class='fu'><a href='https://rdrr.io/r/base/warning.html'>warning</a></span>(<span class='st'>'x'</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: x</span></div>
+<div class='input'><span class='kw'><a href='https://rdrr.io/r/base/warning.html'>warning</a></span><span class='op'>(</span><span class='st'>'x'</span><span class='op'>)</span></div><div class='output co'>#&gt; <span class='warning'>Warning: x</span></div>
 
 > cat(evaluate_and_highlight("stop('x', call. = FALSE)"))
-<div class='input'><span class='fu'><a href='https://rdrr.io/r/base/stop.html'>stop</a></span>(<span class='st'>'x'</span>, call. <span class='op'>=</span> <span class='cn'>FALSE</span>)</div><div class='output co'>#&gt; <span class='error'>Error: x</span></div>
+<div class='input'><span class='kw'><a href='https://rdrr.io/r/base/stop.html'>stop</a></span><span class='op'>(</span><span class='st'>'x'</span>, call. <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></div><div class='output co'>#&gt; <span class='error'>Error: x</span></div>
 
 > # Plots
 > fig_save <- (function(plot, id) list(path = paste0(id, ".png"), width = 10,
@@ -23,6 +23,6 @@
 > f1 <- (function() plot(1))
 > f2 <- (function() lines(0:2, 0:2))
 > cat(evaluate_and_highlight("f1()\nf2()", fig_save = fig_save, env = environment()))
-<div class='input'><span class='fu'>f1</span>()
-</div><div class='input'><span class='fu'>f2</span>()</div><div class='img'><img src='1.png' alt='' width='10' height='10' /></div>
+<div class='input'><span class='fu'>f1</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='input'><span class='fu'>f2</span><span class='op'>(</span><span class='op'>)</span></div><div class='img'><img src='1.png' alt='' width='10' height='10' /></div>
 

@@ -1,6 +1,6 @@
 > # explicit package
 > cat(highlight("MASS::addterm()"))
-<span class='nf'>MASS</span><span class='nf'>::</span><span class='nf'><a href='https://rdrr.io/pkg/MASS/man/addterm.html'>addterm</a></span>()
+<span class='nf'>MASS</span><span class='nf'>::</span><span class='nf'><a href='https://rdrr.io/pkg/MASS/man/addterm.html'>addterm</a></span><span class='o'>(</span><span class='o'>)</span>
 
 > cat(highlight("MASS::addterm"))
 <span class='nf'>MASS</span><span class='nf'>::</span><span class='nv'><a href='https://rdrr.io/pkg/MASS/man/addterm.html'>addterm</a></span>
@@ -10,17 +10,17 @@
 
 > # implicit package
 > cat(highlight("library(MASS)"))
-<span class='nf'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='nv'><a href='http://www.stats.ox.ac.uk/pub/MASS4/'>MASS</a></span>)
+<span class='kr'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='o'>(</span><span class='nv'><a href='http://www.stats.ox.ac.uk/pub/MASS4/'>MASS</a></span><span class='o'>)</span>
 
 > cat(highlight("addterm()"))
-<span class='nf'><a href='https://rdrr.io/pkg/MASS/man/addterm.html'>addterm</a></span>()
+<span class='nf'><a href='https://rdrr.io/pkg/MASS/man/addterm.html'>addterm</a></span><span class='o'>(</span><span class='o'>)</span>
 
 > cat(highlight("median()"))
-<span class='nf'><a href='https://rdrr.io/r/stats/median.html'>median</a></span>()
+<span class='nf'><a href='https://rdrr.io/r/stats/median.html'>median</a></span><span class='o'>(</span><span class='o'>)</span>
 
 > # local package
 > cat(highlight("test::foo()"))
-<span class='nf'>test</span><span class='nf'>::</span><span class='nf'><a href='bar.html'>foo</a></span>()
+<span class='nf'>test</span><span class='nf'>::</span><span class='nf'><a href='bar.html'>foo</a></span><span class='o'>(</span><span class='o'>)</span>
 
 > # operators / special syntax
 > cat(highlight("1 + 2 * 3"))
@@ -30,10 +30,10 @@
 <span class='nv'>x</span> <span class='o'>%in%</span> <span class='nv'>y</span>
 
 > cat(highlight("if (FALSE) 1"))
-<span class='kr'>if</span> (<span class='kc'>FALSE</span>) <span class='m'>1</span>
+<span class='kr'>if</span> <span class='o'>(</span><span class='kc'>FALSE</span><span class='o'>)</span> <span class='m'>1</span>
 
 > cat(highlight("f <- function(x = 'a') {}"))
-<span class='nv'>f</span> <span class='o'>&lt;-</span> <span class='kr'>function</span>(<span class='nv'>x</span> <span class='o'>=</span> <span class='s'>'a'</span>) {}
+<span class='nv'>f</span> <span class='o'>&lt;-</span> <span class='kr'>function</span><span class='o'>(</span><span class='nv'>x</span> <span class='o'>=</span> <span class='s'>'a'</span><span class='o'>)</span> <span class='o'>{</span><span class='o'>}</span>
 
 > # ansi escapes + unicode
 > cat(highlight("# \033[34mblue\033[39m"))
