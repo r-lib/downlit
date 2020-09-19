@@ -142,7 +142,13 @@ token_type <- function(x, text) {
   x[x %in% infix] <- "infix"
   x[x %in% parens] <- "parens"
 
-  x[x == "NUM_CONST" & text %in% c("TRUE", "FALSE")] <- "logical"
+  constant <- c(
+    "NA", "Inf", "NaN", "TRUE", "FALSE",
+    "NA_integer_", "NA_real_", "NA_character_", "NA_complex_"
+  )
+  x[x == "NUM_CONST" & text %in% constant] <- "constant"
+  x[x == "SYMBOL" & text %in% c("T", "F")] <- "constant"
+  x[x == "NULL_CONST"] <- "constant"
 
   x
 }
@@ -160,11 +166,11 @@ token_type <- function(x, text) {
 #' @rdname highlight
 classes_pandoc <- function() {
   c(
-    "logical" = "cn",
     "NUM_CONST" = "fl",
     "STR_CONST" = "st",
-    "NULL_CONST" = "kw",
+    "NULL_CONST" = "cn",
 
+    "constant" = "cn",
     "special" = "kw",
     "parens" = "op",
     "infix" = "op",
@@ -187,11 +193,11 @@ classes_pandoc <- function() {
 #' @rdname highlight
 classes_chroma <- function() {
   c(
-    "logical" = "kc",
     "NUM_CONST" = "m",
     "STR_CONST" = "s",
     "NULL_CONST" = "l",
 
+    "constant" = "kc",
     "special" = "kr",
     "parens" = "o",
     "infix" = "o",
