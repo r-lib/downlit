@@ -46,12 +46,12 @@ test_that("can parse code with carriage returns", {
 })
 
 test_that("syntax can span multiple lines", {
-  expect_equal(highlight("f(\n\n)"), "<span class='nf'>f</span>(\n\n)")
+  expect_equal(highlight("f(\n\n)"), "<span class='nf'>f</span><span class='o'>(</span>\n\n<span class='o'>)</span>")
   expect_equal(highlight("'\n\n'"), "<span class='s'>'\n\n'</span>")
 })
 
 test_that("code with tab is not mangled", {
-  expect_equal(highlight("\tf()"), "  <span class='nf'>f</span>()")
+  expect_equal(highlight("\tf()"), "  <span class='nf'>f</span><span class='o'>(</span><span class='o'>)</span>")
   expect_equal(highlight("'\t'"), "<span class='s'>'  '</span>")
 })
 

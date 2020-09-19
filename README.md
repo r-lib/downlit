@@ -38,6 +38,7 @@ The following forms of inline code are recognized and automatically linked:
 * `help("fun")`, `help("fun", package = "package")`, `help(package = "package")`.
 * `vignette("name")`, `vignette("name", package = "package")`.
 * `library(package)`, `require(package)`, `requireNamespace("package")`.
+* `{package}` gets linked (if possible) _and formatted as plain text_. 
 
 ### Cross-package links
 
@@ -57,7 +58,7 @@ If downlit can find a pkgdown site for the remote package, it will link to it; o
     url: https://dplyr.tidyverse.org
     ```
     
-    When this field is defined, pkgdown generate a public facing
+    When this field is defined, pkgdown generates a public facing
     [`pkgdown.yml` file](https://dplyr.tidyverse.org/pkgdown.yml) that 
     provides metadata about the site:
     
@@ -77,4 +78,4 @@ So when you build a pkgdown site that links to the dplyr documentation (e.g., `d
 
 ## Usage
 
-downlit is designed to be used by other packages, and I expect most uses of downlit will use it via another package (e.g. [hugodown](https://github.com/r-lib/hugodown)). If you want to use it in your own package, you'll typically want to apply it as part of some bigger transformation process. You can get some sense of this this might work by reading the source code of `downlit_html()` and `downlit_md()`, which transform HTML and markdown documents respectively.
+downlit is designed to be used by other packages, and I expect most uses of downlit will use it via another package (e.g. [hugodown](https://github.com/r-lib/hugodown)). If you want to use it in your own package, you'll typically want to apply it as part of some bigger transformation process. You can get some sense of how this might work by reading the source code of [`downlit_html()`](https://github.com/r-lib/downlit/blob/master/R/downlit-html.R) and [`downlit_md()`](https://github.com/r-lib/downlit/blob/master/R/downlit-md.R), which transform HTML and markdown documents respectively.

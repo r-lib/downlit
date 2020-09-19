@@ -54,6 +54,11 @@ downlit_html_node <- function(x) {
   bad_ancestor <- c("h1", "h2", "h3", "h4", "h5", "a")
   bad_ancestor <- paste0("ancestor::", bad_ancestor, collapse = "|")
   xpath_inline <- paste0(".//code[count(*) = 0 and not(", bad_ancestor, ")]")
+
+  # replace inline code "{packagename}" with linked text if possible
+  tweak_children(x, xpath_inline, autolink_curly, replace = "node")
+
+  # handle remaining inline code
   tweak_children(x, xpath_inline, autolink, replace = "contents")
 
   invisible()
@@ -77,6 +82,21 @@ tweak_children <- function(node, xpath, fun, ..., replace = c("node", "contents"
 
   invisible()
 }
+
+autolink_curly <- function(text) {
+  package_name <- extract_curly_package(text)
+  if (is.na(package_name)) {
+    return(NA_character_)
+  }
+
+  href <- href_package(package_name)
+  if (is.na(href)) {
+    return(NA_character_)
+  }
+
+  paste0("<a href='", href, "'>", package_name, "</a>")
+}
+
 
 as_xml <- function(x) {
   xml2::xml_contents(xml2::xml_contents(xml2::read_html(x)))[[1]]
