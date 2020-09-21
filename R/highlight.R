@@ -251,6 +251,17 @@ token_href <- function(token, text) {
   fun <- which(token %in% "SYMBOL_FUNCTION_CALL")
   fun <- setdiff(fun, ns_fun)
   fun <- fun[token[fun-1] != "'$'"]
+
+  # Highlight R6 instantiation
+
+  r6_new_call <- which(
+    text == "new" & token == "SYMBOL_FUNCTION_CALL"
+  )
+  r6_new_call <- r6_new_call[token[r6_new_call-1] == "'$'"]
+  r6_new_call <- r6_new_call[token[r6_new_call-3] == "SYMBOL"]
+
+  fun <- c(fun, r6_new_call - 3)
+
   href[fun] <- map_chr(text[fun], href_topic_local)
 
   # Highlight packages
