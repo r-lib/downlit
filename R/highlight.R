@@ -253,12 +253,11 @@ token_href <- function(token, text) {
   fun <- fun[token[fun-1] != "'$'"]
 
   # Highlight R6 instantiation
-
   r6_new_call <- which(
     text == "new" & token == "SYMBOL_FUNCTION_CALL"
   )
-  r6_new_call <- r6_new_call[token[r6_new_call-1] == "'$'"]
-  r6_new_call <- r6_new_call[token[r6_new_call-3] == "SYMBOL"]
+  r6_new_call <- r6_new_call[token[r6_new_call - 1] == "'$'"]
+  r6_new_call <- r6_new_call[token[r6_new_call - 3] == "SYMBOL"]
 
   fun <- c(fun, r6_new_call - 3)
 

@@ -1,5 +1,9 @@
 # downlit (development version)
 
+* R6 classes are autolinked when a new object is created i.e. in 
+  `r6_object$new()`, `r6_object` will link to the docs of `r6_object` if found
+  (#59, @maelle)
+
 * R6 methods are no longer autolinked as if they were functions of the same name (#54, @maelle).
 
 * `downlit_html_path()` has a more flexible XPath identifying R code blocks, and 

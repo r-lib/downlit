@@ -70,3 +70,15 @@ test_that("R6 methods don't get linked", {
     "<span class='nv'>x</span><span class='o'>$</span><span class='nf'>get</span><span class='o'>(</span><span class='o'>)</span>"
   )
 })
+
+test_that("R6 instantiation gets linked", {
+  expect_equal(
+    highlight("mean$new()"),
+    "<span class='nv'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='o'>$</span><span class='nf'>new</span><span class='o'>(</span><span class='o'>)</span>"
+  )
+  # But not new itself
+  expect_equal(
+    highlight("new()"),
+    "<span class='nf'>new</span><span class='o'>(</span><span class='o'>)</span>"
+  )
+})
