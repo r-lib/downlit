@@ -124,6 +124,15 @@ token_type <- function(x, text) {
     "FOR", "IN", "BREAK", "NEXT", "REPEAT", "WHILE",
     "IF", "ELSE"
   )
+  rstudio_special <- c(
+   "return", "switch", "try", "tryCatch", "stop",
+   "warning", "require", "library", "attach", "detach",
+   "source", "setMethod", "setGeneric", "setGroupGeneric",
+   "setClass", "setRefClass", "R6Class", "UseMethod", "NextMethod"
+  )
+  x[x %in% special] <- "special"
+  x[x == "SYMBOL_FUNCTION_CALL" & text %in% rstudio_special] <- "special"
+
   infix <- c(
     # algebra
     "'-'", "'+'", "'~'", "'*'", "'/'", "'^'",
@@ -133,16 +142,22 @@ token_type <- function(x, text) {
     "'!'", "AND", "AND2", "OR", "OR2",
     # assignment / equals
     "LEFT_ASSIGN", "RIGHT_ASSIGN", "EQ_ASSIGN", "EQ_FORMALS", "EQ_SUB",
-    # subsetting
-    "'$'", "LBB", "'['", "']'", "'@'",
     # miscellaneous
-    "'~'", "'?'", "':'", "SPECIAL"
+    "'$'", "'@'","'~'", "'?'", "':'", "SPECIAL"
   )
-
-  x[x %in% special] <- "special"
   x[x %in% infix] <- "infix"
 
-  x[x == "NUM_CONST" & text %in% c("TRUE", "FALSE")] <- "logical"
+  parens <- c("LBB", "'['", "']'", "'('", "')'", "'{'", "'}'")
+  x[x %in% parens] <- "parens"
+
+  # Matches treatment of constants in RStudio
+  constant <- c(
+    "NA", "Inf", "NaN", "TRUE", "FALSE",
+    "NA_integer_", "NA_real_", "NA_character_", "NA_complex_"
+  )
+  x[x == "NUM_CONST" & text %in% constant] <- "constant"
+  x[x == "SYMBOL" & text %in% c("T", "F")] <- "constant"
+  x[x == "NULL_CONST"] <- "constant"
 
   x
 }
@@ -160,12 +175,12 @@ token_type <- function(x, text) {
 #' @rdname highlight
 classes_pandoc <- function() {
   c(
-    "logical" = "cn",
+    "constant" = "cn",
     "NUM_CONST" = "fl",
     "STR_CONST" = "st",
-    "NULL_CONST" = "kw",
 
     "special" = "kw",
+    "parens" = "op",
     "infix" = "op",
 
     "SLOT" = "va",
@@ -186,12 +201,12 @@ classes_pandoc <- function() {
 #' @rdname highlight
 classes_chroma <- function() {
   c(
-    "logical" = "kc",
+    "constant" = "kc",
     "NUM_CONST" = "m",
     "STR_CONST" = "s",
-    "NULL_CONST" = "l",
 
     "special" = "kr",
+    "parens" = "o",
     "infix" = "o",
 
     "SLOT" = "nv",
@@ -235,6 +250,17 @@ token_href <- function(token, text) {
   # earlier library() statements to affect the highlighting of later blocks
   fun <- which(token %in% "SYMBOL_FUNCTION_CALL")
   fun <- setdiff(fun, ns_fun)
+  fun <- fun[token[fun-1] != "'$'"]
+
+  # Highlight R6 instantiation
+  r6_new_call <- which(
+    text == "new" & token == "SYMBOL_FUNCTION_CALL"
+  )
+  r6_new_call <- r6_new_call[token[r6_new_call - 1] == "'$'"]
+  r6_new_call <- r6_new_call[token[r6_new_call - 3] == "SYMBOL"]
+
+  fun <- c(fun, r6_new_call - 3)
+
   href[fun] <- map_chr(text[fun], href_topic_local)
 
   # Highlight packages

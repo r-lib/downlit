@@ -60,6 +60,13 @@ remote_metadata_slow <- function(package) {
       if (has_name(yaml, "articles")) {
         yaml$articles <- unlist(yaml$articles)
       }
+      if (!has_name(yaml, "urls")) {
+        base_url <- dirname(url)
+        yaml$urls <- list(
+          reference = paste0(base_url, "/reference"),
+          article = paste0(base_url, "/articles")
+        )
+      }
       return(yaml)
     }
   }
