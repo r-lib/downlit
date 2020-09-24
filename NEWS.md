@@ -1,5 +1,8 @@
 # downlit (development version)
 
+* Autolinking guesses reference and article urls for pkgdown sites that haven't
+  set url (@krlmlr, #44).
+
 * R6 classes are autolinked when a new object is created i.e. in 
   `r6_object$new()`, `r6_object` will link to the docs of `r6_object` if found
   (#59, @maelle)
