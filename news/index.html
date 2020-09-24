@@ -113,6 +113,7 @@
 <a href="#downlit-development-version" class="anchor"></a>downlit (development version)<small> Unreleased </small>
 </h1>
 <ul>
+<li><p>Autolinking can use metadata stored in package itself with pkgdown setting <code>deploy.install_metadata</code>; this is useful for packages that only have private websites (<a href='https://github.com/matthewstrasiotto'>@matthewstrasiotto</a>, <a href='https://github.com/r-lib/downlit/issues/29'>#29</a>)</p></li>
 <li><p>Autolinking guesses reference and article urls for pkgdown sites that haven’t set url (<a href='https://github.com/krlmlr'>@krlmlr</a>, <a href='https://github.com/r-lib/downlit/issues/44'>#44</a>).</p></li>
 <li><p>R6 classes are autolinked when a new object is created i.e. in <code>r6_object$new()</code>, <code>r6_object</code> will link to the docs of <code>r6_object</code> if found (<a href='https://github.com/r-lib/downlit/issues/59'>#59</a>, <a href='https://github.com/maelle'>@maelle</a>)</p></li>
 <li><p>R6 methods are no longer autolinked as if they were functions of the same name (<a href='https://github.com/r-lib/downlit/issues/54'>#54</a>, <a href='https://github.com/maelle'>@maelle</a>).</p></li>
