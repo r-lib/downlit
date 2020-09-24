@@ -113,6 +113,7 @@
 <a href="#downlit-development-version" class="anchor"></a>downlit (development version)<small> Unreleased </small>
 </h1>
 <ul>
+<li><p>Autolinking guesses reference and article urls for pkgdown sites that haven’t set url (<a href='https://github.com/krlmlr'>@krlmlr</a>, <a href='https://github.com/r-lib/downlit/issues/44'>#44</a>).</p></li>
 <li><p>R6 classes are autolinked when a new object is created i.e. in <code>r6_object$new()</code>, <code>r6_object</code> will link to the docs of <code>r6_object</code> if found (<a href='https://github.com/r-lib/downlit/issues/59'>#59</a>, <a href='https://github.com/maelle'>@maelle</a>)</p></li>
 <li><p>R6 methods are no longer autolinked as if they were functions of the same name (<a href='https://github.com/r-lib/downlit/issues/54'>#54</a>, <a href='https://github.com/maelle'>@maelle</a>).</p></li>
 <li><p><code><a href="../reference/downlit_html_path.html">downlit_html_path()</a></code> has a more flexible XPath identifying R code blocks, and a <code>classes</code> argument (<a href='https://github.com/r-lib/downlit/issues/53'>#53</a>, <a href='https://github.com/maelle'>@maelle</a>, <a href='https://github.com/cderv'>@cderv</a>)</p></li>
