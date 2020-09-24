@@ -1,5 +1,9 @@
 # downlit (development version)
 
+* Autolinking can use metadata stored in package itself with pkgdown setting
+  `deploy.install_metadata`; this is useful for packages that only have 
+  private websites (@matthewstrasiotto, #29)
+
 * Autolinking guesses reference and article urls for pkgdown sites that haven't
   set url (@krlmlr, #44).
 
