@@ -30,6 +30,8 @@ test_that("can link to external topics that use ::", {
 })
 
 test_that("unicode is not mangled", {
+  skip_on_os("windows")
+
   expect_equal(highlight("# \u2714"), "<span class='c'># \u2714</span>")
 })
 
