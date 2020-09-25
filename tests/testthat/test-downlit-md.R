@@ -46,6 +46,20 @@ test_that("pandoc AST v1.21", {
   })
 })
 
+test_that("Special package string gets linked", {
+  # needed for eof setting on windows
+  skip_if_not(rmarkdown::pandoc_version() > "2.0.0")
+
+  expect_equal(
+    downlit_md_string("`{downlit}`"),
+    "[downlit](https://downlit.r-lib.org/)\n"
+  )
+  expect_equal(
+    downlit_md_string("`{thisisrealltnotapackagename}`"),
+    "`{thisisrealltnotapackagename}`\n"
+  )
+})
+
 test_that("relative paths", {
   path <- tempfile("downlit")
   dir.create(path)

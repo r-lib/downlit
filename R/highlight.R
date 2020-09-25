@@ -119,24 +119,55 @@ token_class <- function(token, text, classes) {
 # for syntax highlighting
 # https://github.com/wch/r-source/blob/trunk/src/main/gram.c#L511
 token_type <- function(x, text) {
-  special <- c("IF", "ELSE", "REPEAT", "WHILE", "FOR", "IN", "NEXT", "BREAK")
-  infix <- c(
-    "'-'", "'+'", "'!'", "'~'", "'?'", "':'", "'*'", "'/'", "'^'", "'~'",
-    "SPECIAL", "LT", "GT", "EQ", "GE", "LE", "AND", "AND2", "OR",
-    "OR2", "LEFT_ASSIGN", "RIGHT_ASSIGN", "'$'", "'@'", "EQ_ASSIGN"
+  special <- c(
+    "FUNCTION",
+    "FOR", "IN", "BREAK", "NEXT", "REPEAT", "WHILE",
+    "IF", "ELSE"
   )
-
+  rstudio_special <- c(
+   "return", "switch", "try", "tryCatch", "stop",
+   "warning", "require", "library", "attach", "detach",
+   "source", "setMethod", "setGeneric", "setGroupGeneric",
+   "setClass", "setRefClass", "R6Class", "UseMethod", "NextMethod"
+  )
   x[x %in% special] <- "special"
+  x[x == "SYMBOL_FUNCTION_CALL" & text %in% rstudio_special] <- "special"
+
+  infix <- c(
+    # algebra
+    "'-'", "'+'", "'~'", "'*'", "'/'", "'^'",
+    # comparison
+    "LT", "GT", "EQ", "GE", "LE", "NE",
+    # logical
+    "'!'", "AND", "AND2", "OR", "OR2",
+    # assignment / equals
+    "LEFT_ASSIGN", "RIGHT_ASSIGN", "EQ_ASSIGN", "EQ_FORMALS", "EQ_SUB",
+    # miscellaneous
+    "'$'", "'@'","'~'", "'?'", "':'", "SPECIAL"
+  )
   x[x %in% infix] <- "infix"
 
-  x[x == "NUM_CONST" & text %in% c("TRUE", "FALSE")] <- "logical"
+  parens <- c("LBB", "'['", "']'", "'('", "')'", "'{'", "'}'")
+  x[x %in% parens] <- "parens"
+
+  # Matches treatment of constants in RStudio
+  constant <- c(
+    "NA", "Inf", "NaN", "TRUE", "FALSE",
+    "NA_integer_", "NA_real_", "NA_character_", "NA_complex_"
+  )
+  x[x == "NUM_CONST" & text %in% constant] <- "constant"
+  x[x == "SYMBOL" & text %in% c("T", "F")] <- "constant"
+  x[x == "NULL_CONST"] <- "constant"
 
   x
 }
 
 # Pandoc styles are based on KDE default styles:
 # https://docs.kde.org/stable5/en/applications/katepart/highlight.html#kate-highlight-default-styles
-# But are given a two letter abbreviations (presumably to reduce generated html size)
+# But in HTML use two letter abbreviations:
+# https://github.com/jgm/skylighting/blob/a1d02a0db6260c73aaf04aae2e6e18b569caacdc/skylighting-core/src/Skylighting/Format/HTML.hs#L117-L147
+# Summary at
+# https://docs.google.com/spreadsheets/d/1JhBtQSCtQ2eu2RepLTJONFdLEnhM3asUyMMLYE3tdYk/edit#gid=0
 #
 # Default syntax highlighting def for R:
 # https://github.com/KDE/syntax-highlighting/blob/master/data/syntax/r.xml
@@ -144,17 +175,23 @@ token_type <- function(x, text) {
 #' @rdname highlight
 classes_pandoc <- function() {
   c(
-    "logical" = "fl",
+    "constant" = "cn",
     "NUM_CONST" = "fl",
     "STR_CONST" = "st",
-    "NULL_CONST" = "kw",
-    "FUNCTION" = "fu",
-    "special" = "co",
+
+    "special" = "kw",
+    "parens" = "op",
     "infix" = "op",
-    "SYMBOL" = "kw",
+
+    "SLOT" = "va",
+    "SYMBOL" = "va",
+    "SYMBOL_FORMALS" = "va",
+
+    "NS_GET" = "fu",
+    "NS_GET_INT" = "fu",
     "SYMBOL_FUNCTION_CALL" = "fu",
-    "SYMBOL_PACKAGE" = "kw",
-    "SYMBOL_FORMALS" = "kw",
+    "SYMBOL_PACKAGE" = "fu",
+
     "COMMENT" = "co"
   )
 }
@@ -164,19 +201,36 @@ classes_pandoc <- function() {
 #' @rdname highlight
 classes_chroma <- function() {
   c(
-    "logical" = "kc",
+    "constant" = "kc",
     "NUM_CONST" = "m",
     "STR_CONST" = "s",
-    "NULL_CONST" = "l",
-    "FUNCTION" = "nf",
+
     "special" = "kr",
+    "parens" = "o",
     "infix" = "o",
-    "SYMBOL" = "k",
+
+    "SLOT" = "nv",
+    "SYMBOL" = "nv",
+    "SYMBOL_FORMALS" = "nv",
+
+    "NS_GET" = "nf",
+    "NS_GET_INT" = "nf",
     "SYMBOL_FUNCTION_CALL" = "nf",
-    "SYMBOL_PACKAGE" = "k",
-    "SYMBOL_FORMALS" = "k",
+    "SYMBOL_PACKAGE" = "nf",
+
     "COMMENT" = "c"
   )
+}
+
+classes_show <- function(x, classes = classes_pandoc()) {
+  text <- paste0(deparse(substitute(x)), collapse = "\n")
+  out <- parse_data(text)$data
+  out$class <- token_class(out$token, out$text, classes)
+  out$class[is.na(out$class)] <- ""
+
+  out <- out[out$terminal, c("token", "text", "class")]
+  rownames(out) <- NULL
+  out
 }
 
 # Linking -----------------------------------------------------------------
@@ -196,6 +250,17 @@ token_href <- function(token, text) {
   # earlier library() statements to affect the highlighting of later blocks
   fun <- which(token %in% "SYMBOL_FUNCTION_CALL")
   fun <- setdiff(fun, ns_fun)
+  fun <- fun[token[fun-1] != "'$'"]
+
+  # Highlight R6 instantiation
+  r6_new_call <- which(
+    text == "new" & token == "SYMBOL_FUNCTION_CALL"
+  )
+  r6_new_call <- r6_new_call[token[r6_new_call - 1] == "'$'"]
+  r6_new_call <- r6_new_call[token[r6_new_call - 3] == "SYMBOL"]
+
+  fun <- c(fun, r6_new_call - 3)
+
   href[fun] <- map_chr(text[fun], href_topic_local)
 
   # Highlight packages

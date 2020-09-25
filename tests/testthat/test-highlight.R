@@ -30,6 +30,8 @@ test_that("can link to external topics that use ::", {
 })
 
 test_that("unicode is not mangled", {
+  skip_on_os("windows")
+
   expect_equal(highlight("# \u2714"), "<span class='c'># \u2714</span>")
 })
 
@@ -46,12 +48,12 @@ test_that("can parse code with carriage returns", {
 })
 
 test_that("syntax can span multiple lines", {
-  expect_equal(highlight("f(\n\n)"), "<span class='nf'>f</span>(\n\n)")
+  expect_equal(highlight("f(\n\n)"), "<span class='nf'>f</span><span class='o'>(</span>\n\n<span class='o'>)</span>")
   expect_equal(highlight("'\n\n'"), "<span class='s'>'\n\n'</span>")
 })
 
 test_that("code with tab is not mangled", {
-  expect_equal(highlight("\tf()"), "  <span class='nf'>f</span>()")
+  expect_equal(highlight("\tf()"), "  <span class='nf'>f</span><span class='o'>(</span><span class='o'>)</span>")
   expect_equal(highlight("'\t'"), "<span class='s'>'  '</span>")
 })
 
@@ -61,5 +63,24 @@ test_that("unparsable code returns NULL", {
   expect_equal(
     highlight("#"),
     "<span class='c'>#</span>"
+  )
+})
+
+test_that("R6 methods don't get linked", {
+  expect_equal(
+    highlight("x$get()"),
+    "<span class='nv'>x</span><span class='o'>$</span><span class='nf'>get</span><span class='o'>(</span><span class='o'>)</span>"
+  )
+})
+
+test_that("R6 instantiation gets linked", {
+  expect_equal(
+    highlight("mean$new()"),
+    "<span class='nv'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='o'>$</span><span class='nf'>new</span><span class='o'>(</span><span class='o'>)</span>"
+  )
+  # But not new itself
+  expect_equal(
+    highlight("new()"),
+    "<span class='nf'>new</span><span class='o'>(</span><span class='o'>)</span>"
   )
 })

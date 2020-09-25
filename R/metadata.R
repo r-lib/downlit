@@ -21,6 +21,13 @@ remote_package_article_url <- function(package) {
 # Retrieve remote metadata ------------------------------------------------
 
 remote_metadata <- function(package) {
+  # Is the metadata installed with the package?
+  meta <- local_metadata(package)
+  if (!is.null(meta)) {
+    return(meta)
+  }
+
+  # Otherwise, look in package websites, caching since this is a slow operation
   tempdir <- Sys.getenv("RMARKDOWN_PREVIEW_DIR", unset = tempdir())
   dir.create(file.path(tempdir, "downlit"), showWarnings = FALSE)
   cache_path <- file.path(tempdir, "downlit", package)
@@ -34,6 +41,15 @@ remote_metadata <- function(package) {
   }
 }
 
+local_metadata <- function(package) {
+  local_path <- system.file("pkgdown.yml", package = package)
+  if (local_path == "") {
+    NULL
+  } else {
+    yaml::read_yaml(local_path)
+  }
+}
+
 remote_metadata_slow <- function(package) {
   urls <- package_urls(package)
 
@@ -43,6 +59,13 @@ remote_metadata_slow <- function(package) {
     if (is.list(yaml)) {
       if (has_name(yaml, "articles")) {
         yaml$articles <- unlist(yaml$articles)
+      }
+      if (!has_name(yaml, "urls")) {
+        base_url <- dirname(url)
+        yaml$urls <- list(
+          reference = paste0(base_url, "/reference"),
+          article = paste0(base_url, "/articles")
+        )
       }
       return(yaml)
     }

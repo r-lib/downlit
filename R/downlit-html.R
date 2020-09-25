@@ -13,6 +13,7 @@
 #' larger pipeline.
 #'
 #' @param in_path,out_path Input and output paths for HTML file
+#' @inheritParams highlight
 #' @param x An `xml2::xml_node`
 #' @return `downlit_html_path()` invisibly returns `output_path`;
 #'   `downlit_html_node()` modifies `x` in place and returns nothing.
@@ -24,13 +25,13 @@
 #' # node is modified in place
 #' downlit_html_node(node)
 #' node
-downlit_html_path <- function(in_path, out_path) {
+downlit_html_path <- function(in_path, out_path, classes = classes_pandoc()) {
   if (!is_installed("xml2")) {
     abort("xml2 package required .html transformation")
   }
 
   html <- xml2::read_html(in_path, encoding = "UTF-8")
-  downlit_html_node(html)
+  downlit_html_node(html, classes = classes)
   xml2::write_html(html, out_path, format = FALSE)
 
   invisible(out_path)
@@ -38,14 +39,16 @@ downlit_html_path <- function(in_path, out_path) {
 
 #' @export
 #' @rdname downlit_html_path
-downlit_html_node <- function(x) {
+downlit_html_node <- function(x, classes = classes_pandoc()) {
   stopifnot(inherits(x, "xml_node"))
 
   # <pre class="sourceCode r">
-  xpath_block <- ".//pre[contains(@class, 'sourceCode r')]"
+  # and <pre class="r"> which is needed when knitting a bookdown gitbook
+  # where highlight is set to NULL
+  xpath_block <- ".//pre[contains(@class, 'sourceCode r')] | .//pre[@class='r']"
   tweak_children(x, xpath_block, highlight,
     pre_class = "downlit",
-    classes = classes_pandoc(),
+    classes = classes,
     replace = "node"
   )
 
@@ -54,6 +57,11 @@ downlit_html_node <- function(x) {
   bad_ancestor <- c("h1", "h2", "h3", "h4", "h5", "a")
   bad_ancestor <- paste0("ancestor::", bad_ancestor, collapse = "|")
   xpath_inline <- paste0(".//code[count(*) = 0 and not(", bad_ancestor, ")]")
+
+  # replace inline code "{packagename}" with linked text if possible
+  tweak_children(x, xpath_inline, autolink_curly, replace = "node")
+
+  # handle remaining inline code
   tweak_children(x, xpath_inline, autolink, replace = "contents")
 
   invisible()
@@ -77,6 +85,21 @@ tweak_children <- function(node, xpath, fun, ..., replace = c("node", "contents"
 
   invisible()
 }
+
+autolink_curly <- function(text) {
+  package_name <- extract_curly_package(text)
+  if (is.na(package_name)) {
+    return(NA_character_)
+  }
+
+  href <- href_package(package_name)
+  if (is.na(href)) {
+    return(NA_character_)
+  }
+
+  paste0("<a href='", href, "'>", package_name, "</a>")
+}
+
 
 as_xml <- function(x) {
   xml2::xml_contents(xml2::xml_contents(xml2::read_html(x)))[[1]]
