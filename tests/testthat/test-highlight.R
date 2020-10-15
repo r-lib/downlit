@@ -71,6 +71,12 @@ test_that("R6 methods don't get linked", {
     highlight("x$get()"),
     "<span class='nv'>x</span><span class='o'>$</span><span class='nf'>get</span><span class='o'>(</span><span class='o'>)</span>"
   )
+
+  expect_equal(
+    highlight("x$library()"),
+    "<span class='nv'>x</span><span class='o'>$</span><span class='kr'>library</span><span class='o'>(</span><span class='o'>)</span>"
+  )
+
 })
 
 test_that("R6 instantiation gets linked", {
