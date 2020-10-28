@@ -237,10 +237,11 @@ classes_show <- function(x, classes = classes_pandoc()) {
 
 token_href <- function(token, text) {
   href <- rep(NA, length(token))
+  to_end <- length(token) - seq_along(token) + 1
 
   # Highlight namespaced function calls. In the parsed tree, these are
   # SYMBOL_PACKAGE then NS_GET/NS_GET_INT then SYMBOL_FUNCTION_CALL/SYMBOL
-  ns_pkg <- which(token %in% "SYMBOL_PACKAGE")
+  ns_pkg <- which(token %in% "SYMBOL_PACKAGE" & to_end > 2)
   ns_fun <- ns_pkg + 2L
 
   href[ns_fun] <- map2_chr(text[ns_fun], text[ns_pkg], href_topic)
@@ -265,7 +266,9 @@ token_href <- function(token, text) {
 
   # Highlight packages
   lib_call <- which(
-    token == "SYMBOL_FUNCTION_CALL" & text %in% c("library", "require")
+    token == "SYMBOL_FUNCTION_CALL" &
+    text %in% c("library", "require") &
+    to_end > 3
   )
   pkg <- lib_call + 3 # expr + '(' + STR_CONST
   href[pkg] <- map_chr(gsub("['\"]", "", text[pkg]), href_package)
