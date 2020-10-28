@@ -124,7 +124,7 @@ in comments, translates ANSI escapes in to HTML equivalents.
 
     </div>
 
-    <pre class="usage"><span class='fu'>highlight</span><span class='op'>(</span><span class='va'>text</span>, classes <span class='op'>=</span> <span class='fu'>classes_chroma</span><span class='op'>(</span><span class='op'>)</span>, pre_class <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>highlight</span><span class='op'>(</span><span class='va'>text</span>, classes <span class='op'>=</span> <span class='fu'>classes_chroma</span><span class='op'>(</span><span class='op'>)</span>, pre_class <span class='op'>=</span> <span class='cn'>NULL</span>, code <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 
 <span class='fu'>classes_pandoc</span><span class='op'>(</span><span class='op'>)</span>
 
@@ -147,6 +147,10 @@ can use existing themes.</p></td>
     <tr>
       <th>pre_class</th>
       <td><p>Class(es) to give output <code>&lt;pre&gt;</code>.</p></td>
+    </tr>
+    <tr>
+      <th>code</th>
+      <td><p>If <code>TRUE</code>, wrap output in a <code>&lt;code&gt;</code>  block</p></td>
     </tr>
     </table>
 
