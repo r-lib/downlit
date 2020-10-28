@@ -47,9 +47,10 @@ downlit_html_node <- function(x, classes = classes_pandoc()) {
   # where highlight is set to NULL
   xpath_block <- ".//pre[contains(@class, 'sourceCode r')] | .//pre[@class='r']"
   tweak_children(x, xpath_block, highlight,
-    pre_class = "downlit",
+    pre_class = "downlit sourceCode r",
     classes = classes,
-    replace = "node"
+    replace = "node",
+    code = TRUE
   )
 
   # Identify <code> containing only text (i.e. no children) that are

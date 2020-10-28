@@ -13,6 +13,7 @@
 #'   that (roughly) match Pandoc and chroma (used by hugo) classes so you
 #'   can use existing themes.
 #' @param pre_class Class(es) to give output `<pre>`.
+#' @param code If `TRUE`, wrap output in a `<code>`  block
 #' @return If `text` is valid R code, an HTML `<pre>` tag. Otherwise,
 #'   `NA`.
 #' @return A string containing syntax highlighted HTML or `NA` (if `text`
@@ -23,7 +24,7 @@
 #'
 #' # Unparseable R code returns NA
 #' cat(highlight("base::t("))
-highlight <- function(text, classes = classes_chroma(), pre_class = NULL) {
+highlight <- function(text, classes = classes_chroma(), pre_class = NULL, code = FALSE) {
   text <- gsub("\t", "  ", text, fixed = TRUE)
   text <- gsub("\r", "", text, fixed = TRUE)
   parsed <- parse_data(text)
@@ -60,7 +61,9 @@ highlight <- function(text, classes = classes_chroma(), pre_class = NULL) {
 
   paste0(
     "<pre class='", paste0(pre_class, collapse = " "), "'>\n",
+    if (code) paste0("<code class='sourceCode R'>"),
     out,
+    if (code) paste("</code>"),
     "</pre>"
   )
 }

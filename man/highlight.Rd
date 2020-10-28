@@ -6,7 +6,7 @@
 \alias{classes_chroma}
 \title{Highlight and link a code block}
 \usage{
-highlight(text, classes = classes_chroma(), pre_class = NULL)
+highlight(text, classes = classes_chroma(), pre_class = NULL, code = FALSE)
 
 classes_pandoc()
 
@@ -21,6 +21,8 @@ that (roughly) match Pandoc and chroma (used by hugo) classes so you
 can use existing themes.}
 
 \item{pre_class}{Class(es) to give output \verb{<pre>}.}
+
+\item{code}{If \code{TRUE}, wrap output in a \verb{<code>}  block}
 }
 \value{
 If \code{text} is valid R code, an HTML \verb{<pre>} tag. Otherwise,
