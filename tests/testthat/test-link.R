@@ -122,13 +122,15 @@ test_that("library() linked to package reference", {
   skip_on_cran() # in case URLs change
   skip_on_os("solaris")
 
-  expect_equal(href_expr_(library()), "https://rdrr.io/r/base/library.html")
   expect_equal(href_expr_(library(rlang)), "https://rlang.r-lib.org")
   expect_equal(href_expr_(library(MASS)), "http://www.stats.ox.ac.uk/pub/MASS4/")
 })
 
-test_that("library() with empty named arg link to library docs", {
+test_that("except when not possible", {
+  expect_equal(href_expr_(library()), "https://rdrr.io/r/base/library.html")
+  expect_equal(href_expr_(library(doesntexist)), "https://rdrr.io/r/base/library.html")
   expect_equal(href_expr_(library(foo = )), "https://rdrr.io/r/base/library.html")
+  expect_equal(href_expr_(library("x", "y", "z")), "https://rdrr.io/r/base/library.html")
 })
 
 # vignette ----------------------------------------------------------------
