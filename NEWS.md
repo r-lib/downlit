@@ -1,5 +1,7 @@
 # downlit (development version)
 
+* No longer errors on library calls with named but empty arguments.
+
 # downlit 0.2.0
 
 * Autolinking can use metadata stored in package itself with pkgdown setting

@@ -127,6 +127,10 @@ test_that("library() linked to package reference", {
   expect_equal(href_expr_(library(MASS)), "http://www.stats.ox.ac.uk/pub/MASS4/")
 })
 
+test_that("library() with empty named arg link to library docs", {
+  expect_equal(href_expr_(library(foo = )), "https://rdrr.io/r/base/library.html")
+})
+
 # vignette ----------------------------------------------------------------
 
 test_that("can link to local articles", {

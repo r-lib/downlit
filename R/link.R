@@ -74,7 +74,7 @@ href_expr <- function(expr) {
     n_args <- length(expr) - 1
 
     if (fun_name %in% c("library", "require", "requireNamespace")) {
-      if (length(expr) == 1) {
+      if (length(expr) == 1 || names(expr)[[2]] != "") {
         return(href_topic(fun_name))
       }
       pkg <- as.character(expr[[2]])
