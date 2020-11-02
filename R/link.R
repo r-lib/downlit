@@ -74,16 +74,16 @@ href_expr <- function(expr) {
     n_args <- length(expr) - 1
 
     if (fun_name %in% c("library", "require", "requireNamespace")) {
-      if (n_args != 1 || (n_args >= 1 && names2(expr)[[2]] != "")) {
-        href_topic(fun_name)
-      } else {
+      if (n_args == 1 && is.null(names(expr))) {
         pkg <- as.character(expr[[2]])
-        topic <- href_topic(fun_name)
+        topic <- href_package(pkg)
         if (is.na(topic)) {
           href_topic(fun_name)
         } else {
           topic
         }
+      } else {
+        href_topic(fun_name)
       }
     } else if (fun_name == "vignette") {
       if (length(expr) == 1) {

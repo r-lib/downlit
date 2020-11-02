@@ -129,7 +129,7 @@ test_that("library() linked to package reference", {
 test_that("except when not possible", {
   expect_equal(href_expr_(library()), "https://rdrr.io/r/base/library.html")
   expect_equal(href_expr_(library(doesntexist)), "https://rdrr.io/r/base/library.html")
-  expect_equal(href_expr_(library(foo = )), "https://rdrr.io/r/base/library.html")
+  expect_equal(href_expr_(library(package = )), "https://rdrr.io/r/base/library.html")
   expect_equal(href_expr_(library("x", "y", "z")), "https://rdrr.io/r/base/library.html")
 })
 
