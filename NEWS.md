@@ -1,5 +1,8 @@
 # downlit (development version)
 
+* In comments, `\u2029` is converted to `\033` to make it possible to preserve
+  ANSI escapes when passed through xml2.
+
 * No longer errors on library calls with named but empty arguments.
 
 # downlit 0.2.0
