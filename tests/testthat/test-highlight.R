@@ -90,3 +90,8 @@ test_that("R6 instantiation gets linked", {
     "<span class='nf'>new</span><span class='o'>(</span><span class='o'>)</span>"
   )
 })
+
+test_that("ansi escapes are converted to html", {
+  expect_snapshot(highlight("# \033[31mhello\033[m"))
+  expect_snapshot(highlight("# \u2029[31mhello\u2029[m"))
+})
