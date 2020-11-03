@@ -1,5 +1,9 @@
 # downlit (development version)
 
+* Can now force highlighting of any `<pre>` by wrapping it inside a `<div>`
+  with `class = "downlit"`. This is useful in cases where it may otherwise
+  be hard to set the class of the `<pre>`.
+
 * In comments, `\u2029` is converted to `\033` to make it possible to preserve
   ANSI escapes when passed through xml2.
 

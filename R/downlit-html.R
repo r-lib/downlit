@@ -1,9 +1,9 @@
 #' Syntax highlight and link an HTML page
 #'
 #' @description
-#' * Code blocks, identified by `<pre>` tags with class `sourceCode` and `r`,
-#'   processed with [highlight()], or any `<pre>` tag inside of
-#'   `<div class='downlit'>`.
+#' * Code blocks, identified by `<pre>` tags with class `sourceCode r`
+#'   or any `<pre>` tag inside of `<div class='downlit'>`, are
+#'   processed with [highlight()].
 #'
 #' * Inline code, identified by `<code>` tags that contain only text
 #'   (and don't have a header tag (e.g. `<h1>`) or `<a>` as an ancestor)

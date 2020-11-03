@@ -25,9 +25,9 @@ can use existing themes.}
 }
 \description{
 \itemize{
-\item Code blocks, identified by \verb{<pre>} tags with class \code{sourceCode} and \code{r},
-processed with \code{\link[=highlight]{highlight()}}, or any \verb{<pre>} tag inside of
-\verb{<div class='downlit'>}.
+\item Code blocks, identified by \verb{<pre>} tags with class \verb{sourceCode r}
+or any \verb{<pre>} tag inside of \verb{<div class='downlit'>}, are
+processed with \code{\link[=highlight]{highlight()}}.
 \item Inline code, identified by \verb{<code>} tags that contain only text
 (and don't have a header tag (e.g. \verb{<h1>}) or \verb{<a>} as an ancestor)
 are processed processed with \code{\link[=autolink]{autolink()}}.
