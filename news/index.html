@@ -113,6 +113,7 @@
 <a href="#downlit-development-version" class="anchor"></a>downlit (development version)<small> Unreleased </small>
 </h1>
 <ul>
+<li><p>When auto-linking <code>vignette(foo)</code>, downlit now looks for a vignette named foo in the packages it knows to be attached (<a href='https://github.com/r-lib/downlit/issues/61'>#61</a>).</p></li>
 <li><p>Can now force highlighting of any <code>&lt;pre&gt;</code> by wrapping it inside a <code>&lt;div&gt;</code> with <code>class = "downlit"</code>. This is useful in cases where it may otherwise be hard to set the class of the <code>&lt;pre&gt;</code>.</p></li>
 <li><p>In comments, <code>\u2029</code> is converted to <code>\033</code> to make it possible to preserve ANSI escapes when passed through xml2.</p></li>
 <li><p>No longer errors on library calls with named but empty arguments.</p></li>
