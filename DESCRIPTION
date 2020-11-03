@@ -27,7 +27,7 @@ Suggests:
     rmarkdown,
     jsonlite,
     MASS,
-    testthat,
+    testthat (>= 3.0.0),
     covr,
     pkgload,
     xml2
