@@ -254,24 +254,42 @@ find_reexport_source <- function(obj, ns, topic) {
 href_article <- function(article, package = NULL) {
   if (is_package_local(package)) {
     path <- find_article(NULL, article)
-    if (is.null(path)) {
-      return(NA_character_)
-    }
-
-    paste0(getOption("downlit.article_path"), path)
-  } else {
-    path <- find_article(package, article)
-    if (is.null(path)) {
-      return(NA_character_)
-    }
-
-    base_url <- remote_package_article_url(package)
-    if (is.null(base_url)) {
-      paste0("https://cran.rstudio.com/web/packages/", package, "/vignettes/", path)
-    } else {
-      paste0(base_url, "/", path)
+    if (!is.null(path)) {
+      return(paste0(getOption("downlit.article_path"), path))
     }
   }
+
+  if (is.null(package)) {
+    package <- find_vignette_package(article)
+    if (is.null(package)) {
+      return(NA_character_)
+    }
+  }
+
+  path <- find_article(package, article)
+  if (is.null(path)) {
+    return(NA_character_)
+  }
+
+  base_url <- remote_package_article_url(package)
+  if (is.null(base_url)) {
+    paste0("https://cran.rstudio.com/web/packages/", package, "/vignettes/", path)
+  } else {
+    paste0(base_url, "/", path)
+  }
+}
+
+# Try to figure out package name from attached packages
+find_vignette_package <- function(x) {
+  for (pkg in getOption("downlit.attached")) {
+    info <- tools::getVignetteInfo(pkg)
+
+    if (x %in% info[, "Topic"]) {
+      return(pkg)
+    }
+  }
+
+  NULL
 }
 
 # Packages ----------------------------------------------------------------

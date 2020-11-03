@@ -172,6 +172,19 @@ test_that("or local sites, if registered", {
   expect_equal(href_expr_(vignette("sha1", "digest")), "digest/articles/sha1.html")
 })
 
+test_that("looks in attached packages", {
+  local_options("downlit.attached" = c("grid", "digest"))
+
+  expect_equal(
+    href_expr_(vignette("sha1")),
+    "https://cran.rstudio.com/web/packages/digest/vignettes/sha1.html"
+  )
+  expect_equal(
+    href_expr_(vignette("moveline")),
+    "https://cran.rstudio.com/web/packages/grid/vignettes/moveline.pdf"
+  )
+})
+
 test_that("fail gracefully with non-working calls", {
   expect_equal(href_expr_(vignette()), "https://rdrr.io/r/utils/vignette.html")
   expect_equal(href_expr_(vignette(package = package)), NA_character_)

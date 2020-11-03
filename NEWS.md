@@ -1,5 +1,8 @@
 # downlit (development version)
 
+* When auto-linking `vignette(foo)`, downlit now looks for a vignette named
+  foo in the packages it knows to be attached (#61).
+
 * Can now force highlighting of any `<pre>` by wrapping it inside a `<div>`
   with `class = "downlit"`. This is useful in cases where it may otherwise
   be hard to set the class of the `<pre>`.
