@@ -1,3 +1,5 @@
+# downlit (development version)
+
 # downlit 0.2.1
 
 * When auto-linking `vignette(foo)`, downlit now looks for a vignette named
