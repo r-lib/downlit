@@ -26,7 +26,7 @@ article_index_remote <- function(package) {
   # Ideally will use published metadata because that includes all articles
   # not just vignettes
   metadata <- remote_metadata(package)
-  if (!is.null(metadata)) {
+  if (!is.null(metadata) && !is.null(metadata$articles)) {
     return(metadata$articles)
   }
 
