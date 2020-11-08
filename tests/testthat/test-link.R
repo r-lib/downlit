@@ -122,9 +122,15 @@ test_that("library() linked to package reference", {
   skip_on_cran() # in case URLs change
   skip_on_os("solaris")
 
-  expect_equal(href_expr_(library()), "https://rdrr.io/r/base/library.html")
-  expect_equal(href_expr_(library(rlang)), "http://rlang.r-lib.org")
+  expect_equal(href_expr_(library(rlang)), "https://rlang.r-lib.org")
   expect_equal(href_expr_(library(MASS)), "http://www.stats.ox.ac.uk/pub/MASS4/")
+})
+
+test_that("except when not possible", {
+  expect_equal(href_expr_(library()), "https://rdrr.io/r/base/library.html")
+  expect_equal(href_expr_(library(doesntexist)), "https://rdrr.io/r/base/library.html")
+  expect_equal(href_expr_(library(package = )), "https://rdrr.io/r/base/library.html")
+  expect_equal(href_expr_(library("x", "y", "z")), "https://rdrr.io/r/base/library.html")
 })
 
 # vignette ----------------------------------------------------------------
@@ -164,6 +170,19 @@ test_that("can link to remote articles", {
 test_that("or local sites, if registered", {
   local_options("downlit.local_packages" = c("digest" = "digest"))
   expect_equal(href_expr_(vignette("sha1", "digest")), "digest/articles/sha1.html")
+})
+
+test_that("looks in attached packages", {
+  local_options("downlit.attached" = c("grid", "digest"))
+
+  expect_equal(
+    href_expr_(vignette("sha1")),
+    "https://cran.rstudio.com/web/packages/digest/vignettes/sha1.html"
+  )
+  expect_equal(
+    href_expr_(vignette("moveline")),
+    "https://cran.rstudio.com/web/packages/grid/vignettes/moveline.pdf"
+  )
 })
 
 test_that("fail gracefully with non-working calls", {

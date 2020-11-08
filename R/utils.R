@@ -50,3 +50,23 @@ safe_parse <- function(text) {
     error = function(e) NULL
   )
 }
+
+
+extract_curly_package <- function(x) {
+  # regex adapted from https://github.com/r-lib/usethis/blob/d5857737b4780c3c3d8fe6fb44ef70e81796ac8e/R/description.R#L134
+  if (! grepl("^\\{[a-zA-Z][a-zA-Z0-9.]+\\}$", x)) {
+    return(NA)
+  }
+
+  # remove first curly brace
+  x <- sub("\\{", "", x)
+  # remove second curly brace and return
+  x <- sub("\\}", "", x)
+
+  x
+}
+
+
+show_xml <- function(x) {
+  cat(as.character(x, options = c("format", "no_declaration")))
+}

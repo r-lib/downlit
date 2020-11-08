@@ -38,10 +38,25 @@ test_that("pandoc AST v1.20", {
 
 test_that("pandoc AST v1.21", {
   skip_if_not(rmarkdown::pandoc_version() >= "2.10")
+  skip_if_not(rmarkdown::pandoc_version() < "2.11")
 
   verify_output(test_path("test-downlit-md-v21.txt"), {
     cat(downlit_md_string("* `base::t`"))
     cat(downlit_md_string("```\nbase::t(1)\n```"))
     cat(downlit_md_string(brio::read_lines(test_path("markdown-table.md"))))
   })
+})
+
+test_that("Special package string gets linked", {
+  # needed for eof setting on windows
+  skip_if_not(rmarkdown::pandoc_version() > "2.0.0")
+
+  expect_equal(
+    downlit_md_string("`{downlit}`"),
+    "[downlit](https://downlit.r-lib.org/)\n"
+  )
+  expect_equal(
+    downlit_md_string("`{thisisrealltnotapackagename}`"),
+    "`{thisisrealltnotapackagename}`\n"
+  )
 })

@@ -7,3 +7,28 @@ test_that("can highlight html file", {
     cat(brio::read_lines(out), sep = "\n")
   })
 })
+
+test_that("highlight all pre inside div.downlit", {
+  html <- xml2::read_xml("
+    <body>
+    <div class = 'downlit'>
+      <pre>1 + 2</pre>
+      <pre>3 + 4</pre>
+    </div>
+    <pre>No hightlight</pre>
+    </body>"
+  )
+  downlit_html_node(html)
+  expect_snapshot_output(show_xml(html))
+})
+
+test_that("special package string gets linked", {
+  html <- xml2::read_xml("<p>before <code>{downlit}</code> after</p>")
+  downlit_html_node(html)
+  expect_snapshot_output(show_xml(html))
+
+  # But only when it's a real package
+  html <- xml2::read_xml("<p>before <code>{notapkg}</code> after</p>")
+  downlit_html_node(html)
+  expect_snapshot_output(show_xml(html))
+})

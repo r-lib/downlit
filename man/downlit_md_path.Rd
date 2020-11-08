@@ -32,10 +32,12 @@ of a larger pipeline.
 Needs pandoc 1.19 or later.
 }
 \examples{
+if (rmarkdown::pandoc_available("1.19")) {
 downlit_md_string("`base::t()`")
 downlit_md_string("`base::t`")
 downlit_md_string("* `base::t`")
 
 # But don't highlight in headings
 downlit_md_string("## `base::t`")
+}
 }
