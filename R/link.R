@@ -282,6 +282,10 @@ href_article <- function(article, package = NULL) {
 # Try to figure out package name from attached packages
 find_vignette_package <- function(x) {
   for (pkg in getOption("downlit.attached")) {
+    if (!is_installed(pkg)) {
+      next
+    }
+
     info <- tools::getVignetteInfo(pkg)
 
     if (x %in% info[, "Topic"]) {
