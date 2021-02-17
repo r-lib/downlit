@@ -11,6 +11,7 @@
 #'   components `path`, `width`, and `height`.
 #' @param env Environment in which to evaluate code; if not supplied,
 #'   defaults to a child of the global environment.
+#' @param output_handler Custom output handler for `evaluate::evaluate`.
 #' @return An string containing HTML.
 #' @inheritParams highlight
 #' @export
@@ -19,13 +20,21 @@
 evaluate_and_highlight <- function(code,
                                    fig_save,
                                    classes = downlit::classes_pandoc(),
-                                   env = NULL) {
+                                   env = NULL,
+                                   output_handler = evaluate::default_output_handler) {
   env <- env %||% child_env(global_env())
 
-  expr <- evaluate::evaluate(code, child_env(env), new_device = TRUE)
+  expr <- evaluate::evaluate(code, child_env(env), new_device = TRUE,
+                             output_handler = output_handler)
   replay_html(expr, fig_save = fig_save, fig_id = unique_id(), classes = classes)
 }
 
+#' Convert object to HTML
+#'
+#' @param x Object to display
+#'
+#' @return character vector containing html
+#' @export
 replay_html <- function(x, ...) UseMethod("replay_html", x)
 
 #' @export
@@ -150,12 +159,18 @@ unique_id <- function() {
 
 # get MD5 digests of recorded plots so that merge_low_plot works
 digest_plot = function(x, level = 1) {
-  if (!is.list(x) || level >= 3) return(digest::digest(x))
+  if (!is.list(x) || level >= 3) return(structure(digest::digest(x),
+                                                  class = "plot_digest"))
   lapply(x, digest_plot, level = level + 1)
 }
 
+is_plot_output = function(x) {
+  evaluate::is.recordedplot(x) ||
+    inherits(x, 'knit_other_plot')
+}
+
 # merge low-level plotting changes
-merge_low_plot = function(x, idx = sapply(x, evaluate::is.recordedplot)) {
+merge_low_plot = function(x, idx = vapply(x, is_plot_output, logical(1L))) {
   idx = which(idx); n = length(idx); m = NULL # store indices that will be removed
   if (n <= 1) return(x)
 
@@ -172,9 +187,24 @@ merge_low_plot = function(x, idx = sapply(x, evaluate::is.recordedplot)) {
   if (is.null(m)) x else x[-m]
 }
 
-# compare two recorded plots
+#' Compare two recorded plots
+#'
+#' @param p1,p2 Plot results
+#'
+#' @return Logical value indicating whether `p2` is a low-level update of `p1`.
+#' @export
 is_low_change = function(p1, p2) {
+  UseMethod("is_low_change")
+}
+
+#' @export
+is_low_change.plot_digest = function(p1, p2) {
+  if (!inherits(p2, "plot_digest"))
+    return(FALSE)
   p1 = p1[[1]]; p2 = p2[[1]]  # real plot info is in [[1]]
-  if ((n2 <- length(p2)) < (n1 <- length(p1))) return(FALSE)  # length must increase
+  if (length(p2) < (n1 <- length(p1))) return(FALSE)  # length must increase
   identical(p1[1:n1], p2[1:n1])
 }
+
+#' @export
+is_low_change.default = function(p1, p2) FALSE
