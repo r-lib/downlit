@@ -21,7 +21,7 @@ evaluate_and_highlight <- function(code,
                                    fig_save,
                                    classes = downlit::classes_pandoc(),
                                    env = NULL,
-                                   output_handler = evaluate::default_output_handler) {
+                                   output_handler = evaluate::new_output_handler()) {
   env <- env %||% child_env(global_env())
 
   expr <- evaluate::evaluate(code, child_env(env), new_device = TRUE,
@@ -32,6 +32,7 @@ evaluate_and_highlight <- function(code,
 #' Convert object to HTML
 #'
 #' @param x Object to display
+#' @param ... Additional parameters to pass to methods.
 #'
 #' @return character vector containing html
 #' @export

@@ -9,7 +9,7 @@ evaluate_and_highlight(
   fig_save,
   classes = downlit::classes_pandoc(),
   env = NULL,
-  output_handler = evaluate::default_output_handler
+  output_handler = evaluate::new_output_handler()
 )
 }
 \arguments{
