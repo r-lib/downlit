@@ -57,13 +57,21 @@ replay_html.list <- function(x, ...) {
   parts <- merge_low_plot(parts)
 
   pieces <- character(length(parts))
+  dependencies <- list()
   for (i in seq_along(parts)) {
-    pieces[i] <- replay_html(parts[[i]], ...)
+    piece <- replay_html(parts[[i]], ...)
+    dependencies <- c(dependencies, attr(piece, "dependencies"))
+    pieces[i] <- piece
   }
   res <- paste0(pieces, collapse = "")
 
   # convert ansi escapes
   res <- fansi::sgr_to_html(res)
+
+  # get dependencies from htmlwidgets etc.
+  if (length(dependencies))
+    attr(res, "dependencies") <- htmltools::resolveDependencies(dependencies)
+
   res
 }
 
