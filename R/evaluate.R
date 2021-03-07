@@ -69,8 +69,7 @@ replay_html.list <- function(x, ...) {
   res <- fansi::sgr_to_html(res)
 
   # get dependencies from htmlwidgets etc.
-  if (length(dependencies))
-    attr(res, "dependencies") <- htmltools::resolveDependencies(dependencies)
+  attr(res, "dependencies") <- dependencies
 
   res
 }
@@ -208,13 +207,8 @@ is_low_change = function(p1, p2) {
 }
 
 #' @export
-is_low_change.plot_digest = function(p1, p2) {
-  if (!inherits(p2, "plot_digest"))
-    return(FALSE)
+is_low_change.default = function(p1, p2) {
   p1 = p1[[1]]; p2 = p2[[1]]  # real plot info is in [[1]]
-  if (length(p2) < (n1 <- length(p1))) return(FALSE)  # length must increase
+  if ((n2 <- length(p2)) < (n1 <- length(p1))) return(FALSE)  # length must increase
   identical(p1[1:n1], p2[1:n1])
 }
-
-#' @export
-is_low_change.default = function(p1, p2) FALSE
