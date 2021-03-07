@@ -14,6 +14,31 @@ test_that("evaluate_and_highlight works", {
     f1 <- function() plot(1)
     f2 <- function() lines(0:2, 0:2)
     cat(evaluate_and_highlight("f1()\nf2()", fig_save = fig_save, env = environment()))
+
+    "Other plots"
+    f3 <- function()
+      structure(3, class = c("fakePlot", "otherRecordedplot"))
+    f4 <- function()
+      structure(4, class = c("fakePlot", "otherRecordedplot"))
+    # Check that we can drop the inclusion of the first one
+    is_low_change.fakePlot <- function(p1, p2) TRUE
+    print.fakePlot <- function(x, ...) {
+      x
+    }
+    replay_html.fakePlot <- function(x, ...) {
+      paste("Text for plot ", unclass(x))
+    }
+    registerS3method("is_low_change", "fakePlot",
+                     is_low_change.fakePlot,
+                     envir = asNamespace("downlit"))
+    registerS3method("replay_html", "fakePlot",
+                     replay_html.fakePlot,
+                     envir = asNamespace("downlit"))
+    registerS3method("print", "fakePlot",
+                     print.fakePlot)
+    cat(evaluate_and_highlight("f3()\nf4()", env = environment(),
+                               fig_save = fig_save,
+                               output_handler = evaluate::new_output_handler(value = print)))
   })
 })
 
