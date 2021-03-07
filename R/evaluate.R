@@ -168,14 +168,15 @@ unique_id <- function() {
 
 # get MD5 digests of recorded plots so that merge_low_plot works
 digest_plot = function(x, level = 1) {
+  if (inherits(x, "otherRecordedplot"))
+    return(x)
   if (!is.list(x) || level >= 3) return(structure(digest::digest(x),
                                                   class = "plot_digest"))
   lapply(x, digest_plot, level = level + 1)
 }
 
 is_plot_output = function(x) {
-  evaluate::is.recordedplot(x) ||
-    inherits(x, 'knit_other_plot')
+  evaluate::is.recordedplot(x) || inherits(x, 'otherRecordedplot')
 }
 
 # merge low-level plotting changes

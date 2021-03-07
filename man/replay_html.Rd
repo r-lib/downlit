@@ -8,6 +8,8 @@ replay_html(x, ...)
 }
 \arguments{
 \item{x}{Object to display}
+
+\item{...}{Additional parameters to pass to methods.}
 }
 \value{
 character vector containing html
