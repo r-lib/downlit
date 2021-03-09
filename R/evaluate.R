@@ -35,7 +35,6 @@ evaluate_and_highlight <- function(code,
 #' @param ... Additional parameters to pass to methods.
 #'
 #' @return character vector containing html
-#' @export
 replay_html <- function(x, ...) UseMethod("replay_html", x)
 
 #' @export
