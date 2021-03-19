@@ -8,7 +8,8 @@ evaluate_and_highlight(
   code,
   fig_save,
   classes = downlit::classes_pandoc(),
-  env = NULL
+  env = NULL,
+  output_handler = evaluate::new_output_handler()
 )
 }
 \arguments{
@@ -26,6 +27,8 @@ can use existing themes.}
 
 \item{env}{Environment in which to evaluate code; if not supplied,
 defaults to a child of the global environment.}
+
+\item{output_handler}{Custom output handler for \code{evaluate::evaluate}.}
 }
 \value{
 An string containing HTML.

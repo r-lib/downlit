@@ -1,5 +1,8 @@
 # downlit (development version)
 
+* Changes to better support for HTML widgets and rgl in pkgdown 
+  (@dmurdoch, #78).
+
 # downlit 0.2.1
 
 * When auto-linking `vignette(foo)`, downlit now looks for a vignette named
