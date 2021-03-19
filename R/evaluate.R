@@ -29,12 +29,6 @@ evaluate_and_highlight <- function(code,
   replay_html(expr, fig_save = fig_save, fig_id = unique_id(), classes = classes)
 }
 
-#' Convert object to HTML
-#'
-#' @param x Object to display
-#' @param ... Additional parameters to pass to methods.
-#'
-#' @return character vector containing html
 replay_html <- function(x, ...) UseMethod("replay_html", x)
 
 #' @export
