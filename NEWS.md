@@ -1,5 +1,8 @@
 # downlit (development version)
 
+* Now suppresses rare warning about incomplete final line in
+  `autolink_url("pkgname::foo")`. (@dmurdoch, pkgdown#1419).
+
 * Changes to better support for HTML widgets and rgl in pkgdown 
   (@dmurdoch, #78).
 

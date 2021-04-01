@@ -80,7 +80,9 @@ fetch_yaml <- function(url) {
     abort("Failed to download")
   }
 
-  yaml::read_yaml(path)
+  # This call may warn if the URL doesn't have a final LF;
+  # see pkgdown issue #1419
+  suppressWarnings(yaml::read_yaml(path))
 }
 
 # Helpers -----------------------------------------------------------------
