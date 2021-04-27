@@ -58,8 +58,10 @@ replay_html.list <- function(x, ...) {
   }
   res <- paste0(pieces, collapse = "")
 
-  # get dependencies from htmlwidgets etc.
-  attr(res, "dependencies") <- dependencies
+  if (is_installed("pkgdown") && packageVersion("pkgdown") >= "1.6.1.9001") {
+    # get dependencies from htmlwidgets etc.
+    attr(res, "dependencies") <- dependencies
+  }
 
   res
 }
@@ -69,7 +71,7 @@ replay_html.NULL <- function(x, ...) ""
 
 #' @export
 replay_html.character <- function(x, ...) {
-  label_output(x)
+  label_output(escape_html(x), "output")
 }
 
 #' @export
@@ -77,7 +79,7 @@ replay_html.value <- function(x, ...) {
   if (!x$visible) return()
 
   printed <- paste0(utils::capture.output(print(x$value)), collapse = "\n")
-  label_output(printed)
+  label_output(escape_html(printed))
 }
 
 #' @export
@@ -88,25 +90,25 @@ replay_html.source <- function(x, ..., classes) {
 
 #' @export
 replay_html.warning <- function(x, ...) {
-  message <- paste0("Warning: ", x$message)
-  label_output(message, "warning")
+  message <- paste0(span("Warning: ", class = "warning"), escape_html(x$message))
+  label_output(message)
 }
 
 #' @export
 replay_html.message <- function(x, ...) {
-  message <- gsub("\n$", "", x$message)
-  label_output(message, "message")
+  message <- escape_html(paste0(gsub("\n$", "", x$message)))
+  label_output(message)
 }
 
 #' @export
 replay_html.error <- function(x, ...) {
   if (is.null(x$call)) {
-    message <- paste0("Error: ", x$message)
+    message <- paste0(span("Error: ", class = "error"), escape_html(x$message))
   } else {
-    call <- paste0(deparse(x$call), collapse = "")
-    message <- paste0("Error in ", call, ": ", x$message)
+    call <- escape_html(paste0(deparse(x$call), collapse = ""))
+    message <- paste0(span("Error in ", call, ": ", class = "error"), escape_html(x$message))
   }
-  label_output(message, "error")
+  label_output(message)
 }
 
 #' @export
