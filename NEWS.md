@@ -1,5 +1,8 @@
 # downlit (development version)
 
+* Packages attached when you call `library(package)` (including by the 
+  tidyverse), are now taken into account when autolinking (#87).
+
 * `downlit_md_path()` now only applies highlighting to R code blocks (#75).
 
 * Autolinking vignettes no longer errors if the package is not installed (#85).

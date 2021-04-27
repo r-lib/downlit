@@ -25,5 +25,23 @@ extract_package_attach_ <- function(expr) {
 }
 
 register_attached_packages <- function(packages) {
+  packages <- add_depends(packages)
   options("downlit.attached" = union(packages, getOption("downlit.attached")))
+}
+
+add_depends <- function(packages) {
+  if ("tidyverse" %in% packages && is_installed("tidyverse")) {
+    core <- getNamespace("tidyverse")$core
+    packages <- union(packages, core)
+  }
+
+  # add packages attached by depends
+  depends <- unlist(lapply(packages, package_depends))
+  union(packages, depends)
+}
+
+package_depends <- function(package) {
+  path_meta <- system.file("Meta", "package.rds", package = package)
+  meta <- readRDS(path_meta)
+  names(meta$Depends)
 }
