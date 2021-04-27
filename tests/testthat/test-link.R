@@ -5,15 +5,14 @@ test_that("can link function calls", {
   )
 
   expect_equal(href_expr_(foo()), "bar.html")
-  expect_equal(href_expr_(foo(1, 2, 3)), "bar.html")
   # even if namespaced
   expect_equal(href_expr_(test::foo()), "bar.html")
-  expect_equal(href_expr_(test::foo(1, 2, 3)), "bar.html")
 
-  # but function factories are ignored
+  # but functions with arguments are ignored
+  expect_equal(href_expr_(foo(1, 2, 3)), NA_character_)
+  # as are function factories are ignored
   expect_equal(href_expr_(foo()(1, 2, 3)), NA_character_)
-  # as functions with special syntax
-  expect_equal(href_expr_(if (TRUE) 1), NA_character_)
+  expect_equal(href_expr_(test::foo()(1, 2, 3)), NA_character_)
 })
 
 test_that("base function calls linked", {
