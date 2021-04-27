@@ -122,6 +122,7 @@
 <a href="#downlit-development-version" class="anchor" aria-hidden="true"></a>downlit (development version)<small> Unreleased </small>
 </h1>
 <ul>
+<li><p>Unusual help calls (e.g. <code>help(a$b)</code>), no longer generate errors (<a href='https://github.com/r-lib/downlit/issues/77'>#77</a>).</p></li>
 <li><p>Inline infix operators are no longer automatically linked; this lead to too many false positives. You can still link with (e.g.) <code><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">?"-"</a></code> (<a href='https://github.com/r-lib/downlit/issues/86'>#86</a>).</p></li>
 <li><p>Now suppresses rare warning about incomplete final line in <code><a href="../reference/autolink.html">autolink_url("pkgname::foo")</a></code>. (<a href='https://github.com/dmurdoch'>@dmurdoch</a>, pkgdown<a href='https://github.com/r-lib/downlit/issues/1419'>#1419</a>).</p></li>
 <li><p>Changes to better support for HTML widgets and rgl in pkgdown (<a href='https://github.com/dmurdoch'>@dmurdoch</a>, <a href='https://github.com/r-lib/downlit/issues/78'>#78</a>).</p></li>
