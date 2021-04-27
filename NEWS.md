@@ -1,5 +1,7 @@
 # downlit (development version)
 
+* Unusual help calls (e.g. `help(a$b)`), no longer generate errors (#77).
+
 * Inline infix operators are no longer automatically linked; this lead to too
   many false positives. You can still link with (e.g.) `?"-"` (#86).
 

@@ -113,11 +113,11 @@ href_expr <- function(expr) {
       }
     } else if (fun_name == "help") {
       expr <- call_standardise(expr)
-      if (!is.null(expr$topic) && !is.null(expr$package)) {
+      if (is_help_literal(expr$topic) && is_help_literal(expr$package)) {
         href_topic(as.character(expr$topic), as.character(expr$package))
-      } else if (!is.null(expr$topic) && is.null(expr$package)) {
+      } else if (is_help_literal(expr$topic) && is.null(expr$package)) {
         href_topic(as.character(expr$topic))
-      } else if (is.null(expr$topic) && !is.null(expr$package)) {
+      } else if (is.null(expr$topic) && is_help_literal(expr$package)) {
         href_package_ref(as.character(expr$package))
       } else {
         NA_character_
@@ -131,6 +131,8 @@ href_expr <- function(expr) {
     NA_character_
   }
 }
+
+is_help_literal <- function(x) is_string(x) || is_symbol(x)
 
 # Topics ------------------------------------------------------------------
 

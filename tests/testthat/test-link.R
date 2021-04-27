@@ -114,6 +114,7 @@ test_that("can link help calls", {
   expect_equal(href_expr_(help("foo", "test")), "foo.html")
   expect_equal(href_expr_(help(package = "MASS")), "https://rdrr.io/pkg/MASS/man")
   expect_equal(href_expr_(help()), NA_character_)
+  expect_equal(href_expr_(help(a$b)), NA_character_)
 })
 
 # library and friends -----------------------------------------------------
