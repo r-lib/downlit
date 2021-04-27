@@ -1,5 +1,7 @@
 # downlit (development version)
 
+* Autolinking vignettes no longer errors if the package is not installed (#85).
+
 * Inline calls with arguments (e.g. `foo(1, 2)`) are no longer auto-linked,
   as intended and documented (#82).
 
