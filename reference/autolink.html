@@ -58,6 +58,9 @@
 
 
 
+<!-- dependencies from examples -->
+
+
   
 
   
@@ -142,13 +145,11 @@ the URL for <code>autolink_url()</code>. Both return <code>NA</code> if the text
 linkable.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples">autolink,Automatically link inline code,Automatically link inline code — autolink,Source: <a href='https://github.com/r-lib/downlit/blob/master/R/link.R'><code>R/link.R</code></a>,autolink.Rd,character(0),c("autolink", "autolink_url"),character(0),list(title = "Description", contents = "<p>Automatically link inline code</p>"),list(description = "Automatically link inline code"),<span class='fu'>autolink</span><span class='op'>(</span><span class='va'>text</span><span class='op'>)</span>
-
-<span class='fu'>autolink_url</span><span class='op'>(</span><span class='va'>text</span><span class='op'>)</span>,list(list(name = "text", description = "<p>String of code to highlight and link.</p>")),TRUE,<div class='input'><span class='fu'>autolink</span><span class='op'>(</span><span class='st'>"stats::median()"</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='fu'>autolink</span><span class='op'>(</span><span class='st'>"stats::median()"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "&lt;a href='https://rdrr.io/r/stats/median.html'&gt;stats::median()&lt;/a&gt;"</div><div class='input'><span class='fu'>autolink</span><span class='op'>(</span><span class='st'>"vignette('grid', package = 'grid')"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "&lt;a href='https://cran.rstudio.com/web/packages/grid/vignettes/grid.pdf'&gt;vignette('grid', package = 'grid')&lt;/a&gt;"</div><div class='input'>
 <span class='fu'>autolink_url</span><span class='op'>(</span><span class='st'>"stats::median()"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "https://rdrr.io/r/stats/median.html"</div>,list(list(title = "Value", contents = "<p>If <code>text</code> is linkable, an HTML link for <code>autolink()</code>, and or just\nthe URL for <code>autolink_url()</code>. Both return <code>NA</code> if the text is not\nlinkable.</p>", slug = "value")),2021,list(name = "downlit", version = "0.2.1.9000", authors = "<a href='http://hadley.nz'>Hadley Wickham</a>"),list(destination = "dev", mode = "release", version_label = "default", version_tooltip = "Released version", in_dev = FALSE),list(root = "../", title = "downlit"),list(),list(type = "default", left = "<li>\n  <a href=\"../reference/index.html\">Reference</a>\n</li>\n<li>\n  <a href=\"../news/index.html\">Changelog</a>\n</li>", right = "<li>\n  <a href=\"https://github.com/r-lib/downlit/\">\n    <span class=\"fab fa-github fa-lg\"></span>\n     \n  </a>\n</li>"),list(.present = TRUE),list(version = "1.6.1.9000"),FALSE,list(left = "<p>Developed by <a href=\"http://hadley.nz\" class=\"external-link\">Hadley Wickham</a>.</p>", right = "<p>Site built with <a href=\"https://pkgdown.r-lib.org/\" class=\"external-link\">pkgdown</a> 1.6.1.9000.</p>"),TRUE</pre>
+</div><div class='output co'>#&gt; [1] "https://rdrr.io/r/stats/median.html"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -164,7 +165,7 @@ linkable.</p>
 </div>
 
 <div class="pkgdown">
-  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>

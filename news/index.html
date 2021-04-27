@@ -57,6 +57,7 @@
 
 
 
+
   
 
   
@@ -118,15 +119,17 @@
 
     <div id="downlit-development-version" class="section level1">
 <h1 class="page-header" data-toc-text="development version">
-<a href="#downlit-development-version" class="anchor"></a>downlit (development version)<small> Unreleased </small>
+<a href="#downlit-development-version" class="anchor" aria-hidden="true"></a>downlit (development version)<small> Unreleased </small>
 </h1>
 <ul>
-<li>Changes to better support for HTML widgets and rgl in pkgdown (<a href='https://github.com/dmurdoch'>@dmurdoch</a>, <a href='https://github.com/r-lib/downlit/issues/78'>#78</a>).</li>
+<li><p>Inline infix operators are no longer automatically linked; this lead to too many false positives. You can still link with (e.g.) <code><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">?"-"</a></code> (<a href='https://github.com/r-lib/downlit/issues/86'>#86</a>).</p></li>
+<li><p>Now suppresses rare warning about incomplete final line in <code><a href="../reference/autolink.html">autolink_url("pkgname::foo")</a></code>. (<a href='https://github.com/dmurdoch'>@dmurdoch</a>, pkgdown<a href='https://github.com/r-lib/downlit/issues/1419'>#1419</a>).</p></li>
+<li><p>Changes to better support for HTML widgets and rgl in pkgdown (<a href='https://github.com/dmurdoch'>@dmurdoch</a>, <a href='https://github.com/r-lib/downlit/issues/78'>#78</a>).</p></li>
 </ul>
 </div>
     <div id="downlit-021" class="section level1">
 <h1 class="page-header" data-toc-text="0.2.1">
-<a href="#downlit-021" class="anchor"></a>downlit 0.2.1<small> 2020-11-04 </small>
+<a href="#downlit-021" class="anchor" aria-hidden="true"></a>downlit 0.2.1<small> 2020-11-04 </small>
 </h1>
 <ul>
 <li><p>When auto-linking <code>vignette(foo)</code>, downlit now looks for a vignette named foo in the packages it knows to be attached (<a href='https://github.com/r-lib/downlit/issues/61'>#61</a>).</p></li>
@@ -137,7 +140,7 @@
 </div>
     <div id="downlit-020" class="section level1">
 <h1 class="page-header" data-toc-text="0.2.0">
-<a href="#downlit-020" class="anchor"></a>downlit 0.2.0<small> 2020-09-25 </small>
+<a href="#downlit-020" class="anchor" aria-hidden="true"></a>downlit 0.2.0<small> 2020-09-25 </small>
 </h1>
 <ul>
 <li><p>Autolinking can use metadata stored in package itself with pkgdown setting <code>deploy.install_metadata</code>; this is useful for packages that only have private websites (<a href='https://github.com/matthewstrasiotto'>@matthewstrasiotto</a>, <a href='https://github.com/r-lib/downlit/issues/29'>#29</a>)</p></li>
@@ -146,13 +149,13 @@
 <li><p>R6 methods are no longer autolinked as if they were functions of the same name (<a href='https://github.com/r-lib/downlit/issues/54'>#54</a>, <a href='https://github.com/maelle'>@maelle</a>).</p></li>
 <li><p><code><a href="../reference/highlight.html">classes_pandoc()</a></code> and <code><a href="../reference/highlight.html">classes_chroma()</a></code> have been thoroughly revieweed to produce syntax highlighting as similar as possible to RStudio.</p></li>
 <li><p><code><a href="../reference/downlit_html_path.html">downlit_html_path()</a></code> has a more flexible XPath identifying R code blocks, and a <code>classes</code> argument (<a href='https://github.com/r-lib/downlit/issues/53'>#53</a>, <a href='https://github.com/maelle'>@maelle</a>, <a href='https://github.com/cderv'>@cderv</a>)</p></li>
-<li><p>Trailing <code><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">/</a></code> are no longer stripped from URLs (<a href='https://github.com/r-lib/downlit/issues/45'>#45</a>, <a href='https://github.com/krlmlr'>@krlmlr</a>).</p></li>
+<li><p>Trailing <code>/</code> are no longer stripped from URLs (<a href='https://github.com/r-lib/downlit/issues/45'>#45</a>, <a href='https://github.com/krlmlr'>@krlmlr</a>).</p></li>
 <li><p>Removed extra newline in <code>&lt;pre&gt;</code> output (<a href='https://github.com/r-lib/downlit/issues/42'>#42</a>, <a href='https://github.com/krlmlr'>@krlmlr</a>).</p></li>
 </ul>
 </div>
     <div id="downlit-010" class="section level1">
 <h1 class="page-header" data-toc-text="0.1.0">
-<a href="#downlit-010" class="anchor"></a>downlit 0.1.0<small> 2020-09-01 </small>
+<a href="#downlit-010" class="anchor" aria-hidden="true"></a>downlit 0.1.0<small> 2020-09-01 </small>
 </h1>
 <ul>
 <li>Added a <code>NEWS.md</code> file to track changes to the package.</li>
@@ -175,7 +178,7 @@
 </div>
 
 <div class="pkgdown">
-  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
