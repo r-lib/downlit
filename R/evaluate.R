@@ -71,7 +71,7 @@ replay_html.list <- function(x, ...) {
   }
   res <- paste0(pieces, collapse = "")
 
-  if (is_installed("pkgdown") && packageVersion("pkgdown") >= "1.6.1.9001") {
+  if (is_installed("pkgdown") && utils::packageVersion("pkgdown") >= "1.6.1.9001") {
     # get dependencies from htmlwidgets etc.
     attr(res, "dependencies") <- dependencies
   }
