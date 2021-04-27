@@ -41,6 +41,10 @@ add_depends <- function(packages) {
 }
 
 package_depends <- function(package) {
+  if (!is_installed(package)) {
+    return(character())
+  }
+
   path_meta <- system.file("Meta", "package.rds", package = package)
   meta <- readRDS(path_meta)
   names(meta$Depends)
