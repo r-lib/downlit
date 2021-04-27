@@ -25,6 +25,15 @@ test_that("common across multiple versions", {
   })
 })
 
+test_that("only highlights R code blocks", {
+  lines <- c("``` yaml", "layout: single", "```")
+  tmp <- tempfile()
+  writeLines(lines, tmp)
+  tmp2 <- tempfile()
+  downlit_md_path(tmp, tmp2)
+  expect_equal(readLines(tmp2), lines)
+})
+
 test_that("pandoc AST v1.20", {
   skip_if_not(rmarkdown::pandoc_version() > "2.0.0")
   skip_if_not(rmarkdown::pandoc_version() < "2.10")

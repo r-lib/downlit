@@ -1,5 +1,7 @@
 # downlit (development version)
 
+* `downlit_md_path()` now only applies highlighting to R code blocks (#75).
+
 * Autolinking vignettes no longer errors if the package is not installed (#85).
 
 * Inline calls with arguments (e.g. `foo(1, 2)`) are no longer auto-linked,
