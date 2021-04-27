@@ -1,5 +1,8 @@
 # downlit (development version)
 
+* Inline infix operators are no longer automatically linked; this lead to too
+  many false positives. You can still link with (e.g.) `?"-"` (#86).
+
 * Now suppresses rare warning about incomplete final line in
   `autolink_url("pkgname::foo")`. (@dmurdoch, pkgdown#1419).
 

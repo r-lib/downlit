@@ -79,8 +79,8 @@ test_that("or local sites, if registered", {
   expect_equal(href_expr_(MASS::abbey), "MASS/reference/abbey.html")
 })
 
-test_that("only links bare symbols if they're infix functions", {
-  expect_equal(autolink_url("%in%"), "https://rdrr.io/r/base/match.html")
+test_that("bare bare symbols are not linked", {
+  expect_equal(autolink_url("%in%"), NA_character_)
   expect_equal(autolink_url("foo"), NA_character_)
 })
 

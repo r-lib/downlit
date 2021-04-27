@@ -25,9 +25,7 @@ autolink <- function(text) {
 #' @rdname autolink
 autolink_url <- function(text) {
   if (is_infix(text)) {
-    # backticks are needed for the parse call, otherwise get:
-    # Error: unexpected SPECIAL in "href_expr_(%in%"
-    text <- paste0("`", text, "`")
+    return(NA_character_)
   }
 
   expr <- safe_parse(text)
