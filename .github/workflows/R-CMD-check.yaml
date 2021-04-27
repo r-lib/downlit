@@ -40,7 +40,8 @@ jobs:
           r-version: ${{ matrix.config.r }}
 
       - uses: r-lib/actions/setup-pandoc@master
-        verion: 2.11.2
+        with:
+          pandoc-version: 2.11.2
 
       - name: Query dependencies
         run: |
