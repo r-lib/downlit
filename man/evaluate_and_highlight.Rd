@@ -40,4 +40,17 @@ and combines all results into a single HTML div.
 }
 \examples{
 evaluate_and_highlight("1 + 2")
+
+# -----------------------------------------------------------------
+# evaluate_and_highlight() powers pkgdown's documentation formatting so
+# here I include a few examples to make sure everything looks good
+# -----------------------------------------------------------------
+
+blue <- function(x) paste0("\033[34m", x, "\033[39m")
+f <- function(x) {
+  cat("This is some output. My favourite colour is ", blue("blue"), ".\n", sep = "")
+  message("This is a message. My favourite fruit is ", blue("blueberries"))
+  warning("Now at stage ", blue("blue"), "!")
+}
+f()
 }

@@ -17,6 +17,19 @@
 #' @export
 #' @examples
 #' evaluate_and_highlight("1 + 2")
+#'
+#' # -----------------------------------------------------------------
+#' # evaluate_and_highlight() powers pkgdown's documentation formatting so
+#' # here I include a few examples to make sure everything looks good
+#' # -----------------------------------------------------------------
+#'
+#' blue <- function(x) paste0("\033[34m", x, "\033[39m")
+#' f <- function(x) {
+#'   cat("This is some output. My favourite colour is ", blue("blue"), ".\n", sep = "")
+#'   message("This is a message. My favourite fruit is ", blue("blueberries"))
+#'   warning("Now at stage ", blue("blue"), "!")
+#' }
+#' f()
 evaluate_and_highlight <- function(code,
                                    fig_save,
                                    classes = downlit::classes_pandoc(),
@@ -120,28 +133,29 @@ replay_html.recordedplot <- function(x, fig_save, fig_id, ...) {
     "<img src='", escape_html(fig$path), "' alt='' width='", fig$width, "' height='", fig$height, "' />",
     "</div>"
   )
-
 }
 
 # helpers -----------------------------------------------------------------
 
-label_lines <- function(x, class = NULL, prompt = "#> ") {
+
+label_output <- function(x, class, prompt = "#> ") {
   lines <- strsplit(x, "\n")[[1]]
-  lines <- escape_html(lines)
+  lines <- paste0(escape_html(prompt), lines)
+  lines <- fansi::sgr_to_html(lines)
 
-  if (!is.null(class)) {
-    lines <- sprintf("<span class='%s'>%s</span>", class, lines)
-  }
-
-  paste0(escape_html(prompt), lines)
+  paste0(
+    "<div class='co'>",
+    paste0(lines, collapse = "\n"),
+    "</div>"
+  )
 }
 
-label_output <- function(x, class = NULL, prompt = "#> ") {
-  lines <- label_lines(x, class = class, prompt = prompt)
-  paste0(
-    "<div class='output co'>",
-    fansi::sgr_to_html(paste0(lines, collapse = "\n")),
-    "</div>\n"
+span <- function(..., class = NULL) {
+  paste0("<span",
+    if (!is.null(class)) paste0(" class='", class, "'"),
+    ">",
+    ...,
+    "</span>"
   )
 }
 

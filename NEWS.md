@@ -1,5 +1,11 @@
 # downlit (development version)
 
+* Messages, warnings, and errors now get a much more minimal style. 
+  Messages are styled the same way as output; and warnings and errors
+  only have the "Warning" or "Error" styled. This makes these types of
+  output easier to read, and easier for package developers to style
+  themselves.
+
 * Using ANSI escapes in output no longer generates invalid HTML (#79).
 
 * Packages attached when you call `library(package)` (including by the 
