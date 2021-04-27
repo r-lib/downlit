@@ -42,6 +42,18 @@ test_that("evaluate_and_highlight works", {
   })
 })
 
+test_that("ansi escapes are translated to html", {
+  blue <- function(x) paste0("\033[34m", x, "\033[39m")
+  f <- function(x) {
+    cat("Output: ", blue("blue"), "\n")
+    inform(paste0("Message: ", blue("blue")))
+    warn(blue("blue"))
+    abort(blue("blue"))
+  }
+
+  expect_snapshot_output(cat(evaluate_and_highlight("f()", env = environment())))
+})
+
 # Output labelling --------------------------------------------------------
 
 test_that("prompt added to start of each line", {

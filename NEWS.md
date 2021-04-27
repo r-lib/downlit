@@ -1,5 +1,7 @@
 # downlit (development version)
 
+* Using ANSI escapes in output no longer generates invalid HTML (#79).
+
 * Packages attached when you call `library(package)` (including by the 
   tidyverse), are now taken into account when autolinking (#87).
 

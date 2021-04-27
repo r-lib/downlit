@@ -58,9 +58,6 @@ replay_html.list <- function(x, ...) {
   }
   res <- paste0(pieces, collapse = "")
 
-  # convert ansi escapes
-  res <- fansi::sgr_to_html(res)
-
   # get dependencies from htmlwidgets etc.
   attr(res, "dependencies") <- dependencies
 
@@ -141,8 +138,8 @@ label_output <- function(x, class = NULL, prompt = "#> ") {
   lines <- label_lines(x, class = class, prompt = prompt)
   paste0(
     "<div class='output co'>",
-    paste0(lines, collapse = "\n"),
-    "</div>"
+    fansi::sgr_to_html(paste0(lines, collapse = "\n")),
+    "</div>\n"
   )
 }
 
