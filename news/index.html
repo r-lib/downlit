@@ -122,6 +122,7 @@
 <a href="#downlit-development-version" class="anchor" aria-hidden="true"></a>downlit (development version)<small> Unreleased </small>
 </h1>
 <ul>
+<li><p>Packages attached when you call <code><a href="https://rdrr.io/r/base/library.html" class="external-link">library(package)</a></code> (including by the tidyverse), are now taken into account when autolinking (<a href='https://github.com/r-lib/downlit/issues/87'>#87</a>).</p></li>
 <li><p><code><a href="../reference/downlit_md_path.html">downlit_md_path()</a></code> now only applies highlighting to R code blocks (<a href='https://github.com/r-lib/downlit/issues/75'>#75</a>).</p></li>
 <li><p>Autolinking vignettes no longer errors if the package is not installed (<a href='https://github.com/r-lib/downlit/issues/85'>#85</a>).</p></li>
 <li><p>Inline calls with arguments (e.g. <code>foo(1, 2)</code>) are no longer auto-linked, as intended and documented (<a href='https://github.com/r-lib/downlit/issues/82'>#82</a>).</p></li>
