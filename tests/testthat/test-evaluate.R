@@ -42,6 +42,11 @@ test_that("evaluate_and_highlight works", {
   })
 })
 
+test_that("custom infix operators are linked, but regular are not", {
+  expect_snapshot_output(cat(highlight("x %in% y")))
+  expect_snapshot_output(cat(highlight("x + y")))
+})
+
 test_that("ansi escapes are translated to html", {
   blue <- function(x) paste0("\033[34m", x, "\033[39m")
   f <- function(x) {

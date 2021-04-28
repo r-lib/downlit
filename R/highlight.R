@@ -256,6 +256,9 @@ token_href <- function(token, text) {
   fun <- setdiff(fun, ns_fun)
   fun <- fun[token[fun-1] != "'$'"]
 
+  # Include custom infix operators
+  fun <- c(fun, which(token %in% "SPECIAL"))
+
   # Highlight R6 instantiation
   r6_new_call <- which(
     text == "new" & token == "SYMBOL_FUNCTION_CALL"

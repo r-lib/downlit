@@ -1,5 +1,7 @@
 # downlit (development version)
 
+* In code blocks, custom infix operators are now autolinked (#89).
+
 * Messages, warnings, and errors now get a much more minimal style. 
   Messages are styled the same way as output; and warnings and errors
   only have the "Warning" or "Error" styled. This makes these types of
