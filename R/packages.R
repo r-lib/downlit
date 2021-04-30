@@ -58,6 +58,7 @@ package_depends <- function(package) {
   names(meta$Depends)
 }
 
+# from https://github.com/r-lib/pkgdown/blob/8e0838e273462cec420dfa20f240c684a33425d9/R/utils.r#L62
 devtools_meta <- function(x) {
   ns <- .getNamespace(x)
   ns[[".__DEVTOOLS__"]]
