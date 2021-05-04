@@ -68,26 +68,13 @@ replay_html <- function(x, ...) UseMethod("replay_html", x)
 
 #' @export
 replay_html.list <- function(x, ...) {
-  # Stitch adjacent source blocks back together
-  src <- vapply(x, evaluate::is.source, logical(1))
-  # New group whenever not source, or when src after not-src
-  group <- cumsum(!src | c(FALSE, src[-1] != src[-length(src)]))
-
-  parts <- split(x, group)
-  parts <- lapply(parts, function(x) {
-    if (length(x) == 1) return(x[[1]])
-    src <- paste0(vapply(x, "[[", "src", FUN.VALUE = character(1)),
-      collapse = "")
-    structure(list(src = src), class = "source")
-  })
-
   # keep only high level plots
-  parts <- merge_low_plot(parts)
+  x <- merge_low_plot(x)
 
-  pieces <- character(length(parts))
+  pieces <- character(length(x))
   dependencies <- list()
-  for (i in seq_along(parts)) {
-    piece <- replay_html(parts[[i]], ...)
+  for (i in seq_along(x)) {
+    piece <- replay_html(x[[i]], ...)
     dependencies <- c(dependencies, attr(piece, "dependencies"))
     pieces[i] <- piece
   }
