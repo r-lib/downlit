@@ -121,19 +121,28 @@
 <h1 class="page-header" data-toc-text="development version">
 <a href="#downlit-development-version" class="anchor" aria-hidden="true"></a>downlit (development version)<small> Unreleased </small>
 </h1>
+<div id="syntax-highlighting" class="section level2">
+<h2 class="hasAnchor">
+<a href="#syntax-highlighting" class="anchor" aria-hidden="true"></a>Syntax highlighting</h2>
 <ul>
-<li><p>In code blocks, custom infix operators are now autolinked (<a href='https://github.com/r-lib/downlit/issues/89'>#89</a>).</p></li>
 <li><p>Messages, warnings, and errors now get a much more minimal style. Messages are styled the same way as output; and warnings and errors only style the “Warning” or “Error” text. This makes these types of output easier to read, and easier for package developers to style themselves.</p></li>
 <li><p>The overall structure of the syntax highlighting has been overhauled. Now each line is wrapped in a <code>&lt;span&gt;</code> with class <code>r-in</code> (input code), <code>r-out</code> (output printed to console), <code>r-plot</code> (plots), <code>r-msg</code> (messages), <code>r-wrn</code> (warnings), and <code>r-err</code> (errors). Additionally, the prompt (<code>#&gt;</code>) is wrapped in a <code>&lt;span class="r-pr"&gt;</code>. Altogether, these changes should give much more flexibility for styling with CSS (<a href='https://github.com/r-lib/downlit/issues/90'>#90</a>).</p></li>
-<li><p>Using ANSI escapes in output no longer generates invalid HTML (<a href='https://github.com/r-lib/downlit/issues/79'>#79</a>).</p></li>
-<li><p>Packages attached when you call <code><a href="https://rdrr.io/r/base/library.html" class="external-link">library(package)</a></code> (including by the tidyverse), are now taken into account when autolinking (<a href='https://github.com/r-lib/downlit/issues/87'>#87</a>).</p></li>
-<li><p>Autolinking vignettes no longer errors if the package is not installed (<a href='https://github.com/r-lib/downlit/issues/85'>#85</a>).</p></li>
-<li><p>Inline calls with arguments (e.g. <code>foo(1, 2)</code>) are no longer auto-linked, as intended and documented (<a href='https://github.com/r-lib/downlit/issues/82'>#82</a>).</p></li>
-<li><p>Unusual help calls (e.g. <code>help(a$b)</code>), no longer generate errors (<a href='https://github.com/r-lib/downlit/issues/77'>#77</a>).</p></li>
-<li><p>Inline infix operators are no longer automatically linked; this lead to too many false positives. You can still link with (e.g.) <code><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">?"-"</a></code> (<a href='https://github.com/r-lib/downlit/issues/86'>#86</a>).</p></li>
-<li><p>Now suppresses rare warning about incomplete final line in <code>autolink_url("pkgname::foo")</code>. (<a href='https://github.com/dmurdoch'>@dmurdoch</a>, pkgdown#1419).</p></li>
+<li><p>ANSI escapes no longer generate invalid HTML (<a href='https://github.com/r-lib/downlit/issues/79'>#79</a>).</p></li>
 <li><p>Changes to better support for HTML widgets and rgl in pkgdown (<a href='https://github.com/dmurdoch'>@dmurdoch</a>, <a href='https://github.com/r-lib/downlit/issues/78'>#78</a>).</p></li>
 </ul>
+</div>
+<div id="auto-linking" class="section level2">
+<h2 class="hasAnchor">
+<a href="#auto-linking" class="anchor" aria-hidden="true"></a>Auto-linking</h2>
+<ul>
+<li><p>Packages attached when you call <code><a href="https://rdrr.io/r/base/library.html" class="external-link">library(package)</a></code> (including by the tidyverse), are now taken into account when autolinking (<a href='https://github.com/r-lib/downlit/issues/87'>#87</a>).</p></li>
+<li><p>In code blocks, custom infix operators are now autolinked (<a href='https://github.com/r-lib/downlit/issues/89'>#89</a>). In inline code, infix operators are no longer autolinked; this lead to too many false positives. You can still link with (e.g.) <code><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">?"-"</a></code> (<a href='https://github.com/r-lib/downlit/issues/86'>#86</a>).</p></li>
+<li><p>Inline calls with arguments (e.g. <code>foo(1, 2)</code>) are no longer auto-linked, as intended and documented (<a href='https://github.com/r-lib/downlit/issues/82'>#82</a>).</p></li>
+<li><p>Autolinking <code>vignette(foo, package = "pkg")</code> no longer errors if <code>pkg</code> is not installed (<a href='https://github.com/r-lib/downlit/issues/85'>#85</a>).</p></li>
+<li><p>Unusual help calls (e.g. <code>help(a$b)</code>), no longer generate errors (<a href='https://github.com/r-lib/downlit/issues/77'>#77</a>).</p></li>
+<li><p>Rare warning about incomplete final line in <code>autolink_url("pkgname::foo")</code> is now suppressed (<a href='https://github.com/dmurdoch'>@dmurdoch</a>, pkgdown#1419).</p></li>
+</ul>
+</div>
 </div>
     <div id="downlit-021" class="section level1">
 <h1 class="page-header" data-toc-text="0.2.1">
