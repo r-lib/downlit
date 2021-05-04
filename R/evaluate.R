@@ -1,8 +1,8 @@
 #' Evaluate code and syntax highlight the results
 #'
 #' This function runs `code` and captures the output using
-#' [evaluate::evaluate()]. It syntax highlights code with [highlight()],
-#' and combines all results into a single HTML div.
+#' [evaluate::evaluate()]. It syntax higlights code with [highlight()], and
+#' intermingles it with output.
 #'
 #' @param code Code to evaluate (as a string).
 #' @param fig_save A function with arguments `plot` and `id` that is
@@ -11,13 +11,14 @@
 #'   components `path`, `width`, and `height`.
 #' @param env Environment in which to evaluate code; if not supplied,
 #'   defaults to a child of the global environment.
-#' @param output_handler Custom output handler for `evaluate::evaluate`.
+#' @param output_handler Custom output handler for [evaluate::evaluate()].
 #' @param highlight Optionally suppress highlighting. This is useful for tests.
 #' @return An string containing HTML.
 #' @inheritParams highlight
 #' @export
 #' @examples
-#' evaluate_and_highlight("1 + 2")
+#' cat(evaluate_and_highlight("1 + 2"))
+#' cat(evaluate_and_highlight("x <- 1:10\nmean(x)"))
 #'
 #' # -----------------------------------------------------------------
 #' # evaluate_and_highlight() powers pkgdown's documentation formatting so
