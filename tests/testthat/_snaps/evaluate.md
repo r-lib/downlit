@@ -81,9 +81,19 @@
 
 # ansi escapes are translated to html
 
-    <span class='r-in'>f()</span>
-    <span class='r-out co'><span class='r-pr'>#&gt; </span>Output:  <span style='color: #0000BB;'>blue</span><span> </span></span>
-    <span class='r-msg co'><span class='r-pr'>#&gt; </span>Message: <span style='color: #0000BB;'>blue</span></span>
-    <span class='r-wrn co'><span class='r-pr'>#&gt; </span><span class='warning'>Warning: </span><span style='color: #0000BB;'>blue</span></span>
-    <span class='r-err co'><span class='r-pr'>#&gt; </span><span class='error'>Error: </span><span style='color: #0000BB;'>blue</span></span>
+    Code
+      blue <- (function(x) paste0("\033[34m", x, "\033[39m"))
+      f <- (function(x) {
+        cat("Output: ", blue("blue"), "\n", sep = "")
+        inform(paste0("Message: ", blue("blue")))
+        warn(blue("blue"))
+        abort(blue("blue"))
+      })
+      test_evaluate("f()\n")
+    Output
+      <span class='r-in'>f()</span>
+      <span class='r-out co'><span class='r-pr'>#&gt; </span>Output: <span style='color: #0000BB;'>blue</span></span>
+      <span class='r-msg co'><span class='r-pr'>#&gt; </span>Message: <span style='color: #0000BB;'>blue</span></span>
+      <span class='r-wrn co'><span class='r-pr'>#&gt; </span><span class='warning'>Warning: </span><span style='color: #0000BB;'>blue</span></span>
+      <span class='r-err co'><span class='r-pr'>#&gt; </span><span class='error'>Error: </span><span style='color: #0000BB;'>blue</span></span>
 

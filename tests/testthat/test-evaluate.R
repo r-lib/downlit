@@ -60,13 +60,15 @@ test_that("handles other plots", {
 })
 
 test_that("ansi escapes are translated to html", {
-  blue <- function(x) paste0("\033[34m", x, "\033[39m")
-  f <- function(x) {
-    cat("Output: ", blue("blue"), "\n")
-    inform(paste0("Message: ", blue("blue")))
-    warn(blue("blue"))
-    abort(blue("blue"))
-  }
+  expect_snapshot({
+    blue <- function(x) paste0("\033[34m", x, "\033[39m")
+    f <- function(x) {
+      cat("Output: ", blue("blue"), "\n", sep = "")
+      inform(paste0("Message: ", blue("blue")))
+      warn(blue("blue"))
+      abort(blue("blue"))
+    }
 
-  expect_snapshot_output(test_evaluate("f()\n"))
+    test_evaluate("f()\n")
+  })
 })
