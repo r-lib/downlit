@@ -60,6 +60,19 @@
       <span class='r-in'>f2()</span>
       <span class='img'><img src='1.png' alt='' width='10' height='10' /></span>
 
+---
+
+    Code
+      f3 <- (function() {
+        plot(1)
+        plot(2)
+      })
+      test_evaluate("f3()")
+    Output
+      <span class='r-in'>f3()</span>
+      <span class='img'><img src='1.png' alt='' width='10' height='10' /></span>
+      <span class='img'><img src='2.png' alt='' width='10' height='10' /></span>
+
 # handles other plots
 
     [1] "<span class='r-in'><span class='fu'>f3</span><span class='op'>(</span><span class='op'>)</span></span>\n<span class='r-in'><span class='fu'>f4</span><span class='op'>(</span><span class='op'>)</span></span>\nText for plot  4"

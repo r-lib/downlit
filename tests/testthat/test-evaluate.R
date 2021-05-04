@@ -31,6 +31,11 @@ test_that("combines plots as needed", {
     f2 <- function() lines(0:2, 0:2)
     test_evaluate("f1()\nf2()\n")
   })
+
+  expect_snapshot({
+    f3 <- function() { plot(1); plot(2) }
+    test_evaluate("f3()")
+  })
 })
 
 test_that("handles other plots", {
