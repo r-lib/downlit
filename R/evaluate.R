@@ -55,7 +55,6 @@ test_evaluate <- function(code, ..., highlight = FALSE) {
     list(path = paste0(id, ".png"), width = 10, height = 10)
   }
 
-  code <- paste0(code, "\n")
   cat(evaluate_and_highlight(
     code,
     fig_save = fig_save,

@@ -4,10 +4,9 @@
       test_evaluate("1 + ", highlight = TRUE)
     Output
       <span class='r-in'>1 + </span>
-      <span class='r-err co'><span class='r-pr'>#&gt; </span><span class='error'>Error: </span>&lt;text&gt;:3:0: unexpected end of input</span>
+      <span class='r-err co'><span class='r-pr'>#&gt; </span><span class='error'>Error: </span>&lt;text&gt;:2:0: unexpected end of input</span>
       <span class='r-err co'><span class='r-pr'>#&gt; </span>1: 1 + </span>
-      <span class='r-err co'><span class='r-pr'>#&gt; </span>2: </span>
-      <span class='r-err co'><span class='r-pr'>#&gt; </span>  ^</span>
+      <span class='r-err co'><span class='r-pr'>#&gt; </span>   ^</span>
 
 # handles basic cases
 
@@ -60,7 +59,6 @@
       <span class='r-in'>f1()</span>
       <span class='r-in'>f2()</span>
       <span class='img'><img src='1.png' alt='' width='10' height='10' /></span>
-      <span class='r-in'></span>
 
 # handles other plots
 
@@ -75,5 +73,4 @@
     <span class='r-msg co'><span class='r-pr'>#&gt; </span>Message: <span style='color: #0000BB;'>blue</span></span>
     <span class='r-wrn co'><span class='r-pr'>#&gt; </span><span class='warning'>Warning: </span><span style='color: #0000BB;'>blue</span></span>
     <span class='r-err co'><span class='r-pr'>#&gt; </span><span class='error'>Error: </span><span style='color: #0000BB;'>blue</span></span>
-    <span class='r-in'></span>
 
