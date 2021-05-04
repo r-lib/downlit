@@ -26,8 +26,7 @@ test_that("each line of input gets span", {
 test_that("output always gets trailing nl", {
   # These two calls should produce the same output
   expect_snapshot({
-    test_evaluate(r"{cat("a")
-cat("a\n")}")
+    test_evaluate('cat("a")\ncat("a\\n")')
   })
 })
 
