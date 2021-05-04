@@ -53,10 +53,13 @@
 
 # output always gets trailing nl
 
-    <span class='r-in'>cat("a")</span>
-    <span class='r-out co'><span class='r-pr'>#&gt; </span>a</span>
-    <span class='r-in'>cat("a\n")</span>
-    <span class='r-out co'><span class='r-pr'>#&gt; </span>a</span>
+    Code
+      test_evaluate("cat(\"a\")\ncat(\"a\\n\")")
+    Output
+      <span class='r-in'>cat("a")</span>
+      <span class='r-out co'><span class='r-pr'>#&gt; </span>a</span>
+      <span class='r-in'>cat("a\n")</span>
+      <span class='r-out co'><span class='r-pr'>#&gt; </span>a</span>
 
 # combines plots as needed
 
