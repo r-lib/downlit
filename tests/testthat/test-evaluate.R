@@ -11,6 +11,14 @@ test_that("handles basic cases", {
   })
 })
 
+test_that("output always gets trailing nl", {
+  # These two calls should produce the same output
+  expect_snapshot_output({
+    test_evaluate(r"{cat("a")
+cat("a\n")}")
+  })
+})
+
 test_that("combines plots as needed", {
   expect_snapshot({
     f1 <- function() plot(1)

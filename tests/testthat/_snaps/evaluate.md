@@ -31,6 +31,13 @@
       <span class='input'>stop('x', call. = FALSE)</span>
       <span class='co'>#&gt; <span class='error'>Error: </span>x</span>
 
+# output always gets trailing nl
+
+    <span class='input'>cat("a")</span>
+    <span class='co'>#&gt; a</span>
+    <span class='input'>cat("a\n")</span>
+    <span class='co'>#&gt; a</span>
+
 # combines plots as needed
 
     Code
