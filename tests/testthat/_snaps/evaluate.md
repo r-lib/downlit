@@ -56,6 +56,15 @@
        5</pre>
       <pre class='r-out co'><span class='r-pr'>#&gt;</span> [1] 15</pre>
 
+# multiple code blocks are combined
+
+    Code
+      test_evaluate("x <- 1\nx <- 2\nx <- 3")
+    Output
+      <pre class='r-in'>x &lt;- 1
+      x &lt;- 2
+      x &lt;- 3</pre>
+
 # output always gets trailing nl
 
     Code
@@ -73,8 +82,8 @@
       f2 <- (function() lines(0:2, 0:2))
       test_evaluate("f1()\nf2()\n")
     Output
-      <pre class='r-in'>f1()</pre>
-      <pre class='r-in'>f2()</pre>
+      <pre class='r-in'>f1()
+      f2()</pre>
       <span class='r-plt'><img src='1.png' alt='' width='10' height='10' /></span>
 
 ---
@@ -92,8 +101,8 @@
 
 # handles other plots
 
-    <pre class='r-in'>f3()</pre>
-    <pre class='r-in'>f4()</pre>
+    <pre class='r-in'>f3()
+    f4()</pre>
     <HTML for plot 4>
 
 # ansi escapes are translated to html
