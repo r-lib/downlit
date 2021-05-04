@@ -20,27 +20,15 @@ test_that("combines plots as needed", {
 })
 
 test_that("handles other plots", {
-
   # Check that we can drop the inclusion of the first one
-  is_low_change.fakePlot <- function(p1, p2) TRUE
-  print.fakePlot <- function(x, ...) {
-    x
-  }
-  replay_html.fakePlot <- function(x, ...) {
+  registerS3method("is_low_change", "fakePlot", function(p1, p2) TRUE,
+    envir = asNamespace("downlit")
+  )
+  registerS3method("replay_html", "fakePlot", function(x, ...) {
     paste("Text for plot ", unclass(x))
-  }
-  registerS3method("is_low_change", "fakePlot",
-    is_low_change.fakePlot,
-    envir = asNamespace("downlit")
-  )
-  registerS3method("replay_html", "fakePlot",
-    replay_html.fakePlot,
-    envir = asNamespace("downlit")
-  )
-  registerS3method(
-    "print", "fakePlot",
-    print.fakePlot
-  )
+  }, envir = asNamespace("downlit"))
+  registerS3method("print", "fakePlot", function(x, ...) x)
+
   expect_snapshot_output({
     f3 <- function() structure(3, class = c("fakePlot", "otherRecordedplot"))
     f4 <- function() structure(4, class = c("fakePlot", "otherRecordedplot"))
