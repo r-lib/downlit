@@ -164,7 +164,7 @@ replay_html.recordedplot <- function(x, fig_save, fig_id, ...) {
     "height='", fig$height, "' ",
     "/>"
   )
-  paste0(span(img, class = "img"), "\n")
+  paste0(span(img, class = "r-plt"), "\n")
 }
 
 # helpers -----------------------------------------------------------------

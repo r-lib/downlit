@@ -58,7 +58,7 @@
     Output
       <span class='r-in'>f1()</span>
       <span class='r-in'>f2()</span>
-      <span class='img'><img src='1.png' alt='' width='10' height='10' /></span>
+      <span class='r-plt'><img src='1.png' alt='' width='10' height='10' /></span>
 
 ---
 
@@ -70,8 +70,8 @@
       test_evaluate("f3()")
     Output
       <span class='r-in'>f3()</span>
-      <span class='img'><img src='1.png' alt='' width='10' height='10' /></span>
-      <span class='img'><img src='2.png' alt='' width='10' height='10' /></span>
+      <span class='r-plt'><img src='1.png' alt='' width='10' height='10' /></span>
+      <span class='r-plt'><img src='2.png' alt='' width='10' height='10' /></span>
 
 # handles other plots
 
