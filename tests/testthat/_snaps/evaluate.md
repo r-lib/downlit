@@ -3,68 +3,68 @@
     Code
       test_evaluate("1 + ", highlight = TRUE)
     Output
-      <span class='r-in'>1 + </span>
-      <span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error:</span> &lt;text&gt;:2:0: unexpected end of input</span>
-      <span class='r-err co'><span class='r-pr'>#&gt;</span> 1: 1 + </span>
-      <span class='r-err co'><span class='r-pr'>#&gt;</span>    ^</span>
+      <pre class='r-in'>1 + </pre>
+      <pre class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error:</span> &lt;text&gt;:2:0: unexpected end of input
+      <span class='r-pr'>#&gt;</span> 1: 1 + 
+      <span class='r-pr'>#&gt;</span>    ^</pre>
 
 # highlights when requested
 
     Code
       test_evaluate("1 + \n 2 + 3", highlight = TRUE)
     Output
-      <span class='r-in'><span class='fl'>1</span> <span class='op'>+</span> </span>
-      <span class='r-in'> <span class='fl'>2</span> <span class='op'>+</span> <span class='fl'>3</span></span>
-      <span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 6</span>
+      <pre class='r-in'><span class='fl'>1</span> <span class='op'>+</span> 
+       <span class='fl'>2</span> <span class='op'>+</span> <span class='fl'>3</span></pre>
+      <pre class='r-out co'><span class='r-pr'>#&gt;</span> [1] 6</pre>
 
 # handles basic cases
 
     Code
       test_evaluate("# comment")
     Output
-      <span class='r-in'># comment</span>
+      <pre class='r-in'># comment</pre>
     Code
       test_evaluate("message('x')")
     Output
-      <span class='r-in'>message('x')</span>
-      <span class='r-msg co'><span class='r-pr'>#&gt;</span> x</span>
+      <pre class='r-in'>message('x')</pre>
+      <pre class='r-msg co'><span class='r-pr'>#&gt;</span> x</pre>
     Code
       test_evaluate("warning('x')")
     Output
-      <span class='r-in'>warning('x')</span>
-      <span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>x</span>
+      <pre class='r-in'>warning('x')</pre>
+      <pre class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>x</pre>
     Code
       test_evaluate("stop('x', call. = FALSE)")
     Output
-      <span class='r-in'>stop('x', call. = FALSE)</span>
-      <span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error:</span> x</span>
+      <pre class='r-in'>stop('x', call. = FALSE)</pre>
+      <pre class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error:</span> x</pre>
     Code
       test_evaluate("f <- function() stop('x'); f()")
     Output
-      <span class='r-in'>f &lt;- function() stop('x'); f()</span>
-      <span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in f()</span> x</span>
+      <pre class='r-in'>f &lt;- function() stop('x'); f()</pre>
+      <pre class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in f()</span> x</pre>
 
 # each line of input gets span
 
     Code
       test_evaluate("1 +\n 2 +\n 3 +\n 4 +\n 5")
     Output
-      <span class='r-in'>1 +</span>
-      <span class='r-in'> 2 +</span>
-      <span class='r-in'> 3 +</span>
-      <span class='r-in'> 4 +</span>
-      <span class='r-in'> 5</span>
-      <span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 15</span>
+      <pre class='r-in'>1 +
+       2 +
+       3 +
+       4 +
+       5</pre>
+      <pre class='r-out co'><span class='r-pr'>#&gt;</span> [1] 15</pre>
 
 # output always gets trailing nl
 
     Code
       test_evaluate("cat(\"a\")\ncat(\"a\\n\")")
     Output
-      <span class='r-in'>cat("a")</span>
-      <span class='r-out co'><span class='r-pr'>#&gt;</span> a</span>
-      <span class='r-in'>cat("a\n")</span>
-      <span class='r-out co'><span class='r-pr'>#&gt;</span> a</span>
+      <pre class='r-in'>cat("a")</pre>
+      <pre class='r-out co'><span class='r-pr'>#&gt;</span> a</pre>
+      <pre class='r-in'>cat("a\n")</pre>
+      <pre class='r-out co'><span class='r-pr'>#&gt;</span> a</pre>
 
 # combines plots as needed
 
@@ -73,8 +73,8 @@
       f2 <- (function() lines(0:2, 0:2))
       test_evaluate("f1()\nf2()\n")
     Output
-      <span class='r-in'>f1()</span>
-      <span class='r-in'>f2()</span>
+      <pre class='r-in'>f1()</pre>
+      <pre class='r-in'>f2()</pre>
       <span class='r-plt'><img src='1.png' alt='' width='10' height='10' /></span>
 
 ---
@@ -86,14 +86,14 @@
       })
       test_evaluate("f3()")
     Output
-      <span class='r-in'>f3()</span>
+      <pre class='r-in'>f3()</pre>
       <span class='r-plt'><img src='1.png' alt='' width='10' height='10' /></span>
       <span class='r-plt'><img src='2.png' alt='' width='10' height='10' /></span>
 
 # handles other plots
 
-    <span class='r-in'>f3()</span>
-    <span class='r-in'>f4()</span>
+    <pre class='r-in'>f3()</pre>
+    <pre class='r-in'>f4()</pre>
     <HTML for plot 4>
 
 # ansi escapes are translated to html
@@ -108,9 +108,9 @@
       })
       test_evaluate("f()\n")
     Output
-      <span class='r-in'>f()</span>
-      <span class='r-out co'><span class='r-pr'>#&gt;</span> Output: <span style='color: #0000BB;'>blue</span></span>
-      <span class='r-msg co'><span class='r-pr'>#&gt;</span> Message: <span style='color: #0000BB;'>blue</span></span>
-      <span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span><span style='color: #0000BB;'>blue</span></span>
-      <span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error:</span> <span style='color: #0000BB;'>blue</span></span>
+      <pre class='r-in'>f()</pre>
+      <pre class='r-out co'><span class='r-pr'>#&gt;</span> Output: <span style='color: #0000BB;'>blue</span></pre>
+      <pre class='r-msg co'><span class='r-pr'>#&gt;</span> Message: <span style='color: #0000BB;'>blue</span></pre>
+      <pre class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span><span style='color: #0000BB;'>blue</span></pre>
+      <pre class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error:</span> <span style='color: #0000BB;'>blue</span></pre>
 
