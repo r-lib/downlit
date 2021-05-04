@@ -13,6 +13,8 @@
 #'   defaults to a child of the global environment.
 #' @param output_handler Custom output handler for [evaluate::evaluate()].
 #' @param highlight Optionally suppress highlighting. This is useful for tests.
+#' @param use_pre Use newer style where each block of input/output gets
+#'   it's own `<pre>`? Automatically enabled by pkgdown when you use bs4.
 #' @return An string containing HTML.
 #' @inheritParams highlight
 #' @export
