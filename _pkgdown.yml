@@ -1,1 +1,4 @@
 url: https://downlit.r-lib.org
+
+template:
+  bootstrap: 4

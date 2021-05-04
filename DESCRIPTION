@@ -38,3 +38,4 @@ RoxygenNote: 7.1.1
 URL: https://downlit.r-lib.org/, https://github.com/r-lib/downlit
 BugReports: https://github.com/r-lib/downlit/issues
 Config/testthat/edition: 3
+Config/Needs/website: r-lib/pkgdown
