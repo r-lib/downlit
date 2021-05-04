@@ -37,6 +37,7 @@ evaluate_and_highlight <- function(code,
                                    classes = downlit::classes_pandoc(),
                                    env = NULL,
                                    output_handler = evaluate::new_output_handler(),
+                                   use_pre = FALSE,
                                    highlight = TRUE) {
   env <- env %||% child_env(global_env())
 
@@ -46,12 +47,13 @@ evaluate_and_highlight <- function(code,
     fig_save = fig_save,
     fig_id = unique_id(),
     classes = classes,
-    highlight = highlight
+    highlight = highlight,
+    use_pre = use_pre
   )
 }
 
 
-test_evaluate <- function(code, ..., highlight = FALSE) {
+test_evaluate <- function(code, ..., highlight = FALSE, use_pre = TRUE) {
   fig_save <- function(plot, id) {
     list(path = paste0(id, ".png"), width = 10, height = 10)
   }
@@ -61,6 +63,7 @@ test_evaluate <- function(code, ..., highlight = FALSE) {
     fig_save = fig_save,
     env = caller_env(),
     highlight = highlight,
+    use_pre = use_pre,
     ...
   ))
 }
@@ -105,21 +108,21 @@ replay_html.list <- function(x, ...) {
 replay_html.NULL <- function(x, ...) ""
 
 #' @export
-replay_html.character <- function(x, ...) {
-  label_output(escape_html(x), "r-out")
+replay_html.character <- function(x, ..., use_pre = FALSE) {
+  label_output(escape_html(x), "r-out", use_pre = use_pre)
 }
 
 #' @export
-replay_html.value <- function(x, ...) {
+replay_html.value <- function(x, ..., use_pre = FALSE) {
   if (!x$visible) return()
 
   printed <- paste0(utils::capture.output(print(x$value)), collapse = "\n")
 
-  label_output(escape_html(printed), "r-out")
+  label_output(escape_html(printed), "r-out", use_pre = use_pre)
 }
 
 #' @export
-replay_html.source <- function(x, ..., classes, highlight = FALSE) {
+replay_html.source <- function(x, ..., classes, use_pre = FALSE, highlight = FALSE) {
   if (highlight) {
     html <- highlight(x$src, classes = classes)
   }
@@ -127,34 +130,34 @@ replay_html.source <- function(x, ..., classes, highlight = FALSE) {
     html <- escape_html(x$src)
   }
 
-  label_input(html, "r-in")
+  label_input(html, "r-in", use_pre = use_pre)
 }
 
 #' @export
-replay_html.warning <- function(x, ...) {
+replay_html.warning <- function(x, ..., use_pre = FALSE) {
   message <- paste0(span("Warning: ", class = "warning"), escape_html(x$message))
-  label_output(message, "r-wrn")
+  label_output(message, "r-wrn", use_pre = use_pre)
 }
 
 #' @export
-replay_html.message <- function(x, ...) {
+replay_html.message <- function(x, ..., use_pre = FALSE) {
   message <- escape_html(paste0(gsub("\n$", "", x$message)))
-  label_output(message, "r-msg")
+  label_output(message, "r-msg", use_pre = use_pre)
 }
 
 #' @export
-replay_html.error <- function(x, ...) {
+replay_html.error <- function(x, ..., use_pre = FALSE) {
   if (is.null(x$call)) {
     prefix <- "Error:"
   } else {
     prefix <- paste0("Error in ", escape_html(paste0(deparse(x$call), collapse = "")))
   }
   message <- paste0(span(prefix, class = "error"), " ", escape_html(x$message))
-  label_output(message, "r-err")
+  label_output(message, "r-err", use_pre = use_pre)
 }
 
 #' @export
-replay_html.recordedplot <- function(x, fig_save, fig_id, ...) {
+replay_html.recordedplot <- function(x, fig_save, fig_id, ..., use_pre = FALSE) {
   fig <- fig_save(x, fig_id())
   img <- paste0(
     "<img ",
@@ -164,7 +167,7 @@ replay_html.recordedplot <- function(x, fig_save, fig_id, ...) {
     "height='", fig$height, "' ",
     "/>"
   )
-  block(img, "r-plt")
+  block(img, "r-plt", use_pre = use_pre)
 }
 
 # helpers -----------------------------------------------------------------
