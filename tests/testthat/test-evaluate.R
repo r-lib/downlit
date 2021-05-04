@@ -1,19 +1,19 @@
 test_that("evaluate_and_highlight works", {
   verify_output(test_path("test-evaluate.txt"), {
     "Parsing failure"
-    cat(evaluate_and_highlight("1 + "))
+    cat(evaluate_and_highlight("1 + \n"))
 
     "Basic ouput"
-    cat(evaluate_and_highlight("# comment"))
-    cat(evaluate_and_highlight("message('x')"))
-    cat(evaluate_and_highlight("warning('x')"))
-    cat(evaluate_and_highlight("stop('x', call. = FALSE)"))
+    cat(evaluate_and_highlight("# comment \n"))
+    cat(evaluate_and_highlight("message('x') \n"))
+    cat(evaluate_and_highlight("warning('x') \n"))
+    cat(evaluate_and_highlight("stop('x', call. = FALSE) \n"))
 
     "Plots"
     fig_save <- function(plot, id) list(path = paste0(id, ".png"), width = 10, height = 10)
     f1 <- function() plot(1)
     f2 <- function() lines(0:2, 0:2)
-    cat(evaluate_and_highlight("f1()\nf2()", fig_save = fig_save, env = environment()))
+    cat(evaluate_and_highlight("f1()\nf2()\n", fig_save = fig_save, env = environment()))
 
     "Other plots"
     f3 <- function()
@@ -43,8 +43,8 @@ test_that("evaluate_and_highlight works", {
 })
 
 test_that("custom infix operators are linked, but regular are not", {
-  expect_snapshot_output(cat(highlight("x %in% y")))
-  expect_snapshot_output(cat(highlight("x + y")))
+  expect_snapshot_output(cat(highlight("x %in% y\n")))
+  expect_snapshot_output(cat(highlight("x + y\n")))
 })
 
 test_that("ansi escapes are translated to html", {
@@ -56,5 +56,5 @@ test_that("ansi escapes are translated to html", {
     abort(blue("blue"))
   }
 
-  expect_snapshot_output(cat(evaluate_and_highlight("f()", env = environment())))
+  expect_snapshot_output(cat(evaluate_and_highlight("f()\n", env = environment())))
 })

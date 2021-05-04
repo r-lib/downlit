@@ -98,7 +98,7 @@ replay_html.value <- function(x, ...) {
 #' @export
 replay_html.source <- function(x, ..., classes) {
   html <- highlight(x$src, classes = classes)
-  paste0("<div class='input'>", html, "</div>")
+  div(html, class = "input")
 }
 
 #' @export
@@ -127,12 +127,15 @@ replay_html.error <- function(x, ...) {
 #' @export
 replay_html.recordedplot <- function(x, fig_save, fig_id, ...) {
   fig <- fig_save(x, fig_id())
-
-  paste0(
-    "<div class='img'>",
-    "<img src='", escape_html(fig$path), "' alt='' width='", fig$width, "' height='", fig$height, "' />",
-    "</div>"
+  img <- paste0(
+    "<img ",
+    "src='", escape_html(fig$path), "' ",
+    "alt='' ",
+    "width='", fig$width, "' ",
+    "height='", fig$height, "' ",
+    "/>"
   )
+  div(img, class = "img")
 }
 
 # helpers -----------------------------------------------------------------
@@ -143,19 +146,26 @@ label_output <- function(x, class, prompt = "#> ") {
   lines <- paste0(escape_html(prompt), lines)
   lines <- fansi::sgr_to_html(lines)
 
-  paste0(
-    "<div class='co'>",
-    paste0(lines, collapse = "\n"),
-    "</div>"
-  )
+  div(paste0(lines, collapse = "\n"), class = "co")
 }
 
 span <- function(..., class = NULL) {
-  paste0("<span",
-    if (!is.null(class)) paste0(" class='", class, "'"),
-    ">",
+  paste0(
+    "<span", if (!is.null(class)) paste0(" class='", class, "'"), ">",
     ...,
     "</span>"
+  )
+}
+
+div <- function(..., class = NULL) {
+  contents <- paste0(...)
+  trailing_nl <- grepl("\n$", contents)
+
+  paste0(
+    "<div", if (!is.null(class)) paste0(" class='", class, "'"), ">",
+    gsub("\n", "", contents),
+    "</div>",
+    if (trailing_nl) "\n"
   )
 }
 
