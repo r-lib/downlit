@@ -1,8 +1,8 @@
 pandoc: 2.7.3
 pkgdown: 1.6.1.9001
-pkgdown_sha: dff8062d297c001dba0dfaf567bfffdc8ad89f5c
+pkgdown_sha: e858a19f9a69184aa5b56b166ef1d198251885f4
 articles: {}
-last_built: 2021-04-28T12:00Z
+last_built: 2021-05-04T17:42Z
 urls:
   reference: https://downlit.r-lib.org/reference
   article: https://downlit.r-lib.org/articles
