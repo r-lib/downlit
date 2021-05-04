@@ -3,40 +3,40 @@
     Code
       test_evaluate("1 + ", highlight = TRUE)
     Output
-      <span class='input'>1 + </span>
-      <span class='co'>#&gt; <span class='error'>Error: </span>&lt;text&gt;:3:0: unexpected end of input
-      #&gt; 1: 1 + 
-      #&gt; 2: 
-      #&gt;   ^</span>
+      <span class='r-in'>1 + </span>
+      <span class='r-err co'><span class='r-pr'>#&gt; </span><span class='error'>Error: </span>&lt;text&gt;:3:0: unexpected end of input
+      <span class='r-pr'>#&gt; </span>1: 1 + 
+      <span class='r-pr'>#&gt; </span>2: 
+      <span class='r-pr'>#&gt; </span>  ^</span>
 
 # handles basic cases
 
     Code
       test_evaluate("# comment")
     Output
-      <span class='input'># comment</span>
+      <span class='r-in'># comment</span>
     Code
       test_evaluate("message('x')")
     Output
-      <span class='input'>message('x')</span>
-      <span class='co'>#&gt; x</span>
+      <span class='r-in'>message('x')</span>
+      <span class='r-msg co'><span class='r-pr'>#&gt; </span>x</span>
     Code
       test_evaluate("warning('x')")
     Output
-      <span class='input'>warning('x')</span>
-      <span class='co'>#&gt; <span class='warning'>Warning: </span>x</span>
+      <span class='r-in'>warning('x')</span>
+      <span class='r-wrn co'><span class='r-pr'>#&gt; </span><span class='warning'>Warning: </span>x</span>
     Code
       test_evaluate("stop('x', call. = FALSE)")
     Output
-      <span class='input'>stop('x', call. = FALSE)</span>
-      <span class='co'>#&gt; <span class='error'>Error: </span>x</span>
+      <span class='r-in'>stop('x', call. = FALSE)</span>
+      <span class='r-err co'><span class='r-pr'>#&gt; </span><span class='error'>Error: </span>x</span>
 
 # output always gets trailing nl
 
-    <span class='input'>cat("a")</span>
-    <span class='co'>#&gt; a</span>
-    <span class='input'>cat("a\n")</span>
-    <span class='co'>#&gt; a</span>
+    <span class='r-in'>cat("a")</span>
+    <span class='r-out co'><span class='r-pr'>#&gt; </span>a</span>
+    <span class='r-in'>cat("a\n")</span>
+    <span class='r-out co'><span class='r-pr'>#&gt; </span>a</span>
 
 # combines plots as needed
 
@@ -45,22 +45,22 @@
       f2 <- (function() lines(0:2, 0:2))
       test_evaluate("f1()\nf2()\n")
     Output
-      <span class='input'>f1()</span>
-      <span class='input'>f2()</span>
-      <span class='img'><img src='1.png' alt='' width='10' height='10' /></span><span class='input'></span>
+      <span class='r-in'>f1()</span>
+      <span class='r-in'>f2()</span>
+      <span class='img'><img src='1.png' alt='' width='10' height='10' /></span><span class='r-in'></span>
 
 # handles other plots
 
-    [1] "<span class='input'><span class='fu'>f3</span><span class='op'>(</span><span class='op'>)</span></span>\n<span class='input'><span class='fu'>f4</span><span class='op'>(</span><span class='op'>)</span></span>Text for plot  4"
+    [1] "<span class='r-in'><span class='fu'>f3</span><span class='op'>(</span><span class='op'>)</span></span>\n<span class='r-in'><span class='fu'>f4</span><span class='op'>(</span><span class='op'>)</span></span>Text for plot  4"
     attr(,"dependencies")
     list()
 
 # ansi escapes are translated to html
 
-    <span class='input'>f()</span>
-    <span class='co'>#&gt; Output:  <span style='color: #0000BB;'>blue</span><span> </span></span>
-    <span class='co'>#&gt; Message: <span style='color: #0000BB;'>blue</span></span>
-    <span class='co'>#&gt; <span class='warning'>Warning: </span><span style='color: #0000BB;'>blue</span></span>
-    <span class='co'>#&gt; <span class='error'>Error: </span><span style='color: #0000BB;'>blue</span></span>
-    <span class='input'></span>
+    <span class='r-in'>f()</span>
+    <span class='r-out co'><span class='r-pr'>#&gt; </span>Output:  <span style='color: #0000BB;'>blue</span><span> </span></span>
+    <span class='r-msg co'><span class='r-pr'>#&gt; </span>Message: <span style='color: #0000BB;'>blue</span></span>
+    <span class='r-wrn co'><span class='r-pr'>#&gt; </span><span class='warning'>Warning: </span><span style='color: #0000BB;'>blue</span></span>
+    <span class='r-err co'><span class='r-pr'>#&gt; </span><span class='error'>Error: </span><span style='color: #0000BB;'>blue</span></span>
+    <span class='r-in'></span>
 

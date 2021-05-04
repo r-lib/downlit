@@ -107,7 +107,7 @@ replay_html.NULL <- function(x, ...) ""
 
 #' @export
 replay_html.character <- function(x, ...) {
-  label_output(escape_html(x), "output")
+  label_output(escape_html(x), "r-out")
 }
 
 #' @export
@@ -116,7 +116,7 @@ replay_html.value <- function(x, ...) {
 
   printed <- paste0(utils::capture.output(print(x$value)), collapse = "\n")
 
-  label_output(escape_html(printed))
+  label_output(escape_html(printed), "r-out")
 }
 
 #' @export
@@ -128,19 +128,19 @@ replay_html.source <- function(x, ..., classes, highlight = FALSE) {
     html <- escape_html(x$src)
   }
 
-  span(html, class = "input")
+  span(html, class = "r-in")
 }
 
 #' @export
 replay_html.warning <- function(x, ...) {
   message <- paste0(span("Warning: ", class = "warning"), escape_html(x$message))
-  label_output(message)
+  label_output(message, "r-wrn")
 }
 
 #' @export
 replay_html.message <- function(x, ...) {
   message <- escape_html(paste0(gsub("\n$", "", x$message)))
-  label_output(message)
+  label_output(message, "r-msg")
 }
 
 #' @export
@@ -151,7 +151,7 @@ replay_html.error <- function(x, ...) {
     call <- escape_html(paste0(deparse(x$call), collapse = ""))
     message <- paste0(span("Error in ", call, ": ", class = "error"), escape_html(x$message))
   }
-  label_output(message)
+  label_output(message, "r-err")
 }
 
 #' @export
@@ -173,10 +173,10 @@ replay_html.recordedplot <- function(x, fig_save, fig_id, ...) {
 
 label_output <- function(x, class, prompt = "#> ") {
   lines <- strsplit(x, "\n")[[1]]
-  lines <- paste0(escape_html(prompt), lines)
+  lines <- paste0(span(escape_html(prompt), class = "r-pr"), lines)
   lines <- fansi::sgr_to_html(lines)
 
-  span(paste0(lines, "\n", collapse = ""), class = "co")
+  span(paste0(lines, "\n", collapse = ""), class = paste(class, "co"))
 }
 
 span <- function(..., class = NULL) {
