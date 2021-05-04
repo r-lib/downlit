@@ -38,6 +38,11 @@
     Output
       <span class='r-in'>stop('x', call. = FALSE)</span>
       <span class='r-err co'><span class='r-pr'>#&gt; </span><span class='error'>Error: </span>x</span>
+    Code
+      test_evaluate("f <- function() stop('x'); f()")
+    Output
+      <span class='r-in'>f &lt;- function() stop('x'); f()</span>
+      <span class='r-err co'><span class='r-pr'>#&gt; </span><span class='error'>Error in f(): </span>x</span>
 
 # each line of input gets span
 

@@ -13,6 +13,7 @@ test_that("handles basic cases", {
     test_evaluate("message('x')")
     test_evaluate("warning('x')")
     test_evaluate("stop('x', call. = FALSE)")
+    test_evaluate("f <- function() stop('x'); f()")
   })
 })
 
