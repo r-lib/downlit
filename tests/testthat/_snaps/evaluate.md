@@ -4,10 +4,10 @@
       test_evaluate("1 + ", highlight = TRUE)
     Output
       <span class='r-in'>1 + </span>
-      <span class='r-err co'><span class='r-pr'>#&gt; </span><span class='error'>Error: </span>&lt;text&gt;:3:0: unexpected end of input
-      <span class='r-pr'>#&gt; </span>1: 1 + 
-      <span class='r-pr'>#&gt; </span>2: 
-      <span class='r-pr'>#&gt; </span>  ^</span>
+      <span class='r-err co'><span class='r-pr'>#&gt; </span><span class='error'>Error: </span>&lt;text&gt;:3:0: unexpected end of input</span>
+      <span class='r-err co'><span class='r-pr'>#&gt; </span>1: 1 + </span>
+      <span class='r-err co'><span class='r-pr'>#&gt; </span>2: </span>
+      <span class='r-err co'><span class='r-pr'>#&gt; </span>  ^</span>
 
 # handles basic cases
 
@@ -47,11 +47,12 @@
     Output
       <span class='r-in'>f1()</span>
       <span class='r-in'>f2()</span>
-      <span class='img'><img src='1.png' alt='' width='10' height='10' /></span><span class='r-in'></span>
+      <span class='img'><img src='1.png' alt='' width='10' height='10' /></span>
+      <span class='r-in'></span>
 
 # handles other plots
 
-    [1] "<span class='r-in'><span class='fu'>f3</span><span class='op'>(</span><span class='op'>)</span></span>\n<span class='r-in'><span class='fu'>f4</span><span class='op'>(</span><span class='op'>)</span></span>Text for plot  4"
+    [1] "<span class='r-in'><span class='fu'>f3</span><span class='op'>(</span><span class='op'>)</span></span>\n<span class='r-in'><span class='fu'>f4</span><span class='op'>(</span><span class='op'>)</span></span>\nText for plot  4"
     attr(,"dependencies")
     list()
 

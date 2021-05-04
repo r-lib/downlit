@@ -128,7 +128,7 @@ replay_html.source <- function(x, ..., classes, highlight = FALSE) {
     html <- escape_html(x$src)
   }
 
-  span(html, class = "r-in")
+  label_input(html, "r-in")
 }
 
 #' @export
@@ -165,7 +165,7 @@ replay_html.recordedplot <- function(x, fig_save, fig_id, ...) {
     "height='", fig$height, "' ",
     "/>"
   )
-  span(img, class = "img")
+  paste0(span(img, class = "img"), "\n")
 }
 
 # helpers -----------------------------------------------------------------
@@ -175,19 +175,22 @@ label_output <- function(x, class, prompt = "#> ") {
   lines <- strsplit(x, "\n")[[1]]
   lines <- paste0(span(escape_html(prompt), class = "r-pr"), lines)
   lines <- fansi::sgr_to_html(lines)
-
-  span(paste0(lines, "\n", collapse = ""), class = paste(class, "co"))
+  lines <- span(lines, class = paste(class, "co"))
+  paste0(lines, "\n", collapse = "")
 }
 
-span <- function(..., class = NULL) {
-  contents <- paste0(...)
-  trailing_nl <- grepl("\n$", contents)
+label_input <- function(x, class) {
+  lines <- strsplit(x, "\n")[[1]]
+  lines <- span(lines, class = class)
+  paste0(lines, "\n", collapse = "")
+}
 
+
+span <- function(..., class = NULL) {
   paste0(
     "<span", if (!is.null(class)) paste0(" class='", class, "'"), ">",
-    gsub("\n$", "", contents),
-    "</span>",
-    if (trailing_nl) "\n"
+    ...,
+    "</span>"
   )
 }
 
