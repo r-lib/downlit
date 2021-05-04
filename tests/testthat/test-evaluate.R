@@ -2,6 +2,11 @@ test_that("handles parsing failures gracefully", {
   expect_snapshot(test_evaluate("1 + ", highlight = TRUE))
 })
 
+test_that("highlights when requested", {
+  expect_snapshot(test_evaluate("1 + \n 2 + 3", highlight = TRUE))
+})
+
+
 test_that("handles basic cases", {
   expect_snapshot({
     test_evaluate("# comment")
