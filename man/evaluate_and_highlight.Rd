@@ -9,7 +9,8 @@ evaluate_and_highlight(
   fig_save,
   classes = downlit::classes_pandoc(),
   env = NULL,
-  output_handler = evaluate::new_output_handler()
+  output_handler = evaluate::new_output_handler(),
+  highlight = TRUE
 )
 }
 \arguments{
@@ -29,6 +30,8 @@ can use existing themes.}
 defaults to a child of the global environment.}
 
 \item{output_handler}{Custom output handler for \code{evaluate::evaluate}.}
+
+\item{highlight}{Optionally suppress highlighting. This is useful for tests.}
 }
 \value{
 An string containing HTML.
