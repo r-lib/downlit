@@ -1,8 +1,8 @@
 #' Evaluate code and syntax highlight the results
 #'
 #' This function runs `code` and captures the output using
-#' [evaluate::evaluate()]. It syntax highlights code with [highlight()],
-#' and combines all results into a single HTML div.
+#' [evaluate::evaluate()]. It syntax higlights code with [highlight()], and
+#' intermingles it with output.
 #'
 #' @param code Code to evaluate (as a string).
 #' @param fig_save A function with arguments `plot` and `id` that is
@@ -11,12 +11,14 @@
 #'   components `path`, `width`, and `height`.
 #' @param env Environment in which to evaluate code; if not supplied,
 #'   defaults to a child of the global environment.
-#' @param output_handler Custom output handler for `evaluate::evaluate`.
+#' @param output_handler Custom output handler for [evaluate::evaluate()].
+#' @param highlight Optionally suppress highlighting. This is useful for tests.
 #' @return An string containing HTML.
 #' @inheritParams highlight
 #' @export
 #' @examples
-#' evaluate_and_highlight("1 + 2")
+#' cat(evaluate_and_highlight("1 + 2"))
+#' cat(evaluate_and_highlight("x <- 1:10\nmean(x)"))
 #'
 #' # -----------------------------------------------------------------
 #' # evaluate_and_highlight() powers pkgdown's documentation formatting so
@@ -34,38 +36,46 @@ evaluate_and_highlight <- function(code,
                                    fig_save,
                                    classes = downlit::classes_pandoc(),
                                    env = NULL,
-                                   output_handler = evaluate::new_output_handler()) {
+                                   output_handler = evaluate::new_output_handler(),
+                                   highlight = TRUE) {
   env <- env %||% child_env(global_env())
 
   expr <- evaluate::evaluate(code, child_env(env), new_device = TRUE,
                              output_handler = output_handler)
-  replay_html(expr, fig_save = fig_save, fig_id = unique_id(), classes = classes)
+  replay_html(expr,
+    fig_save = fig_save,
+    fig_id = unique_id(),
+    classes = classes,
+    highlight = highlight
+  )
+}
+
+
+test_evaluate <- function(code, ..., highlight = FALSE) {
+  fig_save <- function(plot, id) {
+    list(path = paste0(id, ".png"), width = 10, height = 10)
+  }
+
+  cat(evaluate_and_highlight(
+    code,
+    fig_save = fig_save,
+    env = caller_env(),
+    highlight = highlight,
+    ...
+  ))
 }
 
 replay_html <- function(x, ...) UseMethod("replay_html", x)
 
 #' @export
 replay_html.list <- function(x, ...) {
-  # Stitch adjacent source blocks back together
-  src <- vapply(x, evaluate::is.source, logical(1))
-  # New group whenever not source, or when src after not-src
-  group <- cumsum(!src | c(FALSE, src[-1] != src[-length(src)]))
-
-  parts <- split(x, group)
-  parts <- lapply(parts, function(x) {
-    if (length(x) == 1) return(x[[1]])
-    src <- paste0(vapply(x, "[[", "src", FUN.VALUE = character(1)),
-      collapse = "")
-    structure(list(src = src), class = "source")
-  })
-
   # keep only high level plots
-  parts <- merge_low_plot(parts)
+  x <- merge_low_plot(x)
 
-  pieces <- character(length(parts))
+  pieces <- character(length(x))
   dependencies <- list()
-  for (i in seq_along(parts)) {
-    piece <- replay_html(parts[[i]], ...)
+  for (i in seq_along(x)) {
+    piece <- replay_html(x[[i]], ...)
     dependencies <- c(dependencies, attr(piece, "dependencies"))
     pieces[i] <- piece
   }
@@ -84,7 +94,7 @@ replay_html.NULL <- function(x, ...) ""
 
 #' @export
 replay_html.character <- function(x, ...) {
-  label_output(escape_html(x), "output")
+  label_output(escape_html(x), "r-out")
 }
 
 #' @export
@@ -92,68 +102,82 @@ replay_html.value <- function(x, ...) {
   if (!x$visible) return()
 
   printed <- paste0(utils::capture.output(print(x$value)), collapse = "\n")
-  label_output(escape_html(printed))
+
+  label_output(escape_html(printed), "r-out")
 }
 
 #' @export
-replay_html.source <- function(x, ..., classes) {
-  html <- highlight(x$src, classes = classes)
-  paste0("<div class='input'>", html, "</div>")
+replay_html.source <- function(x, ..., classes, highlight = FALSE) {
+  if (highlight) {
+    html <- highlight(x$src, classes = classes)
+  }
+  if (!highlight || is.na(html)) {
+    html <- escape_html(x$src)
+  }
+
+  label_input(html, "r-in")
 }
 
 #' @export
 replay_html.warning <- function(x, ...) {
   message <- paste0(span("Warning: ", class = "warning"), escape_html(x$message))
-  label_output(message)
+  label_output(message, "r-wrn")
 }
 
 #' @export
 replay_html.message <- function(x, ...) {
   message <- escape_html(paste0(gsub("\n$", "", x$message)))
-  label_output(message)
+  label_output(message, "r-msg")
 }
 
 #' @export
 replay_html.error <- function(x, ...) {
   if (is.null(x$call)) {
-    message <- paste0(span("Error: ", class = "error"), escape_html(x$message))
+    prefix <- "Error:"
   } else {
-    call <- escape_html(paste0(deparse(x$call), collapse = ""))
-    message <- paste0(span("Error in ", call, ": ", class = "error"), escape_html(x$message))
+    prefix <- paste0("Error in ", escape_html(paste0(deparse(x$call), collapse = "")))
   }
-  label_output(message)
+  message <- paste0(span(prefix, class = "error"), " ", escape_html(x$message))
+  label_output(message, "r-err")
 }
 
 #' @export
 replay_html.recordedplot <- function(x, fig_save, fig_id, ...) {
   fig <- fig_save(x, fig_id())
-
-  paste0(
-    "<div class='img'>",
-    "<img src='", escape_html(fig$path), "' alt='' width='", fig$width, "' height='", fig$height, "' />",
-    "</div>"
+  img <- paste0(
+    "<img ",
+    "src='", escape_html(fig$path), "' ",
+    "alt='' ",
+    "width='", fig$width, "' ",
+    "height='", fig$height, "' ",
+    "/>"
   )
+  paste0(span(img, class = "r-plt"), "\n")
 }
 
 # helpers -----------------------------------------------------------------
 
 
-label_output <- function(x, class, prompt = "#> ") {
-  lines <- strsplit(x, "\n")[[1]]
-  lines <- paste0(escape_html(prompt), lines)
-  lines <- fansi::sgr_to_html(lines)
+label_output <- function(x, class) {
+  prompt <- span("#&gt;", class = "r-pr")
 
-  paste0(
-    "<div class='co'>",
-    paste0(lines, collapse = "\n"),
-    "</div>"
-  )
+  lines <- strsplit(x, "\n")[[1]]
+  lines <- fansi::sgr_to_html(lines)
+  lines <- paste0(prompt, " ", lines)
+  lines <- span(lines, class = paste(class, "co"))
+  paste0(lines, "\n", collapse = "")
 }
 
+label_input <- function(x, class) {
+  lines <- strsplit(x, "\n")[[1]]
+  lines <- span(lines, class = class)
+  paste0(lines, "\n", collapse = "")
+}
+
+
 span <- function(..., class = NULL) {
-  paste0("<span",
-    if (!is.null(class)) paste0(" class='", class, "'"),
-    ">",
+  paste0(
+    "<span", if (!is.null(class)) paste0(" class='", class, "'"), ">",
     ...,
     "</span>"
   )
