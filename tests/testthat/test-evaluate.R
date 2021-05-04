@@ -50,14 +50,14 @@ test_that("handles other plots", {
     envir = asNamespace("downlit")
   )
   registerS3method("replay_html", "fakePlot", function(x, ...) {
-    paste("Text for plot ", unclass(x))
+    paste0("<HTML for plot ", unclass(x), ">")
   }, envir = asNamespace("downlit"))
   registerS3method("print", "fakePlot", function(x, ...) x)
 
   expect_snapshot_output({
     f3 <- function() structure(3, class = c("fakePlot", "otherRecordedplot"))
     f4 <- function() structure(4, class = c("fakePlot", "otherRecordedplot"))
-    evaluate_and_highlight("f3()\nf4()", env = environment())
+    test_evaluate("f3()\nf4()")
   })
 })
 

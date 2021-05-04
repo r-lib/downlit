@@ -92,9 +92,9 @@
 
 # handles other plots
 
-    [1] "<span class='r-in'><span class='fu'>f3</span><span class='op'>(</span><span class='op'>)</span></span>\n<span class='r-in'><span class='fu'>f4</span><span class='op'>(</span><span class='op'>)</span></span>\nText for plot  4"
-    attr(,"dependencies")
-    list()
+    <span class='r-in'>f3()</span>
+    <span class='r-in'>f4()</span>
+    <HTML for plot 4>
 
 # ansi escapes are translated to html
 
