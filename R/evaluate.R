@@ -191,9 +191,9 @@ label_input <- function(x, class, use_pre = TRUE) {
 block <- function(lines, class = NULL, use_pre = TRUE) {
   if (use_pre) {
     paste0(
-      "<pre class='", class, "'>",
+      "<pre class='", class, "'><code>",
       paste0(lines, collapse = "\n"),
-      "</pre>\n"
+      "</code></pre>\n"
     )
   } else {
     lines <- span(lines, class = class)
