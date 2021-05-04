@@ -4,7 +4,7 @@
 
 * Messages, warnings, and errors now get a much more minimal style. 
   Messages are styled the same way as output; and warnings and errors
-  only have the "Warning" or "Error" styled. This makes these types of
+  only style the "Warning" or "Error" text. This makes these types of
   output easier to read, and easier for package developers to style
   themselves.
 
