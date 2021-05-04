@@ -123,7 +123,8 @@
 </h1>
 <ul>
 <li><p>In code blocks, custom infix operators are now autolinked (<a href='https://github.com/r-lib/downlit/issues/89'>#89</a>).</p></li>
-<li><p>Messages, warnings, and errors now get a much more minimal style. Messages are styled the same way as output; and warnings and errors only have the “Warning” or “Error” styled. This makes these types of output easier to read, and easier for package developers to style themselves.</p></li>
+<li><p>Messages, warnings, and errors now get a much more minimal style. Messages are styled the same way as output; and warnings and errors only style the “Warning” or “Error” text. This makes these types of output easier to read, and easier for package developers to style themselves.</p></li>
+<li><p>The overall structure of the syntax highlighting has been overhauled. Now each line is wrapped in a <code>&lt;span&gt;</code> with class <code>r-in</code> (input code), <code>r-out</code> (output printed to console), <code>r-plot</code> (plots), <code>r-msg</code> (messages), <code>r-wrn</code> (warnings), and <code>r-err</code> (errors). Additionally, the prompt (<code>#&gt;</code>) is wrapped in a <code>&lt;span class="r-pr"&gt;</code>. Altogether, these changes should give much more flexibility for styling with CSS (<a href='https://github.com/r-lib/downlit/issues/90'>#90</a>).</p></li>
 <li><p>Using ANSI escapes in output no longer generates invalid HTML (<a href='https://github.com/r-lib/downlit/issues/79'>#79</a>).</p></li>
 <li><p>Packages attached when you call <code><a href="https://rdrr.io/r/base/library.html" class="external-link">library(package)</a></code> (including by the tidyverse), are now taken into account when autolinking (<a href='https://github.com/r-lib/downlit/issues/87'>#87</a>).</p></li>
 <li><p>Autolinking vignettes no longer errors if the package is not installed (<a href='https://github.com/r-lib/downlit/issues/85'>#85</a>).</p></li>
