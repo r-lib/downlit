@@ -11,6 +11,12 @@ test_that("handles basic cases", {
   })
 })
 
+test_that("each line of input gets span", {
+  expect_snapshot({
+    test_evaluate("1 +\n 2 +\n 3 +\n 4 +\n 5")
+  })
+})
+
 test_that("output always gets trailing nl", {
   # These two calls should produce the same output
   expect_snapshot_output({

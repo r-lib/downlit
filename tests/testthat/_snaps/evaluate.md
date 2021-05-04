@@ -31,6 +31,18 @@
       <span class='r-in'>stop('x', call. = FALSE)</span>
       <span class='r-err co'><span class='r-pr'>#&gt; </span><span class='error'>Error: </span>x</span>
 
+# each line of input gets span
+
+    Code
+      test_evaluate("1 +\n 2 +\n 3 +\n 4 +\n 5")
+    Output
+      <span class='r-in'>1 +</span>
+      <span class='r-in'> 2 +</span>
+      <span class='r-in'> 3 +</span>
+      <span class='r-in'> 4 +</span>
+      <span class='r-in'> 5</span>
+      <span class='r-out co'><span class='r-pr'>#&gt; </span>[1] 15</span>
+
 # output always gets trailing nl
 
     <span class='r-in'>cat("a")</span>
