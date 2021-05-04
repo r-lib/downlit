@@ -164,7 +164,7 @@ replay_html.recordedplot <- function(x, fig_save, fig_id, ...) {
     "height='", fig$height, "' ",
     "/>"
   )
-  paste0(span(img, class = "r-plt"), "\n")
+  block(img, "r-plt")
 }
 
 # helpers -----------------------------------------------------------------
@@ -177,21 +177,15 @@ label_output <- function(x, class, use_pre = TRUE) {
   lines <- fansi::sgr_to_html(lines)
   lines <- paste0(prompt, " ", lines)
 
-  if (use_pre) {
-    paste0(
-      "<pre class='", paste(class, "co"), "'>",
-      paste0(lines, collapse = "\n"),
-      "</pre>\n"
-    )
-  } else {
-    lines <- span(lines, class = paste(class, "co"))
-    paste0(lines, "\n", collapse = "")
-  }
+  block(lines, paste(class, "co"), use_pre = use_pre)
 }
 
 label_input <- function(x, class, use_pre = TRUE) {
   lines <- strsplit(x, "\n")[[1]]
+  block(lines, class, use_pre = use_pre)
+}
 
+block <- function(lines, class = NULL, use_pre = TRUE) {
   if (use_pre) {
     paste0(
       "<pre class='", class, "'>",
@@ -203,7 +197,6 @@ label_input <- function(x, class, use_pre = TRUE) {
     paste0(lines, "\n", collapse = "")
   }
 }
-
 
 span <- function(..., class = NULL) {
   paste0(
