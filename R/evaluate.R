@@ -12,6 +12,7 @@
 #' @param env Environment in which to evaluate code; if not supplied,
 #'   defaults to a child of the global environment.
 #' @param output_handler Custom output handler for `evaluate::evaluate`.
+#' @param highlight Optionally suppress highlighting. This is useful for tests.
 #' @return An string containing HTML.
 #' @inheritParams highlight
 #' @export
@@ -34,22 +35,34 @@ evaluate_and_highlight <- function(code,
                                    fig_save,
                                    classes = downlit::classes_pandoc(),
                                    env = NULL,
-                                   output_handler = evaluate::new_output_handler()) {
+                                   output_handler = evaluate::new_output_handler(),
+                                   highlight = TRUE) {
   env <- env %||% child_env(global_env())
 
   expr <- evaluate::evaluate(code, child_env(env), new_device = TRUE,
                              output_handler = output_handler)
-  replay_html(expr, fig_save = fig_save, fig_id = unique_id(), classes = classes)
+  replay_html(expr,
+    fig_save = fig_save,
+    fig_id = unique_id(),
+    classes = classes,
+    highlight = highlight
+  )
 }
 
 
-test_evaluate <- function(code, ...) {
+test_evaluate <- function(code, ..., highlight = TRUE) {
   fig_save <- function(plot, id) {
     list(path = paste0(id, ".png"), width = 10, height = 10)
   }
 
   code <- paste0(code, "\n")
-  cat(evaluate_and_highlight(code, fig_save = fig_save, env = caller_env()), ...)
+  cat(evaluate_and_highlight(
+    code,
+    fig_save = fig_save,
+    env = caller_env(),
+    highlight = highlight,
+    ...
+  ))
 }
 
 replay_html <- function(x, ...) UseMethod("replay_html", x)
@@ -102,13 +115,19 @@ replay_html.value <- function(x, ...) {
   if (!x$visible) return()
 
   printed <- paste0(utils::capture.output(print(x$value)), collapse = "\n")
+
   label_output(escape_html(printed))
 }
 
 #' @export
-replay_html.source <- function(x, ..., classes) {
-  html <- highlight(x$src, classes = classes)
-  div(html, class = "input")
+replay_html.source <- function(x, ..., classes, highlight = FALSE) {
+  if (highlight) {
+    html <- highlight(x$src, classes = classes)
+  } else {
+    html <- escape_html(x$src)
+  }
+
+  span(html, class = "input")
 }
 
 #' @export
@@ -145,7 +164,7 @@ replay_html.recordedplot <- function(x, fig_save, fig_id, ...) {
     "height='", fig$height, "' ",
     "/>"
   )
-  div(img, class = "img")
+  span(img, class = "img")
 }
 
 # helpers -----------------------------------------------------------------
@@ -156,25 +175,17 @@ label_output <- function(x, class, prompt = "#> ") {
   lines <- paste0(escape_html(prompt), lines)
   lines <- fansi::sgr_to_html(lines)
 
-  div(paste0(lines, collapse = "\n"), class = "co")
+  span(paste0(lines, "\n", collapse = ""), class = "co")
 }
 
 span <- function(..., class = NULL) {
-  paste0(
-    "<span", if (!is.null(class)) paste0(" class='", class, "'"), ">",
-    ...,
-    "</span>"
-  )
-}
-
-div <- function(..., class = NULL) {
   contents <- paste0(...)
   trailing_nl <- grepl("\n$", contents)
 
   paste0(
-    "<div", if (!is.null(class)) paste0(" class='", class, "'"), ">",
-    gsub("\n", "", contents),
-    "</div>",
+    "<span", if (!is.null(class)) paste0(" class='", class, "'"), ">",
+    gsub("\n$", "", contents),
+    "</span>",
     if (trailing_nl) "\n"
   )
 }
