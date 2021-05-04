@@ -8,6 +8,13 @@
   output easier to read, and easier for package developers to style
   themselves.
 
+* The overall structure of the syntax highlighting has been overhauled.
+  Now each line is wrapped in a `<span>` with class `r-in` (input code),
+  `r-out` (output printed to console), `r-plot` (plots), `r-msg` (messages), 
+  `r-wrn` (warnings), and `r-err` (errors). Additionally, the prompt (`#>`)
+  is wrapped in a `<span class="r-pr">`. Altogether, these changes
+  should give much more flexibility for styling with CSS (#90).
+  
 * Using ANSI escapes in output no longer generates invalid HTML (#79).
 
 * Packages attached when you call `library(package)` (including by the 
