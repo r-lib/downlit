@@ -4,7 +4,7 @@
       test_evaluate("1 + ", highlight = TRUE)
     Output
       <span class='r-in'>1 + </span>
-      <span class='r-err co'><span class='r-pr'>#&gt; </span><span class='error'>Error: </span>&lt;text&gt;:2:0: unexpected end of input</span>
+      <span class='r-err co'><span class='r-pr'>#&gt; </span><span class='error'>Error:</span> &lt;text&gt;:2:0: unexpected end of input</span>
       <span class='r-err co'><span class='r-pr'>#&gt; </span>1: 1 + </span>
       <span class='r-err co'><span class='r-pr'>#&gt; </span>   ^</span>
 
@@ -37,12 +37,12 @@
       test_evaluate("stop('x', call. = FALSE)")
     Output
       <span class='r-in'>stop('x', call. = FALSE)</span>
-      <span class='r-err co'><span class='r-pr'>#&gt; </span><span class='error'>Error: </span>x</span>
+      <span class='r-err co'><span class='r-pr'>#&gt; </span><span class='error'>Error:</span> x</span>
     Code
       test_evaluate("f <- function() stop('x'); f()")
     Output
       <span class='r-in'>f &lt;- function() stop('x'); f()</span>
-      <span class='r-err co'><span class='r-pr'>#&gt; </span><span class='error'>Error in f(): </span>x</span>
+      <span class='r-err co'><span class='r-pr'>#&gt; </span><span class='error'>Error in f()</span> x</span>
 
 # each line of input gets span
 
@@ -112,5 +112,5 @@
       <span class='r-out co'><span class='r-pr'>#&gt; </span>Output: <span style='color: #0000BB;'>blue</span></span>
       <span class='r-msg co'><span class='r-pr'>#&gt; </span>Message: <span style='color: #0000BB;'>blue</span></span>
       <span class='r-wrn co'><span class='r-pr'>#&gt; </span><span class='warning'>Warning: </span><span style='color: #0000BB;'>blue</span></span>
-      <span class='r-err co'><span class='r-pr'>#&gt; </span><span class='error'>Error: </span><span style='color: #0000BB;'>blue</span></span>
+      <span class='r-err co'><span class='r-pr'>#&gt; </span><span class='error'>Error:</span> <span style='color: #0000BB;'>blue</span></span>
 
