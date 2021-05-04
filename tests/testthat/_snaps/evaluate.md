@@ -4,9 +4,9 @@
       test_evaluate("1 + ", highlight = TRUE)
     Output
       <span class='r-in'>1 + </span>
-      <span class='r-err co'><span class='r-pr'>#&gt; </span><span class='error'>Error:</span> &lt;text&gt;:2:0: unexpected end of input</span>
-      <span class='r-err co'><span class='r-pr'>#&gt; </span>1: 1 + </span>
-      <span class='r-err co'><span class='r-pr'>#&gt; </span>   ^</span>
+      <span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error:</span> &lt;text&gt;:2:0: unexpected end of input</span>
+      <span class='r-err co'><span class='r-pr'>#&gt;</span> 1: 1 + </span>
+      <span class='r-err co'><span class='r-pr'>#&gt;</span>    ^</span>
 
 # highlights when requested
 
@@ -15,7 +15,7 @@
     Output
       <span class='r-in'><span class='fl'>1</span> <span class='op'>+</span> </span>
       <span class='r-in'> <span class='fl'>2</span> <span class='op'>+</span> <span class='fl'>3</span></span>
-      <span class='r-out co'><span class='r-pr'>#&gt; </span>[1] 6</span>
+      <span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 6</span>
 
 # handles basic cases
 
@@ -27,22 +27,22 @@
       test_evaluate("message('x')")
     Output
       <span class='r-in'>message('x')</span>
-      <span class='r-msg co'><span class='r-pr'>#&gt; </span>x</span>
+      <span class='r-msg co'><span class='r-pr'>#&gt;</span> x</span>
     Code
       test_evaluate("warning('x')")
     Output
       <span class='r-in'>warning('x')</span>
-      <span class='r-wrn co'><span class='r-pr'>#&gt; </span><span class='warning'>Warning: </span>x</span>
+      <span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>x</span>
     Code
       test_evaluate("stop('x', call. = FALSE)")
     Output
       <span class='r-in'>stop('x', call. = FALSE)</span>
-      <span class='r-err co'><span class='r-pr'>#&gt; </span><span class='error'>Error:</span> x</span>
+      <span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error:</span> x</span>
     Code
       test_evaluate("f <- function() stop('x'); f()")
     Output
       <span class='r-in'>f &lt;- function() stop('x'); f()</span>
-      <span class='r-err co'><span class='r-pr'>#&gt; </span><span class='error'>Error in f()</span> x</span>
+      <span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in f()</span> x</span>
 
 # each line of input gets span
 
@@ -54,7 +54,7 @@
       <span class='r-in'> 3 +</span>
       <span class='r-in'> 4 +</span>
       <span class='r-in'> 5</span>
-      <span class='r-out co'><span class='r-pr'>#&gt; </span>[1] 15</span>
+      <span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 15</span>
 
 # output always gets trailing nl
 
@@ -62,9 +62,9 @@
       test_evaluate("cat(\"a\")\ncat(\"a\\n\")")
     Output
       <span class='r-in'>cat("a")</span>
-      <span class='r-out co'><span class='r-pr'>#&gt; </span>a</span>
+      <span class='r-out co'><span class='r-pr'>#&gt;</span> a</span>
       <span class='r-in'>cat("a\n")</span>
-      <span class='r-out co'><span class='r-pr'>#&gt; </span>a</span>
+      <span class='r-out co'><span class='r-pr'>#&gt;</span> a</span>
 
 # combines plots as needed
 
@@ -109,8 +109,8 @@
       test_evaluate("f()\n")
     Output
       <span class='r-in'>f()</span>
-      <span class='r-out co'><span class='r-pr'>#&gt; </span>Output: <span style='color: #0000BB;'>blue</span></span>
-      <span class='r-msg co'><span class='r-pr'>#&gt; </span>Message: <span style='color: #0000BB;'>blue</span></span>
-      <span class='r-wrn co'><span class='r-pr'>#&gt; </span><span class='warning'>Warning: </span><span style='color: #0000BB;'>blue</span></span>
-      <span class='r-err co'><span class='r-pr'>#&gt; </span><span class='error'>Error:</span> <span style='color: #0000BB;'>blue</span></span>
+      <span class='r-out co'><span class='r-pr'>#&gt;</span> Output: <span style='color: #0000BB;'>blue</span></span>
+      <span class='r-msg co'><span class='r-pr'>#&gt;</span> Message: <span style='color: #0000BB;'>blue</span></span>
+      <span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span><span style='color: #0000BB;'>blue</span></span>
+      <span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error:</span> <span style='color: #0000BB;'>blue</span></span>
 
