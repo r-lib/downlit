@@ -50,7 +50,7 @@ evaluate_and_highlight <- function(code,
 }
 
 
-test_evaluate <- function(code, ..., highlight = TRUE) {
+test_evaluate <- function(code, ..., highlight = FALSE) {
   fig_save <- function(plot, id) {
     list(path = paste0(id, ".png"), width = 10, height = 10)
   }
@@ -123,7 +123,8 @@ replay_html.value <- function(x, ...) {
 replay_html.source <- function(x, ..., classes, highlight = FALSE) {
   if (highlight) {
     html <- highlight(x$src, classes = classes)
-  } else {
+  }
+  if (!highlight || is.na(html)) {
     html <- escape_html(x$src)
   }
 

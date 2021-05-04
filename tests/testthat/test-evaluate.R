@@ -1,5 +1,5 @@
 test_that("handles parsing failures gracefully", {
-  expect_snapshot(test_evaluate("1 + "))
+  expect_snapshot(test_evaluate("1 + ", highlight = TRUE))
 })
 
 test_that("handles basic cases", {
