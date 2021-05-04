@@ -1,6 +1,6 @@
 # downlit (development version)
 
-* In code blocks, custom infix operators are now autolinked (#89).
+## Syntax highlighting
 
 * Messages, warnings, and errors now get a much more minimal style. 
   Messages are styled the same way as output; and warnings and errors
@@ -14,27 +14,31 @@
   `r-wrn` (warnings), and `r-err` (errors). Additionally, the prompt (`#>`)
   is wrapped in a `<span class="r-pr">`. Altogether, these changes
   should give much more flexibility for styling with CSS (#90).
-  
-* Using ANSI escapes in output no longer generates invalid HTML (#79).
+
+* ANSI escapes no longer generate invalid HTML (#79).
+
+* Changes to better support for HTML widgets and rgl in pkgdown 
+  (@dmurdoch, #78).
+
+## Auto-linking
 
 * Packages attached when you call `library(package)` (including by the 
   tidyverse), are now taken into account when autolinking (#87).
 
-* Autolinking vignettes no longer errors if the package is not installed (#85).
+* In code blocks, custom infix operators are now autolinked (#89).
+  In inline code, infix operators are no longer autolinked; this lead to too
+  many false positives. You can still link with (e.g.) `?"-"` (#86).
 
 * Inline calls with arguments (e.g. `foo(1, 2)`) are no longer auto-linked,
   as intended and documented (#82).
 
+* Autolinking `vignette(foo, package = "pkg")` no longer errors if `pkg` is not 
+  installed (#85).
+
 * Unusual help calls (e.g. `help(a$b)`), no longer generate errors (#77).
 
-* Inline infix operators are no longer automatically linked; this lead to too
-  many false positives. You can still link with (e.g.) `?"-"` (#86).
-
-* Now suppresses rare warning about incomplete final line in
-  `autolink_url("pkgname::foo")`. (@dmurdoch, pkgdown#1419).
-
-* Changes to better support for HTML widgets and rgl in pkgdown 
-  (@dmurdoch, #78).
+* Rare warning about incomplete final line in `autolink_url("pkgname::foo")`
+  is now suppressed (@dmurdoch, pkgdown#1419).
 
 # downlit 0.2.1
 
