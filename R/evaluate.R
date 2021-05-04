@@ -42,6 +42,16 @@ evaluate_and_highlight <- function(code,
   replay_html(expr, fig_save = fig_save, fig_id = unique_id(), classes = classes)
 }
 
+
+test_evaluate <- function(code, ...) {
+  fig_save <- function(plot, id) {
+    list(path = paste0(id, ".png"), width = 10, height = 10)
+  }
+
+  code <- paste0(code, "\n")
+  cat(evaluate_and_highlight(code, fig_save = fig_save, env = caller_env()), ...)
+}
+
 replay_html <- function(x, ...) UseMethod("replay_html", x)
 
 #' @export

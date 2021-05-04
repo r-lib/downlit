@@ -35,6 +35,11 @@ test_that("unicode is not mangled", {
   expect_equal(highlight("# \u2714"), "<span class='c'># \u2714</span>")
 })
 
+test_that("custom infix operators are linked, but regular are not", {
+  expect_snapshot_output(cat(highlight("x %in% y\n")))
+  expect_snapshot_output(cat(highlight("x + y\n")))
+})
+
 test_that("distinguish logical and numeric",{
   expect_equal(highlight("TRUE"), "<span class='kc'>TRUE</span>")
   expect_equal(highlight("FALSE"), "<span class='kc'>FALSE</span>")
