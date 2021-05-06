@@ -5,6 +5,7 @@
 #'   If `text` is linkable, an HTML link for `autolink()`, and or just
 #'   the URL for `autolink_url()`. Both return `NA` if the text is not
 #'   linkable.
+#' @inheritSection highlight Options
 #' @export
 #' @examples
 #' autolink("stats::median()")
