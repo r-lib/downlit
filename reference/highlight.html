@@ -171,6 +171,24 @@ can use existing themes.</p></td>
 <code>NA</code>.</p>
 <p>A string containing syntax highlighted HTML or <code>NA</code> (if <code>text</code>
 isn't parseable).</p>
+    <h2 class="hasAnchor" id="options"><a class="anchor" href="#options"></a>Options</h2>
+
+    <p>downlit provides a number of options to control the details of the linking.
+They are particularly important if you want to generate "local" links.</p><ul>
+<li><p><code>downlit.package</code>: name of the current package. Determines when
+<code>topic_index</code> and <code>article_index</code></p></li>
+<li><p><code>downlit.topic_index</code> and <code>downlit.article_index</code>: named character
+vector that maps from topic/article name to path.</p></li>
+<li><p><code>downlit.rdname</code>: name of current Rd file being documented (if any);
+used to avoid self-links.</p></li>
+<li><p><code>downlit.attached</code>: character vector of currently attached R packages.</p></li>
+<li><p><code>downlit.local_packages</code>: named character vector providing relative
+paths (value) to packages (name) that can be reached with relative links
+from the target HTML document.</p></li>
+<li><p><code>downlit.topic_path</code> and <code>downlit.article_path</code>: paths to reference
+topics and articles/vignettes relative to the "current" file.</p></li>
+</ul>
+
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='fu'>highlight</span><span class='op'>(</span><span class='st'>"1 + 1"</span><span class='op'>)</span><span class='op'>)</span></span>
