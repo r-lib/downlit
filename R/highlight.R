@@ -61,7 +61,7 @@ highlight <- function(text, classes = classes_chroma(), pre_class = NULL, code =
 
   paste0(
     "<pre class='", paste0(pre_class, collapse = " "), "'>\n",
-    if (code) paste0("<code class='sourceCode R'>"),
+    if (code) paste0("<code class='sourceCode r'>"),
     out,
     if (code) paste("</code>"),
     "</pre>"

@@ -190,7 +190,7 @@ label_input <- function(x, class, multi_pre = TRUE) {
 block <- function(lines, class = NULL, multi_pre = TRUE) {
   if (multi_pre) {
     paste0(
-      "<pre class='", class, "'><code>",
+      "<pre class='", class, "'><code class='sourceCode r'>",
       paste0(lines, collapse = "\n"),
       "</code></pre>\n"
     )
