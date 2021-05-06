@@ -4,9 +4,9 @@
       test_evaluate("1 + ", highlight = TRUE)
     Output
       <pre class='r-in'><code>1 + </code></pre>
-      <pre class='r-err co'><code><span class='r-pr'>#&gt;</span> <span class='error'>Error:</span> &lt;text&gt;:2:0: unexpected end of input
-      <span class='r-pr'>#&gt;</span> 1: 1 + 
-      <span class='r-pr'>#&gt;</span>    ^</code></pre>
+      <pre class='r-err co'><code>#&gt; <span class='error'>Error:</span> &lt;text&gt;:2:0: unexpected end of input
+      #&gt; 1: 1 + 
+      #&gt;    ^</code></pre>
 
 # highlights when requested
 
@@ -15,7 +15,7 @@
     Output
       <pre class='r-in'><code><span class='fl'>1</span> <span class='op'>+</span> 
        <span class='fl'>2</span> <span class='op'>+</span> <span class='fl'>3</span></code></pre>
-      <pre class='r-out co'><code><span class='r-pr'>#&gt;</span> [1] 6</code></pre>
+      <pre class='r-out co'><code>#&gt; [1] 6</code></pre>
 
 # handles basic cases
 
@@ -27,22 +27,22 @@
       test_evaluate("message('x')")
     Output
       <pre class='r-in'><code>message('x')</code></pre>
-      <pre class='r-msg co'><code><span class='r-pr'>#&gt;</span> x</code></pre>
+      <pre class='r-msg co'><code>#&gt; x</code></pre>
     Code
       test_evaluate("warning('x')")
     Output
       <pre class='r-in'><code>warning('x')</code></pre>
-      <pre class='r-wrn co'><code><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>x</code></pre>
+      <pre class='r-wrn co'><code>#&gt; <span class='warning'>Warning: </span>x</code></pre>
     Code
       test_evaluate("stop('x', call. = FALSE)")
     Output
       <pre class='r-in'><code>stop('x', call. = FALSE)</code></pre>
-      <pre class='r-err co'><code><span class='r-pr'>#&gt;</span> <span class='error'>Error:</span> x</code></pre>
+      <pre class='r-err co'><code>#&gt; <span class='error'>Error:</span> x</code></pre>
     Code
       test_evaluate("f <- function() stop('x'); f()")
     Output
       <pre class='r-in'><code>f &lt;- function() stop('x'); f()</code></pre>
-      <pre class='r-err co'><code><span class='r-pr'>#&gt;</span> <span class='error'>Error in f()</span> x</code></pre>
+      <pre class='r-err co'><code>#&gt; <span class='error'>Error in f()</span> x</code></pre>
 
 # each line of input gets span
 
@@ -54,7 +54,7 @@
        3 +
        4 +
        5</code></pre>
-      <pre class='r-out co'><code><span class='r-pr'>#&gt;</span> [1] 15</code></pre>
+      <pre class='r-out co'><code>#&gt; [1] 15</code></pre>
 
 # multiple code blocks are combined
 
@@ -71,9 +71,9 @@
       test_evaluate("cat(\"a\")\ncat(\"a\\n\")")
     Output
       <pre class='r-in'><code>cat("a")</code></pre>
-      <pre class='r-out co'><code><span class='r-pr'>#&gt;</span> a</code></pre>
+      <pre class='r-out co'><code>#&gt; a</code></pre>
       <pre class='r-in'><code>cat("a\n")</code></pre>
-      <pre class='r-out co'><code><span class='r-pr'>#&gt;</span> a</code></pre>
+      <pre class='r-out co'><code>#&gt; a</code></pre>
 
 # combines plots as needed
 
@@ -118,8 +118,8 @@
       test_evaluate("f()\n")
     Output
       <pre class='r-in'><code>f()</code></pre>
-      <pre class='r-out co'><code><span class='r-pr'>#&gt;</span> Output: <span style='color: #0000BB;'>blue</span></code></pre>
-      <pre class='r-msg co'><code><span class='r-pr'>#&gt;</span> Message: <span style='color: #0000BB;'>blue</span></code></pre>
-      <pre class='r-wrn co'><code><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span><span style='color: #0000BB;'>blue</span></code></pre>
-      <pre class='r-err co'><code><span class='r-pr'>#&gt;</span> <span class='error'>Error:</span> <span style='color: #0000BB;'>blue</span></code></pre>
+      <pre class='r-out co'><code>#&gt; Output: <span style='color: #0000BB;'>blue</span></code></pre>
+      <pre class='r-msg co'><code>#&gt; Message: <span style='color: #0000BB;'>blue</span></code></pre>
+      <pre class='r-wrn co'><code>#&gt; <span class='warning'>Warning: </span><span style='color: #0000BB;'>blue</span></code></pre>
+      <pre class='r-err co'><code>#&gt; <span class='error'>Error:</span> <span style='color: #0000BB;'>blue</span></code></pre>
 

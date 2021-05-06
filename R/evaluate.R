@@ -174,13 +174,10 @@ replay_html.recordedplot <- function(x, fig_save, fig_id, ..., use_pre = FALSE) 
 
 # helpers -----------------------------------------------------------------
 
-
 label_output <- function(x, class, use_pre = TRUE) {
-  prompt <- span("#&gt;", class = "r-pr")
-
   lines <- strsplit(x, "\n")[[1]]
   lines <- fansi::sgr_to_html(lines)
-  lines <- paste0(prompt, " ", lines)
+  lines <- paste0("#&gt;", " ", lines)
 
   block(lines, paste(class, "co"), use_pre = use_pre)
 }
