@@ -22,6 +22,19 @@ test_that("highlight all pre inside div.downlit", {
   expect_snapshot_output(show_xml(html))
 })
 
+test_that("preserves classes of .chunk <pre>s", {
+  html <- xml2::read_xml("
+    <body>
+    <div class = 'r-chunk'>
+      <pre class='a'>1 + 2</pre>
+      <pre class='b'>3 + 4</pre>
+    </div>
+    </body>
+  ")
+  downlit_html_node(html)
+  expect_snapshot_output(show_xml(html))
+})
+
 test_that("special package string gets linked", {
   html <- xml2::read_xml("<p>before <code>{downlit}</code> after</p>")
   downlit_html_node(html)
