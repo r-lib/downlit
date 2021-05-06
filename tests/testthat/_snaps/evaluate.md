@@ -4,7 +4,7 @@
       test_evaluate("1 + ", highlight = TRUE)
     Output
       <pre class='r-in'><code class='sourceCode r'>1 + </code></pre>
-      <pre class='r-err co'><code class='sourceCode r'>#&gt; <span class='error'>Error:</span> &lt;text&gt;:2:0: unexpected end of input
+      <pre class='r-err co'><code class='sourceCode r'>#&gt; <strong>Error:</strong> &lt;text&gt;:2:0: unexpected end of input
       #&gt; 1: 1 + 
       #&gt;    ^</code></pre>
 
@@ -32,17 +32,40 @@
       test_evaluate("warning('x')")
     Output
       <pre class='r-in'><code class='sourceCode r'>warning('x')</code></pre>
-      <pre class='r-wrn co'><code class='sourceCode r'>#&gt; <span class='warning'>Warning: </span>x</code></pre>
+      <pre class='r-wrn co'><code class='sourceCode r'>#&gt; <strong>Warning:</strong> x</code></pre>
     Code
       test_evaluate("stop('x', call. = FALSE)")
     Output
       <pre class='r-in'><code class='sourceCode r'>stop('x', call. = FALSE)</code></pre>
-      <pre class='r-err co'><code class='sourceCode r'>#&gt; <span class='error'>Error:</span> x</code></pre>
+      <pre class='r-err co'><code class='sourceCode r'>#&gt; <strong>Error:</strong> x</code></pre>
     Code
       test_evaluate("f <- function() stop('x'); f()")
     Output
       <pre class='r-in'><code class='sourceCode r'>f &lt;- function() stop('x'); f()</code></pre>
-      <pre class='r-err co'><code class='sourceCode r'>#&gt; <span class='error'>Error in f()</span> x</code></pre>
+      <pre class='r-err co'><code class='sourceCode r'>#&gt; <strong>Error in f()</strong> x</code></pre>
+
+# multi_pre = FALSE handles basic cases
+
+    Code
+      test_evaluate("# comment", multi_pre = FALSE)
+    Output
+      <div class='input'># comment</div>
+    Code
+      test_evaluate("message('x')", multi_pre = FALSE)
+    Output
+      <div class='input'>message('x')</div><div class='error'>#&gt; x</div>
+    Code
+      test_evaluate("warning('x')", multi_pre = FALSE)
+    Output
+      <div class='input'>warning('x')</div><div class='warning'>#&gt; <strong>Warning:</strong> x</div>
+    Code
+      test_evaluate("stop('x', call. = FALSE)", multi_pre = FALSE)
+    Output
+      <div class='input'>stop('x', call. = FALSE)</div><div class='message'>#&gt; <strong>Error:</strong> x</div>
+    Code
+      test_evaluate("f <- function() stop('x'); f()", multi_pre = FALSE)
+    Output
+      <div class='input'>f &lt;- function() stop('x'); f()</div><div class='message'>#&gt; <strong>Error in f()</strong> x</div>
 
 # each line of input gets span
 
@@ -120,6 +143,6 @@
       <pre class='r-in'><code class='sourceCode r'>f()</code></pre>
       <pre class='r-out co'><code class='sourceCode r'>#&gt; Output: <span style='color: #0000BB;'>blue</span></code></pre>
       <pre class='r-msg co'><code class='sourceCode r'>#&gt; Message: <span style='color: #0000BB;'>blue</span></code></pre>
-      <pre class='r-wrn co'><code class='sourceCode r'>#&gt; <span class='warning'>Warning: </span><span style='color: #0000BB;'>blue</span></code></pre>
-      <pre class='r-err co'><code class='sourceCode r'>#&gt; <span class='error'>Error:</span> <span style='color: #0000BB;'>blue</span></code></pre>
+      <pre class='r-wrn co'><code class='sourceCode r'>#&gt; <strong>Warning:</strong> <span style='color: #0000BB;'>blue</span></code></pre>
+      <pre class='r-err co'><code class='sourceCode r'>#&gt; <strong>Error:</strong> <span style='color: #0000BB;'>blue</span></code></pre>
 

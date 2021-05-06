@@ -2,18 +2,14 @@
 
 ## Syntax highlighting
 
-* Messages, warnings, and errors now get a much more minimal style. 
-  Messages are styled the same way as output; and warnings and errors
-  only style the "Warning" or "Error" text. This makes these types of
-  output easier to read, and easier for package developers to style
-  themselves.
-
-* The overall structure of the syntax highlighting has been overhauled.
-  Now each line is wrapped in a `<span>` with class `r-in` (input code),
-  `r-out` (output printed to console), `r-plot` (plots), `r-msg` (messages), 
-  `r-wrn` (warnings), and `r-err` (errors). Additionally, the prompt (`#>`)
-  is wrapped in a `<span class="r-pr">`. Altogether, these changes
-  should give much more flexibility for styling with CSS (#90).
+* `evaluate_and_highlight()` gains a new output mode, `multi_pre = TRUE`,
+  This mode will be used by default with the `bootstrap: 4` templates in 
+  pkgdown, and wraps each contiguous block of same type is in a `<pre>` with 
+  class `r-in` (input code), `r-out` (output printed to console), 
+  `r-plot` (plots), `r-msg` (messages),  `r-wrn` (warnings), and 
+  `r-err` (errors). This makes the output similar to what knitr produces 
+  (especially in concert with other pkgdown changes) and should give much 
+  greater flexibility for CSS styling (#90).
 
 * ANSI escapes no longer generate invalid HTML (#79).
 

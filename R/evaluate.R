@@ -137,7 +137,7 @@ replay_html.source <- function(x, ..., classes, multi_pre = FALSE, highlight = F
 
 #' @export
 replay_html.warning <- function(x, ..., multi_pre = FALSE) {
-  message <- paste0(span("Warning: ", class = "warning"), escape_html(x$message))
+  message <- paste0("<strong>Warning:</strong> ", escape_html(x$message))
   label_output(message, "r-wrn", multi_pre = multi_pre)
 }
 
@@ -154,7 +154,7 @@ replay_html.error <- function(x, ..., multi_pre = FALSE) {
   } else {
     prefix <- paste0("Error in ", escape_html(paste0(deparse(x$call), collapse = "")))
   }
-  message <- paste0(span(prefix, class = "error"), " ", escape_html(x$message))
+  message <- paste0("<strong>", prefix, "</strong> ", escape_html(x$message))
   label_output(message, "r-err", multi_pre = multi_pre)
 }
 
@@ -195,17 +195,22 @@ block <- function(lines, class = NULL, multi_pre = TRUE) {
       "</code></pre>\n"
     )
   } else {
-    lines <- span(lines, class = class)
-    paste0(lines, "\n", collapse = "")
-  }
-}
+    class <- switch(class,
+      "r-in" = "input",
+      "r-wrn co" = "warning",
+      "r-msg co" = "error",
+      "r-err co" = "message",
+      "r-out co" = "co",
+      "r-img" = "img",
+      abort("Unknown class")
+    )
 
-span <- function(..., class = NULL) {
-  paste0(
-    "<span", if (!is.null(class)) paste0(" class='", class, "'"), ">",
-    ...,
-    "</span>"
-  )
+    paste0(
+      "<div class='", class, "'>",
+      paste0(lines, collapse = "\n"),
+      "</div>"
+    )
+  }
 }
 
 unique_id <- function() {

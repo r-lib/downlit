@@ -17,6 +17,17 @@ test_that("handles basic cases", {
   })
 })
 
+test_that("multi_pre = FALSE handles basic cases", {
+  expect_snapshot({
+    test_evaluate("# comment", multi_pre = FALSE)
+    test_evaluate("message('x')", multi_pre = FALSE)
+    test_evaluate("warning('x')", multi_pre = FALSE)
+    test_evaluate("stop('x', call. = FALSE)", multi_pre = FALSE)
+    test_evaluate("f <- function() stop('x'); f()", multi_pre = FALSE)
+  })
+})
+
+
 test_that("each line of input gets span", {
   expect_snapshot({
     test_evaluate("1 +\n 2 +\n 3 +\n 4 +\n 5")
