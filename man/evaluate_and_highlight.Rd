@@ -10,7 +10,7 @@ evaluate_and_highlight(
   classes = downlit::classes_pandoc(),
   env = NULL,
   output_handler = evaluate::new_output_handler(),
-  use_pre = FALSE,
+  multi_pre = FALSE,
   highlight = TRUE
 )
 }
@@ -32,7 +32,7 @@ defaults to a child of the global environment.}
 
 \item{output_handler}{Custom output handler for \code{\link[evaluate:evaluate]{evaluate::evaluate()}}.}
 
-\item{use_pre}{Use newer style where each block of input/output gets
+\item{multi_pre}{Use newer style where each block of input/output gets
 it's own \verb{<pre>}? Automatically enabled by pkgdown when you use bs4.}
 
 \item{highlight}{Optionally suppress highlighting. This is useful for tests.}

@@ -13,7 +13,7 @@
 #'   defaults to a child of the global environment.
 #' @param output_handler Custom output handler for [evaluate::evaluate()].
 #' @param highlight Optionally suppress highlighting. This is useful for tests.
-#' @param use_pre Use newer style where each block of input/output gets
+#' @param multi_pre Use newer style where each block of input/output gets
 #'   it's own `<pre>`? Automatically enabled by pkgdown when you use bs4.
 #' @return An string containing HTML.
 #' @inheritParams highlight
@@ -39,7 +39,7 @@ evaluate_and_highlight <- function(code,
                                    classes = downlit::classes_pandoc(),
                                    env = NULL,
                                    output_handler = evaluate::new_output_handler(),
-                                   use_pre = FALSE,
+                                   multi_pre = FALSE,
                                    highlight = TRUE) {
   env <- env %||% child_env(global_env())
 
@@ -50,12 +50,12 @@ evaluate_and_highlight <- function(code,
     fig_id = unique_id(),
     classes = classes,
     highlight = highlight,
-    use_pre = use_pre
+    multi_pre = multi_pre
   )
 }
 
 
-test_evaluate <- function(code, ..., highlight = FALSE, use_pre = TRUE) {
+test_evaluate <- function(code, ..., highlight = FALSE, multi_pre = TRUE) {
   fig_save <- function(plot, id) {
     list(path = paste0(id, ".png"), width = 10, height = 10)
   }
@@ -65,7 +65,7 @@ test_evaluate <- function(code, ..., highlight = FALSE, use_pre = TRUE) {
     fig_save = fig_save,
     env = caller_env(),
     highlight = highlight,
-    use_pre = use_pre,
+    multi_pre = multi_pre,
     ...
   ))
 }
@@ -110,21 +110,21 @@ replay_html.list <- function(x, ...) {
 replay_html.NULL <- function(x, ...) ""
 
 #' @export
-replay_html.character <- function(x, ..., use_pre = FALSE) {
-  label_output(escape_html(x), "r-out", use_pre = use_pre)
+replay_html.character <- function(x, ..., multi_pre = FALSE) {
+  label_output(escape_html(x), "r-out", multi_pre = multi_pre)
 }
 
 #' @export
-replay_html.value <- function(x, ..., use_pre = FALSE) {
+replay_html.value <- function(x, ..., multi_pre = FALSE) {
   if (!x$visible) return()
 
   printed <- paste0(utils::capture.output(print(x$value)), collapse = "\n")
 
-  label_output(escape_html(printed), "r-out", use_pre = use_pre)
+  label_output(escape_html(printed), "r-out", multi_pre = multi_pre)
 }
 
 #' @export
-replay_html.source <- function(x, ..., classes, use_pre = FALSE, highlight = FALSE) {
+replay_html.source <- function(x, ..., classes, multi_pre = FALSE, highlight = FALSE) {
   if (highlight) {
     html <- highlight(x$src, classes = classes)
   }
@@ -132,34 +132,34 @@ replay_html.source <- function(x, ..., classes, use_pre = FALSE, highlight = FAL
     html <- escape_html(x$src)
   }
 
-  label_input(html, "r-in", use_pre = use_pre)
+  label_input(html, "r-in", multi_pre = multi_pre)
 }
 
 #' @export
-replay_html.warning <- function(x, ..., use_pre = FALSE) {
+replay_html.warning <- function(x, ..., multi_pre = FALSE) {
   message <- paste0(span("Warning: ", class = "warning"), escape_html(x$message))
-  label_output(message, "r-wrn", use_pre = use_pre)
+  label_output(message, "r-wrn", multi_pre = multi_pre)
 }
 
 #' @export
-replay_html.message <- function(x, ..., use_pre = FALSE) {
+replay_html.message <- function(x, ..., multi_pre = FALSE) {
   message <- escape_html(paste0(gsub("\n$", "", x$message)))
-  label_output(message, "r-msg", use_pre = use_pre)
+  label_output(message, "r-msg", multi_pre = multi_pre)
 }
 
 #' @export
-replay_html.error <- function(x, ..., use_pre = FALSE) {
+replay_html.error <- function(x, ..., multi_pre = FALSE) {
   if (is.null(x$call)) {
     prefix <- "Error:"
   } else {
     prefix <- paste0("Error in ", escape_html(paste0(deparse(x$call), collapse = "")))
   }
   message <- paste0(span(prefix, class = "error"), " ", escape_html(x$message))
-  label_output(message, "r-err", use_pre = use_pre)
+  label_output(message, "r-err", multi_pre = multi_pre)
 }
 
 #' @export
-replay_html.recordedplot <- function(x, fig_save, fig_id, ..., use_pre = FALSE) {
+replay_html.recordedplot <- function(x, fig_save, fig_id, ..., multi_pre = FALSE) {
   fig <- fig_save(x, fig_id())
   img <- paste0(
     "<img ",
@@ -169,26 +169,26 @@ replay_html.recordedplot <- function(x, fig_save, fig_id, ..., use_pre = FALSE) 
     "height='", fig$height, "' ",
     "/>"
   )
-  block(img, "r-plt", use_pre = use_pre)
+  block(img, "r-plt", multi_pre = multi_pre)
 }
 
 # helpers -----------------------------------------------------------------
 
-label_output <- function(x, class, use_pre = TRUE) {
+label_output <- function(x, class, multi_pre = TRUE) {
   lines <- strsplit(x, "\n")[[1]]
   lines <- fansi::sgr_to_html(lines)
   lines <- paste0("#&gt;", " ", lines)
 
-  block(lines, paste(class, "co"), use_pre = use_pre)
+  block(lines, paste(class, "co"), multi_pre = multi_pre)
 }
 
-label_input <- function(x, class, use_pre = TRUE) {
+label_input <- function(x, class, multi_pre = TRUE) {
   lines <- strsplit(x, "\n")[[1]]
-  block(lines, class, use_pre = use_pre)
+  block(lines, class, multi_pre = multi_pre)
 }
 
-block <- function(lines, class = NULL, use_pre = TRUE) {
-  if (use_pre) {
+block <- function(lines, class = NULL, multi_pre = TRUE) {
+  if (multi_pre) {
     paste0(
       "<pre class='", class, "'><code>",
       paste0(lines, collapse = "\n"),
