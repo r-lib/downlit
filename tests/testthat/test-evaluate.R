@@ -23,6 +23,12 @@ test_that("each line of input gets span", {
   })
 })
 
+test_that("multiple code blocks are combined", {
+  expect_snapshot({
+    test_evaluate("x <- 1\nx <- 2\nx <- 3")
+  })
+})
+
 test_that("output always gets trailing nl", {
   # These two calls should produce the same output
   expect_snapshot({
