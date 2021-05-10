@@ -8,6 +8,10 @@
   output easier to read, and easier for package developers to style
   themselves.
 
+* Messages, warnings, and errors now retrieve their text using
+  `conditionMessage()`, which supports more advanced types of conditions
+  (@davidchall, #100).
+
 * The overall structure of the syntax highlighting has been overhauled.
   Now each line is wrapped in a `<span>` with class `r-in` (input code),
   `r-out` (output printed to console), `r-plot` (plots), `r-msg` (messages), 
