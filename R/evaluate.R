@@ -120,13 +120,13 @@ replay_html.source <- function(x, ..., classes, highlight = FALSE) {
 
 #' @export
 replay_html.warning <- function(x, ...) {
-  message <- paste0(span("Warning: ", class = "warning"), escape_html(x$message))
+  message <- paste0(span("Warning: ", class = "warning"), escape_html(conditionMessage(x)))
   label_output(message, "r-wrn")
 }
 
 #' @export
 replay_html.message <- function(x, ...) {
-  message <- escape_html(paste0(gsub("\n$", "", x$message)))
+  message <- escape_html(paste0(gsub("\n$", "", conditionMessage(x))))
   label_output(message, "r-msg")
 }
 
@@ -137,7 +137,7 @@ replay_html.error <- function(x, ...) {
   } else {
     prefix <- paste0("Error in ", escape_html(paste0(deparse(x$call), collapse = "")))
   }
-  message <- paste0(span(prefix, class = "error"), " ", escape_html(x$message))
+  message <- paste0(span(prefix, class = "error"), " ", escape_html(conditionMessage(x)))
   label_output(message, "r-err")
 }
 
