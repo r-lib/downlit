@@ -4,7 +4,7 @@
 
 * `evaluate_and_highlight()` gains a new output mode, `multi_pre = TRUE`,
   This mode will be used by default with the `bootstrap: 4` templates in 
-  pkgdown, and wraps each contiguous block of same type is in a `<pre>` with 
+  pkgdown, and wraps each contiguous block of same type in a `<pre>` with 
   class `r-in` (input code), `r-out` (output printed to console), 
   `r-plot` (plots), `r-msg` (messages),  `r-wrn` (warnings), and 
   `r-err` (errors). This makes the output similar to what knitr produces 
