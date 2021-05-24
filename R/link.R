@@ -5,6 +5,7 @@
 #'   If `text` is linkable, an HTML link for `autolink()`, and or just
 #'   the URL for `autolink_url()`. Both return `NA` if the text is not
 #'   linkable.
+#' @inheritSection highlight Options
 #' @export
 #' @examples
 #' autolink("stats::median()")
@@ -24,12 +25,6 @@ autolink <- function(text) {
 #' @export
 #' @rdname autolink
 autolink_url <- function(text) {
-  if (is_infix(text)) {
-    # backticks are needed for the parse call, otherwise get:
-    # Error: unexpected SPECIAL in "href_expr_(%in%"
-    text <- paste0("`", text, "`")
-  }
-
   expr <- safe_parse(text)
   if (length(expr) == 0) {
     return(NA_character_)
@@ -44,89 +39,85 @@ href_expr_ <- function(expr, ...) {
 }
 
 href_expr <- function(expr) {
-  if (is_symbol(expr)) {
-    if (is_infix(as.character(expr))) {
-      href_topic(as.character(expr))
+  if (!is_call(expr)) {
+    return(NA_character_)
+  }
+
+  fun <- expr[[1]]
+  if (is_call(fun, "::", n = 2)) {
+    pkg <- as.character(fun[[2]])
+    fun <- fun[[3]]
+  } else {
+    pkg <- NULL
+  }
+
+  if (!is_symbol(fun))
+    return(NA_character_)
+
+  fun_name <- as.character(fun)
+  n_args <- length(expr) - 1
+
+  if (fun_name %in% c("library", "require", "requireNamespace")) {
+    if (n_args == 1 && is.null(names(expr))) {
+      pkg <- as.character(expr[[2]])
+      topic <- href_package(pkg)
+      if (is.na(topic)) {
+        href_topic(fun_name)
+      } else {
+        topic
+      }
+    } else {
+      href_topic(fun_name)
+    }
+  } else if (fun_name == "vignette") {
+    if (length(expr) == 1) {
+      return(href_topic(fun_name))
+    }
+    expr <- call_standardise(expr)
+    topic_ok <- is.character(expr$topic)
+    package_ok <- is.character(expr$package) || is.null(expr$package)
+    if (topic_ok && package_ok) {
+      href_article(expr$topic, expr$package)
     } else {
       NA_character_
     }
-  } else if (is_call(expr)) {
-    fun <- expr[[1]]
-
-    if (is_call(fun, "::", n = 2)) {
-      pkg <- as.character(fun[[2]])
-      fun <- fun[[3]]
-    } else {
-      pkg <- NULL
-    }
-
-    if (!is_symbol(fun))
-      return(NA_character_)
-
-    fun_name <- as.character(fun)
-
-    # we need to include the `::` and `?` infix operators
-    # so that `?build_site()` and `pkgdown::build_site()` are linked
-    if (!is_prefix(fun_name) && !fun_name %in% c("::", "?")) {
-      return(NA_character_)
-    }
-
-    n_args <- length(expr) - 1
-
-    if (fun_name %in% c("library", "require", "requireNamespace")) {
-      if (length(expr) == 1) {
-        return(href_topic(fun_name))
-      }
-      pkg <- as.character(expr[[2]])
-      href_package(pkg)
-    } else if (fun_name == "vignette") {
-      if (length(expr) == 1) {
-        return(href_topic(fun_name))
-      }
-      expr <- call_standardise(expr)
-      topic_ok <- is.character(expr$topic)
-      package_ok <- is.character(expr$package) || is.null(expr$package)
-      if (topic_ok && package_ok) {
-        href_article(expr$topic, expr$package)
+  } else if (fun_name == "?") {
+    if (n_args == 1) {
+      topic <- expr[[2]]
+      if (is_call(topic, "::")) {
+        # ?pkg::x
+        href_topic(as.character(topic[[3]]), as.character(topic[[2]]))
+      } else if (is_symbol(topic) || is_string(topic)) {
+        # ?x
+        href_topic(as.character(expr[[2]]))
       } else {
         NA_character_
       }
-    } else if (fun_name == "?") {
-      if (n_args == 1) {
-        topic <- expr[[2]]
-        if (is_call(topic, "::")) {
-          # ?pkg::x
-          href_topic(as.character(topic[[3]]), as.character(topic[[2]]))
-        } else if (is_symbol(topic) || is_string(topic)) {
-          # ?x
-          href_topic(as.character(expr[[2]]))
-        } else {
-          NA_character_
-        }
-      } else if (n_args == 2) {
-        # package?x
-        href_topic(paste0(expr[[3]], "-", expr[[2]]))
-      }
-    } else if (fun_name == "help") {
-      expr <- call_standardise(expr)
-      if (!is.null(expr$topic) && !is.null(expr$package)) {
-        href_topic(as.character(expr$topic), as.character(expr$package))
-      } else if (!is.null(expr$topic) && is.null(expr$package)) {
-        href_topic(as.character(expr$topic))
-      } else if (is.null(expr$topic) && !is.null(expr$package)) {
-        href_package_ref(as.character(expr$package))
-      } else {
-        NA_character_
-      }
-    } else if (fun_name == "::") {
-      href_topic(as.character(expr[[3]]), as.character(expr[[2]]))
-    } else {
-      href_topic(fun_name, pkg)
+    } else if (n_args == 2) {
+      # package?x
+      href_topic(paste0(expr[[3]], "-", expr[[2]]))
     }
+  } else if (fun_name == "help") {
+    expr <- call_standardise(expr)
+    if (is_help_literal(expr$topic) && is_help_literal(expr$package)) {
+      href_topic(as.character(expr$topic), as.character(expr$package))
+    } else if (is_help_literal(expr$topic) && is.null(expr$package)) {
+      href_topic(as.character(expr$topic))
+    } else if (is.null(expr$topic) && is_help_literal(expr$package)) {
+      href_package_ref(as.character(expr$package))
+    } else {
+      NA_character_
+    }
+  } else if (fun_name == "::") {
+    href_topic(as.character(expr[[3]]), as.character(expr[[2]]))
+  } else if (n_args == 0) {
+    href_topic(fun_name, pkg)
   } else {
     NA_character_
   }
 }
+
+is_help_literal <- function(x) is_string(x) || is_symbol(x)
 
 # Topics ------------------------------------------------------------------
 
@@ -248,24 +239,46 @@ find_reexport_source <- function(obj, ns, topic) {
 href_article <- function(article, package = NULL) {
   if (is_package_local(package)) {
     path <- find_article(NULL, article)
-    if (is.null(path)) {
-      return(NA_character_)
-    }
-
-    paste0(getOption("downlit.article_path"), path)
-  } else {
-    path <- find_article(package, article)
-    if (is.null(path)) {
-      return(NA_character_)
-    }
-
-    base_url <- remote_package_article_url(package)
-    if (is.null(base_url)) {
-      paste0("https://cran.rstudio.com/web/packages/", package, "/vignettes/", path)
-    } else {
-      paste0(base_url, "/", path)
+    if (!is.null(path)) {
+      return(paste0(getOption("downlit.article_path"), path))
     }
   }
+
+  if (is.null(package)) {
+    package <- find_vignette_package(article)
+    if (is.null(package)) {
+      return(NA_character_)
+    }
+  }
+
+  path <- find_article(package, article)
+  if (is.null(path)) {
+    return(NA_character_)
+  }
+
+  base_url <- remote_package_article_url(package)
+  if (is.null(base_url)) {
+    paste0("https://cran.rstudio.com/web/packages/", package, "/vignettes/", path)
+  } else {
+    paste0(base_url, "/", path)
+  }
+}
+
+# Try to figure out package name from attached packages
+find_vignette_package <- function(x) {
+  for (pkg in getOption("downlit.attached")) {
+    if (!is_installed(pkg)) {
+      next
+    }
+
+    info <- tools::getVignetteInfo(pkg)
+
+    if (x %in% info[, "Topic"]) {
+      return(pkg)
+    }
+  }
+
+  NULL
 }
 
 # Packages ----------------------------------------------------------------

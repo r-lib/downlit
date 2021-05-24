@@ -35,6 +35,11 @@ test_that("unicode is not mangled", {
   expect_equal(highlight("# \u2714"), "<span class='c'># \u2714</span>")
 })
 
+test_that("custom infix operators are linked, but regular are not", {
+  expect_snapshot_output(cat(highlight("x %in% y\n")))
+  expect_snapshot_output(cat(highlight("x + y\n")))
+})
+
 test_that("distinguish logical and numeric",{
   expect_equal(highlight("TRUE"), "<span class='kc'>TRUE</span>")
   expect_equal(highlight("FALSE"), "<span class='kc'>FALSE</span>")
@@ -89,4 +94,9 @@ test_that("R6 instantiation gets linked", {
     highlight("new()"),
     "<span class='nf'>new</span><span class='o'>(</span><span class='o'>)</span>"
   )
+})
+
+test_that("ansi escapes are converted to html", {
+  expect_snapshot_output(highlight("# \033[31mhello\033[m"))
+  expect_snapshot_output(highlight("# \u2029[31mhello\u2029[m"))
 })

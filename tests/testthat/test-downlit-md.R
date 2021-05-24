@@ -38,6 +38,7 @@ test_that("pandoc AST v1.20", {
 
 test_that("pandoc AST v1.21", {
   skip_if_not(rmarkdown::pandoc_version() >= "2.10")
+  skip_if_not(rmarkdown::pandoc_version() < "2.11")
 
   verify_output(test_path("test-downlit-md-v21.txt"), {
     cat(downlit_md_string("* `base::t`"))

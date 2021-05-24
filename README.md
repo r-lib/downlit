@@ -12,7 +12,7 @@ The goal of downlit is to provide syntax highlighting and automatic linking of R
 
 Install downlit from CRAN with:
 
-```{r, eval = FALSE}
+```r
 install.packages("downlit")
 ```
 

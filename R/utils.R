@@ -66,3 +66,7 @@ extract_curly_package <- function(x) {
   x
 }
 
+
+show_xml <- function(x) {
+  cat(as.character(x, options = c("format", "no_declaration")))
+}

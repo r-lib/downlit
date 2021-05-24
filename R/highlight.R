@@ -6,6 +6,28 @@
 #' * links function calls to their documentation (where possible)
 #' * in comments, translates ANSI escapes in to HTML equivalents.
 #'
+#' # Options
+#'
+#' downlit provides a number of options to control the details of the linking.
+#' They are particularly important if you want to generate "local" links.
+#'
+#' * `downlit.package`: name of the current package. Determines when
+#'   `topic_index` and `article_index`
+#'
+#' * `downlit.topic_index` and `downlit.article_index`: named character
+#'   vector that maps from topic/article name to path.
+#'
+#' * `downlit.rdname`: name of current Rd file being documented (if any);
+#'   used to avoid self-links.
+#'
+#' * `downlit.attached`: character vector of currently attached R packages.
+#'
+#' * `downlit.local_packages`: named character vector providing relative
+#'   paths (value) to packages (name) that can be reached with relative links
+#'   from the target HTML document.
+#'
+#' * `downlit.topic_path` and `downlit.article_path`: paths to reference
+#'   topics and articles/vignettes relative to the "current" file.
 #' @export
 #' @param text String of code to highlight and link.
 #' @param classes A mapping between token names and CSS class names.
@@ -13,6 +35,7 @@
 #'   that (roughly) match Pandoc and chroma (used by hugo) classes so you
 #'   can use existing themes.
 #' @param pre_class Class(es) to give output `<pre>`.
+#' @param code If `TRUE`, wrap output in a `<code>`  block
 #' @return If `text` is valid R code, an HTML `<pre>` tag. Otherwise,
 #'   `NA`.
 #' @return A string containing syntax highlighted HTML or `NA` (if `text`
@@ -23,7 +46,7 @@
 #'
 #' # Unparseable R code returns NA
 #' cat(highlight("base::t("))
-highlight <- function(text, classes = classes_chroma(), pre_class = NULL) {
+highlight <- function(text, classes = classes_chroma(), pre_class = NULL, code = FALSE) {
   text <- gsub("\t", "  ", text, fixed = TRUE)
   text <- gsub("\r", "", text, fixed = TRUE)
   parsed <- parse_data(text)
@@ -60,7 +83,9 @@ highlight <- function(text, classes = classes_chroma(), pre_class = NULL) {
 
   paste0(
     "<pre class='", paste0(pre_class, collapse = " "), "'>\n",
+    if (code) paste0("<code class='sourceCode R'>"),
     out,
+    if (code) paste("</code>"),
     "</pre>"
   )
 }
@@ -253,6 +278,9 @@ token_href <- function(token, text) {
   fun <- setdiff(fun, ns_fun)
   fun <- fun[token[fun-1] != "'$'"]
 
+  # Include custom infix operators
+  fun <- c(fun, which(token %in% "SPECIAL"))
+
   # Highlight R6 instantiation
   r6_new_call <- which(
     text == "new" & token == "SYMBOL_FUNCTION_CALL"
@@ -289,6 +317,8 @@ token_escape <- function(token, text) {
   text <- escape_html(text)
 
   is_comment <- token == "COMMENT"
+  # \033 can't be represented in xml (and hence is ignored by xml2)
+  text[is_comment] <- gsub("\u2029", "\033", text[is_comment], fixed = TRUE)
   text[is_comment] <- fansi::sgr_to_html(text[is_comment])
 
   text

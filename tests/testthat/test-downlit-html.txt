@@ -4,12 +4,12 @@
 <html><body>
 
 <!-- Should get linked -->
-<pre class="downlit">
-
+<pre class="downlit sourceCode r">
+<code class="sourceCode R">
 <span class="co"># This is a comment</span>
 
 <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span><span class="op">(</span><span class="op">)</span>
-</pre>
+</code></pre>
 <p><code><a href="https://rdrr.io/r/stats/median.html">stats::median()</a></code></p>
 
 <!-- Shouldn't get linked -->

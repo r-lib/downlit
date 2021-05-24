@@ -1,5 +1,63 @@
 # downlit (development version)
 
+## Syntax highlighting
+
+* Messages, warnings, and errors now get a much more minimal style. 
+  Messages are styled the same way as output; and warnings and errors
+  only style the "Warning" or "Error" text. This makes these types of
+  output easier to read, and easier for package developers to style
+  themselves.
+
+* Messages, warnings, and errors now retrieve their text using
+  `conditionMessage()`, which supports more advanced types of conditions
+  (@davidchall, #100).
+
+* The overall structure of the syntax highlighting has been overhauled.
+  Now each line is wrapped in a `<span>` with class `r-in` (input code),
+  `r-out` (output printed to console), `r-plot` (plots), `r-msg` (messages), 
+  `r-wrn` (warnings), and `r-err` (errors). Additionally, the prompt (`#>`)
+  is wrapped in a `<span class="r-pr">`. Altogether, these changes
+  should give much more flexibility for styling with CSS (#90).
+
+* ANSI escapes no longer generate invalid HTML (#79).
+
+* Changes to better support for HTML widgets and rgl in pkgdown 
+  (@dmurdoch, #78).
+
+## Auto-linking
+
+* Packages attached when you call `library(package)` (including by the 
+  tidyverse), are now taken into account when autolinking (#87).
+
+* In code blocks, custom infix operators are now autolinked (#89).
+  In inline code, infix operators are no longer autolinked; this lead to too
+  many false positives. You can still link with (e.g.) `?"-"` (#86).
+
+* Inline calls with arguments (e.g. `foo(1, 2)`) are no longer auto-linked,
+  as intended and documented (#82).
+
+* Autolinking `vignette(foo, package = "pkg")` no longer errors if `pkg` is not 
+  installed (#85).
+
+* Unusual help calls (e.g. `help(a$b)`), no longer generate errors (#77).
+
+* Rare warning about incomplete final line in `autolink_url("pkgname::foo")`
+  is now suppressed (@dmurdoch, pkgdown#1419).
+
+# downlit 0.2.1
+
+* When auto-linking `vignette(foo)`, downlit now looks for a vignette named
+  foo in the packages it knows to be attached (#61).
+
+* Can now force highlighting of any `<pre>` by wrapping it inside a `<div>`
+  with `class = "downlit"`. This is useful in cases where it may otherwise
+  be hard to set the class of the `<pre>`.
+
+* In comments, `\u2029` is converted to `\033` to make it possible to preserve
+  ANSI escapes when passed through xml2.
+
+* No longer errors on library calls with named but empty arguments.
+
 # downlit 0.2.0
 
 * Autolinking can use metadata stored in package itself with pkgdown setting

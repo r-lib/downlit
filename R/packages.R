@@ -25,5 +25,41 @@ extract_package_attach_ <- function(expr) {
 }
 
 register_attached_packages <- function(packages) {
+  packages <- add_depends(packages)
   options("downlit.attached" = union(packages, getOption("downlit.attached")))
+}
+
+add_depends <- function(packages) {
+  if ("tidyverse" %in% packages && is_installed("tidyverse")) {
+    core <- getNamespace("tidyverse")$core
+    packages <- union(packages, core)
+  }
+
+  # add packages attached by depends
+  depends <- unlist(lapply(packages, package_depends))
+  union(packages, depends)
+}
+
+package_depends <- function(package) {
+  if (!is_installed(package)) {
+    return(character())
+  }
+
+  if (!is.null(devtools_meta(package))) {
+    path_desc <- system.file("DESCRIPTION", package = "pkgdown")
+    deps <- desc::desc_get_deps(path_desc)
+    depends <- deps$package[deps$type == "Depends"]
+    depends <- depends[depends != "R"]
+    return(depends)
+  }
+
+  path_meta <- system.file("Meta", "package.rds", package = package)
+  meta <- readRDS(path_meta)
+  names(meta$Depends)
+}
+
+# from https://github.com/r-lib/pkgdown/blob/8e0838e273462cec420dfa20f240c684a33425d9/R/utils.r#L62
+devtools_meta <- function(x) {
+  ns <- .getNamespace(x)
+  ns[[".__DEVTOOLS__"]]
 }

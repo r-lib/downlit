@@ -6,7 +6,7 @@
 \alias{classes_chroma}
 \title{Highlight and link a code block}
 \usage{
-highlight(text, classes = classes_chroma(), pre_class = NULL)
+highlight(text, classes = classes_chroma(), pre_class = NULL, code = FALSE)
 
 classes_pandoc()
 
@@ -21,6 +21,8 @@ that (roughly) match Pandoc and chroma (used by hugo) classes so you
 can use existing themes.}
 
 \item{pre_class}{Class(es) to give output \verb{<pre>}.}
+
+\item{code}{If \code{TRUE}, wrap output in a \verb{<code>}  block}
 }
 \value{
 If \code{text} is valid R code, an HTML \verb{<pre>} tag. Otherwise,
@@ -37,6 +39,25 @@ This function:
 \item in comments, translates ANSI escapes in to HTML equivalents.
 }
 }
+\section{Options}{
+downlit provides a number of options to control the details of the linking.
+They are particularly important if you want to generate "local" links.
+\itemize{
+\item \code{downlit.package}: name of the current package. Determines when
+\code{topic_index} and \code{article_index}
+\item \code{downlit.topic_index} and \code{downlit.article_index}: named character
+vector that maps from topic/article name to path.
+\item \code{downlit.rdname}: name of current Rd file being documented (if any);
+used to avoid self-links.
+\item \code{downlit.attached}: character vector of currently attached R packages.
+\item \code{downlit.local_packages}: named character vector providing relative
+paths (value) to packages (name) that can be reached with relative links
+from the target HTML document.
+\item \code{downlit.topic_path} and \code{downlit.article_path}: paths to reference
+topics and articles/vignettes relative to the "current" file.
+}
+}
+
 \examples{
 cat(highlight("1 + 1"))
 cat(highlight("base::t(1:3)"))
