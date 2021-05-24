@@ -70,7 +70,7 @@ test_that("relative paths", {
 
   # Relative paths
   downlit_md_path("in.md", "out1.md")
-  expect_equal(readLines("out1.md", "Test"))
+  expect_equal(readLines("out1.md"), "Test")
 
   # Directory must exist
   expect_error(downlit_md_path("in.md", "bogus/out.md"))
@@ -78,7 +78,7 @@ test_that("relative paths", {
   # Subdirectory
   dir.create("out3")
   downlit_md_path("in.md", "out3/out3.md")
-  expect_equal(readLines("out3/out3.md", "Test"))
+  expect_equal(readLines("out3/out3.md"), "Test")
 
   in_path <- normalizePath("in.md", mustWork = TRUE)
 
@@ -87,12 +87,12 @@ test_that("relative paths", {
 
   # Paths are relative to current directory
   downlit_md_path(in_path, "out5.md")
-  expect_equal(readLines("out5.md", "Test"))
+  expect_equal(readLines("out5.md"), "Test")
 
   # Absolute paths
   out_path <- file.path(getwd(), "out6.md")
   downlit_md_path(in_path, out_path)
-  expect_equal(readLines(out_path, "Test"))
+  expect_equal(readLines(out_path), "Test")
 })
 
 test_that("path_abs", {
@@ -101,5 +101,5 @@ test_that("path_abs", {
   expect_equal(path_abs("../bogus"), file.path(dirname(getwd()), "bogus"))
   expect_equal(path_abs("bogus"), file.path(getwd(), "bogus"))
   expect_equal(path_abs(getwd()), getwd())
-  expect_equal(path_abs(file.path(getwd(), "bogus"), file.path(getwd(), "bogus")))
+  expect_equal(path_abs(file.path(getwd(), "bogus")), file.path(getwd(), "bogus"))
 })
