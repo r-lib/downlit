@@ -101,5 +101,6 @@ test_that("path_abs", {
   expect_equal(path_abs("../bogus"), file.path(dirname(getwd()), "bogus"))
   expect_equal(path_abs("bogus"), file.path(getwd(), "bogus"))
   expect_equal(path_abs(getwd()), getwd())
+  skip_on_os("windows")
   expect_equal(path_abs(file.path(getwd(), "bogus")), file.path(getwd(), "bogus"))
 })
