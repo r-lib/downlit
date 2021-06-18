@@ -103,6 +103,7 @@ package_urls <- function(package) {
 parse_urls <- function(x) {
   urls <- trimws(strsplit(trimws(x), "[,\\s]+", perl = TRUE)[[1]])
   urls <- urls[grepl("^http", urls)]
+  urls <- sub("/$", "", urls)
 
   sub_special_cases(urls)
 }
