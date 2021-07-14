@@ -1,5 +1,8 @@
 # downlit (development version)
 
+* Functions in HTML `<summary>` elements are no longer autolinked 
+  (@gadenbuie, #105).
+
 ## Syntax highlighting
 
 * Messages, warnings, and errors now get a much more minimal style. 
