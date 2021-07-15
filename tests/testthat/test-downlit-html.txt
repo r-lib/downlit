@@ -15,6 +15,6 @@
 <!-- Shouldn't get linked -->
 <h1><code>stats::median()</code></h1>
 <a><code>stats::median()</code></a>
-
+<details><summary><code>stats::median()</code></summary></details>
 </body></html>
 
