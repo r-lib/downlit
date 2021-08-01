@@ -72,7 +72,7 @@ ast2md <- function(path, out_path, format = NULL) {
 
   options <- c(
     if (rmarkdown::pandoc_available("2.0")) "--eol=lf",
-    "--atx-headers", # 1.19
+    if (rmarkdown::pandoc_version() < "2.11.2") "--atx-headers", # 1.19-2.11.2
     "--wrap=none" # 1.16
   )
 

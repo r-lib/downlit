@@ -43,3 +43,13 @@ test_that("doesn't include if character.only = TRUE", {
     character()
   )
 })
+
+test_that("adds packages attached by dependencies", {
+  skip_if_not_installed("ggraph")
+  expect_true("ggplot2" %in% add_depends("ggraph"))
+})
+
+test_that("adds tidyverse packages", {
+  skip_if_not_installed("tidyverse")
+  expect_true("ggplot2" %in% add_depends("tidyverse"))
+})

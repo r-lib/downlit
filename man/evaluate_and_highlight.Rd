@@ -8,7 +8,9 @@ evaluate_and_highlight(
   code,
   fig_save,
   classes = downlit::classes_pandoc(),
-  env = NULL
+  env = NULL,
+  output_handler = evaluate::new_output_handler(),
+  highlight = TRUE
 )
 }
 \arguments{
@@ -26,15 +28,33 @@ can use existing themes.}
 
 \item{env}{Environment in which to evaluate code; if not supplied,
 defaults to a child of the global environment.}
+
+\item{output_handler}{Custom output handler for \code{\link[evaluate:evaluate]{evaluate::evaluate()}}.}
+
+\item{highlight}{Optionally suppress highlighting. This is useful for tests.}
 }
 \value{
 An string containing HTML.
 }
 \description{
 This function runs \code{code} and captures the output using
-\code{\link[evaluate:evaluate]{evaluate::evaluate()}}. It syntax highlights code with \code{\link[=highlight]{highlight()}},
-and combines all results into a single HTML div.
+\code{\link[evaluate:evaluate]{evaluate::evaluate()}}. It syntax higlights code with \code{\link[=highlight]{highlight()}}, and
+intermingles it with output.
 }
 \examples{
-evaluate_and_highlight("1 + 2")
+cat(evaluate_and_highlight("1 + 2"))
+cat(evaluate_and_highlight("x <- 1:10\nmean(x)"))
+
+# -----------------------------------------------------------------
+# evaluate_and_highlight() powers pkgdown's documentation formatting so
+# here I include a few examples to make sure everything looks good
+# -----------------------------------------------------------------
+
+blue <- function(x) paste0("\033[34m", x, "\033[39m")
+f <- function(x) {
+  cat("This is some output. My favourite colour is ", blue("blue"), ".\n", sep = "")
+  message("This is a message. My favourite fruit is ", blue("blueberries"))
+  warning("Now at stage ", blue("blue"), "!")
+}
+f()
 }

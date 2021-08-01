@@ -57,9 +57,9 @@ downlit_html_node <- function(x, classes = classes_pandoc()) {
     code = TRUE
   )
 
-  # Identify <code> containing only text (i.e. no children) that are
-  # are not descendants of a header or link
-  bad_ancestor <- c("h1", "h2", "h3", "h4", "h5", "a")
+  # Identify <code> containing only text (i.e. no children)
+  # that are not descendants of an element where links are undesirable
+  bad_ancestor <- c("h1", "h2", "h3", "h4", "h5", "a", "summary")
   bad_ancestor <- paste0("ancestor::", bad_ancestor, collapse = "|")
   xpath_inline <- paste0(".//code[count(*) = 0 and not(", bad_ancestor, ")]")
 

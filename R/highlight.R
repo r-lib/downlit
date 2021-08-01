@@ -6,6 +6,28 @@
 #' * links function calls to their documentation (where possible)
 #' * in comments, translates ANSI escapes in to HTML equivalents.
 #'
+#' # Options
+#'
+#' downlit provides a number of options to control the details of the linking.
+#' They are particularly important if you want to generate "local" links.
+#'
+#' * `downlit.package`: name of the current package. Determines when
+#'   `topic_index` and `article_index`
+#'
+#' * `downlit.topic_index` and `downlit.article_index`: named character
+#'   vector that maps from topic/article name to path.
+#'
+#' * `downlit.rdname`: name of current Rd file being documented (if any);
+#'   used to avoid self-links.
+#'
+#' * `downlit.attached`: character vector of currently attached R packages.
+#'
+#' * `downlit.local_packages`: named character vector providing relative
+#'   paths (value) to packages (name) that can be reached with relative links
+#'   from the target HTML document.
+#'
+#' * `downlit.topic_path` and `downlit.article_path`: paths to reference
+#'   topics and articles/vignettes relative to the "current" file.
 #' @export
 #' @param text String of code to highlight and link.
 #' @param classes A mapping between token names and CSS class names.
@@ -255,6 +277,9 @@ token_href <- function(token, text) {
   fun <- which(token %in% "SYMBOL_FUNCTION_CALL")
   fun <- setdiff(fun, ns_fun)
   fun <- fun[token[fun-1] != "'$'"]
+
+  # Include custom infix operators
+  fun <- c(fun, which(token %in% "SPECIAL"))
 
   # Highlight R6 instantiation
   r6_new_call <- which(

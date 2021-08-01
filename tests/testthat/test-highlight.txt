@@ -27,7 +27,7 @@
 <span class='m'>1</span> <span class='o'>+</span> <span class='m'>2</span> <span class='o'>*</span> <span class='m'>3</span>
 
 > cat(highlight("x %in% y"))
-<span class='nv'>x</span> <span class='o'>%in%</span> <span class='nv'>y</span>
+<span class='nv'>x</span> <span class='o'><a href='https://rdrr.io/r/base/match.html'>%in%</a></span> <span class='nv'>y</span>
 
 > cat(highlight("if (FALSE) 1"))
 <span class='kr'>if</span> <span class='o'>(</span><span class='kc'>FALSE</span><span class='o'>)</span> <span class='m'>1</span>
