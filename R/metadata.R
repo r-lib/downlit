@@ -106,7 +106,7 @@ package_urls <- function(package, repos = getOption("repos")) {
     # if it stays because the CRAN PACKAGES files don't include the URL entry, so we won't get
     # anything back - it's just a bit of a waste of effort
     # What happens if the custom repo is called something like "mycran"?
-    custom_repos <- repos[!grepl("cran", repos)]
+    custom_repos <- repos[!grepl("(\\bcran\\b)|(\\bCRAN\\b)", repos)]
 
     # Check your custom repos for a URL entry, returning NA_character_ if nothing is found
     desc_url <- repo_packages_urls(package = package, repos = custom_repos)
