@@ -154,9 +154,10 @@ repo_packages_urls <- function(package, repos) {
   urls <- lapply(
     repos, check_repo_for_package_url, package = package
   )
-  urls <- urls[[!is.null(urls)]]
   if (length(urls) == 0) {
     return(NA_character_)
+  } else {
+    urls <- urls[[!is.null(urls)]]
   }
   urls
 }
