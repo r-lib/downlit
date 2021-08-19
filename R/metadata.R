@@ -171,7 +171,7 @@ check_repo_for_package_url <- function(repo, package) {
 }
 
 fetch_repo_packages_file <- function(repo) {
-  as.data.frame(available.packages(contrib.url(repo), fields = "URL"))
+  as.data.frame(utils::available.packages(utils::contrib.url(repo), fields = "URL"))
 
 }
 
