@@ -87,7 +87,7 @@ fetch_yaml <- function(url) {
 
 # Helpers -----------------------------------------------------------------
 
-package_urls <- function(package) {
+package_urls <- function(package, repos = getOption("repos")) {
   # Finding the package URL:
   #
   # 1. Check if the package is installed and use the DESCRIPTION
@@ -95,12 +95,23 @@ package_urls <- function(package) {
   # 2.5. Maybe try using a custom function here that we could register?
   # 3. Then look for the package on CRAN and look for the DESCRIPTION
   path <- system.file("DESCRIPTION", package = package)
+
+  # If the package isn't installed, try repositories in 'repos', then CRAN
   if (path == "") {
 
     # Check the user's repos - the PACKAGE file will need to have the URL entry
     # otherwise we'd have to download the whole package just to get the DESCRIPTION
-    desc_url <- repo_package_urls(package = package, repos = getOptions("repos"))
 
+    # We try and remove CRAN from the list to check here but it's not the end of the world
+    # if it stays because the CRAN PACKAGES files don't include the URL entry, so we won't get
+    # anything back - it's just a bit of a waste of effort
+    custom_repos <- repos[names(repos) != "CRAN"]
+
+    # Check your custom repos for a URL entry, returning NA_character_ if nothing is found
+    desc_url <- repo_packages_urls(package = package, repos = custom_repos)
+
+
+    # If nothing is found, move to the next step (checking CRAN)
     if (is.na(desc_url)) {
       # Check CRAN for the URL
       desc_url <- cran_description_urls(package)
@@ -109,6 +120,7 @@ package_urls <- function(package) {
         return(character())
       }
     }
+    # If the package is installed, check the URL field from that
   } else {
     desc_url <- read.dcf(path, fields = "URL")[[1]]
     # If there's no URL field, return an empty character
@@ -138,26 +150,31 @@ cran_description_urls <- function(package) {
   }
 }
 
-repo_package_urls <- function(package, repos = getOption("repos")) {
+repo_packages_urls <- function(package, repos) {
   urls <- purrr::map(
-    repos, function(repo) {
-      pkgs <- fetch_repo_packages(repo)
-      unlist(strsplit(pkgs[pkgs[["Package"]] == package,"URL"], ", "))
-    }
+    repos, ~check_repo_for_package_url(repo = .x, package = package)
   )
-
+  urls <- purrr::compact(urls)
   if (length(urls) == 0) {
     return(NA_character_)
   }
-
-  unlist(urls)
+  urls
 }
 
-fetch_repo_packages <- function(repo) {
+check_repo_for_package_url <- function(repo, package) {
+  pkgs <- fetch_repo_packages_file(repo)
+  pkg <- pkgs[pkgs[["Package"]] == package,"URL"]
+  if (is.null(pkg)) {
+    return(NULL)
+  }
+  unlist(strsplit(pkg, ", "))
+}
+
+fetch_repo_packages_file <- function(repo) {
   tmp_packages <- tempfile(fileext = ".rds")
   on.exit(file.remove(tmp_packages))
 
-  if (suppressWarnings(utils::download.file(paste0(contrib.url(repo), "/PACKAGES.rds"), tmp_packages))) {
+  if (suppressWarnings(utils::download.file(paste0(contrib.url(repo, type = "source"), "/PACKAGES.rds"), tmp_packages, quiet = TRUE))) {
     abort("Failed to download")
   }
 
