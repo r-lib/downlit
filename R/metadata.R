@@ -160,7 +160,11 @@ repo_packages_urls <- function(package, repos) {
   } else {
     urls <- urls[[!is.null(urls)]]
   }
-  urls
+  if (length(urls) == 0) {
+    return(NA_character_)
+  } else {
+    urls
+  }
 }
 
 check_repo_for_package_url <- function(repo, package) {
