@@ -171,12 +171,8 @@ check_repo_for_package_url <- function(repo, package) {
 }
 
 fetch_repo_packages_file <- function(repo) {
-  tmp_packages <- tempfile(fileext = ".rds")
-  on.exit(file.remove(tmp_packages))
 
-  if (suppressWarnings(utils::download.file(paste0(contrib.url(repo, type = "source"), "/PACKAGES.rds"), tmp_packages, quiet = TRUE))) {
-    abort("Failed to download")
-  }
+  available.packages(contrib.url(repo), fields = "URL")
 
   as.data.frame(readRDS(tmp_packages))
 }
