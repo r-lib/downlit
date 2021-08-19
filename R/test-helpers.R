@@ -11,3 +11,10 @@ defer <- function(expr, scope = parent.frame()) {
 
   invisible()
 }
+
+skip_if_installed <- function (pkg) {
+  if (requireNamespace(pkg, quietly = TRUE)) {
+    testthat::skip(paste0(pkg, " could be loaded"))
+  }
+  return(invisible(TRUE))
+}
