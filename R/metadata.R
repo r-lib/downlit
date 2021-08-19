@@ -151,10 +151,10 @@ cran_description_urls <- function(package) {
 }
 
 repo_packages_urls <- function(package, repos) {
-  urls <- purrr::map(
-    repos, ~check_repo_for_package_url(repo = .x, package = package)
+  urls <- lapply(
+    repos, check_repo_for_package_url, package = package
   )
-  urls <- purrr::compact(urls)
+  urls <- urls[[!is.null(urls)]]
   if (length(urls) == 0) {
     return(NA_character_)
   }
@@ -171,10 +171,8 @@ check_repo_for_package_url <- function(repo, package) {
 }
 
 fetch_repo_packages_file <- function(repo) {
+  as.data.frame(available.packages(contrib.url(repo), fields = "URL"))
 
-  available.packages(contrib.url(repo), fields = "URL")
-
-  as.data.frame(readRDS(tmp_packages))
 }
 
 # All rOpenSci repositories have a known pkgdown URL.
