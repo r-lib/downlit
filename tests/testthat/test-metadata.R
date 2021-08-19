@@ -15,7 +15,6 @@ test_that("can extract urls for uninstalled packages from CRAN", {
   # I'm assuming that BMRSr isn't going to be installed (because why would it),
   # but this might not be the best approach
   expect_equal(package_urls("BMRSr"), "https://bmrsr.arawles.co.uk/")
-  expect_equal(package_urls("BMRSr", repos = c(Test = "http://test.com")))
 })
 
 test_that("handle common url formats", {
