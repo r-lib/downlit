@@ -88,14 +88,33 @@ fetch_yaml <- function(url) {
 # Helpers -----------------------------------------------------------------
 
 package_urls <- function(package) {
+  # Finding the package URL:
+  #
+  # 1. Check if the package is installed and use the DESCRIPTION
+  # 2. Then look for the package in the 'repos' repos and find the DESCRIPTION
+  # 2.5. Maybe try using a custom function here that we could register?
+  # 3. Then look for the package on CRAN and look for the DESCRIPTION
   path <- system.file("DESCRIPTION", package = package)
   if (path == "") {
-    return(character())
-  }
 
-  desc_url <- read.dcf(path, fields = "URL")[[1]]
-  if (is.na(desc_url)) {
-    return(character())
+    # Check the user's repos - the PACKAGE file will need to have the URL entry
+    # otherwise we'd have to download the whole package just to get the DESCRIPTION
+    desc_url <- repo_package_urls(package = package, repos = getOptions("repos"))
+
+    if (is.na(desc_url)) {
+      # Check CRAN for the URL
+      desc_url <- cran_description_urls(package)
+      # If there's no URL in the CRAN package, return an empty character
+      if (is.na(desc_url)) {
+        return(character())
+      }
+    }
+  } else {
+    desc_url <- read.dcf(path, fields = "URL")[[1]]
+    # If there's no URL field, return an empty character
+    if (is.na(desc_url)) {
+      return(character())
+    }
   }
   parse_urls(desc_url)
 }
@@ -105,6 +124,44 @@ parse_urls <- function(x) {
   urls <- urls[grepl("^http", urls)]
 
   sub_special_cases(urls)
+}
+
+cran_description_urls <- function(package) {
+  pkgs <- as.data.frame(tools::CRAN_package_db())
+
+  pkg_url <- unlist(strsplit(pkgs[pkgs[["Package"]] == package,"URL"], ", "))
+
+  if (is.null(pkg_url)){
+    return(NA_character_)
+  } else {
+    pkg_url
+  }
+}
+
+repo_package_urls <- function(package, repos = getOption("repos")) {
+  urls <- purrr::map(
+    repos, function(repo) {
+      pkgs <- fetch_repo_packages(repo)
+      unlist(strsplit(pkgs[pkgs[["Package"]] == package,"URL"], ", "))
+    }
+  )
+
+  if (length(urls) == 0) {
+    return(NA_character_)
+  }
+
+  unlist(urls)
+}
+
+fetch_repo_packages <- function(repo) {
+  tmp_packages <- tempfile(fileext = ".rds")
+  on.exit(file.remove(tmp_packages))
+
+  if (suppressWarnings(utils::download.file(paste0(contrib.url(repo), "/PACKAGES.rds"), tmp_packages))) {
+    abort("Failed to download")
+  }
+
+  as.data.frame(readRDS(tmp_packages))
 }
 
 # All rOpenSci repositories have a known pkgdown URL.
