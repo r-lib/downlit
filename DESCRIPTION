@@ -23,7 +23,8 @@ Imports:
     fansi,
     rlang,
     vctrs,
-    yaml
+    yaml,
+    memoise
 Suggests:
     rmarkdown,
     jsonlite,

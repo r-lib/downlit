@@ -141,7 +141,7 @@ url_from_desc <- function(path) {
 }
 
 url_from_cran <- function(package) {
-  pkgs <- as.data.frame(tools::CRAN_package_db())
+  pkgs <- memo_fetch_cran_packages()
   pkgs[pkgs[["Package"]] == package,"URL"]
 }
 
@@ -153,10 +153,12 @@ url_from_custom_repo <- function(package, repos) {
 }
 
 check_repo_for_package_url <- function(repo, package) {
-  pkgs <- fetch_repo_packages(repo)
+  pkgs <- memo_fetch_repo_packages(repo)
   url <- pkgs[pkgs[["Package"]] == package,"URL"]
   fix_filtered_url_field(url)
 }
+
+
 
 #' When filtering a df with package information and trying to get the URL,
 #' you'll get different return values:
@@ -175,6 +177,10 @@ fix_filtered_url_field <- function(x) {
 
 fetch_repo_packages <- function(repo) {
   as.data.frame(utils::available.packages(utils::contrib.url(repo), fields = "URL"))
+}
+
+fetch_cran_packages <- function() {
+  as.data.frame(tools::CRAN_package_db())
 }
 
 # All rOpenSci repositories have a known pkgdown URL.
