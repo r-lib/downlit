@@ -9,7 +9,8 @@ test_that("can extract urls for package", {
 
 test_that("can extract urls for uninstalled packages from CRAN", {
   skip_on_cran()
-  skip_if_installed("BMRSr")
+  pkg <- "BMRSr"
+  skip_if(requireNamespace(pkg, quietly = TRUE), "BMRSr package is installed")
 
   # We're testing here that we can find URLs for packages that aren't installed
   # I'm assuming that BMRSr isn't going to be installed (because why would it),

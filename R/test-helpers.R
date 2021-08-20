@@ -12,10 +12,3 @@ defer <- function(expr, scope = parent.frame()) {
   invisible()
 }
 
-#' Not included inline to avoid a `testthat` warning about undeclared dependencies
-skip_if_installed <- function (pkg) {
-  if (requireNamespace(pkg, quietly = TRUE)) {
-    testthat::skip(paste0(pkg, " could be loaded"))
-  }
-  return(invisible(TRUE))
-}
