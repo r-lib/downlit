@@ -109,27 +109,18 @@ package_urls <- function(package, repos = getOption("repos")) {
     custom_repos <- repos[!grepl("(\\bcran\\b)|(\\bCRAN\\b)", repos)]
 
     # Check your custom repos for a URL entry, returning NA_character_ if nothing is found
-    desc_url <- url_from_custom_repo(package = package, repos = custom_repos)
+    url <- url_from_custom_repo(package = package, repos = custom_repos)
 
 
     # If nothing is found, move to the next step (checking CRAN)
-    if (length(desc_url) == 0) {
-      # Check CRAN for the URL
-      desc_url <- url_from_cran(package)
-      # If there's no URL in the CRAN package, return an empty character
-      if (length(desc_url) == 0) {
-        return(character())
+    if (length(url) == 0) {
+        url <- url_from_cran(package)
       }
-    }
-    # If the package is installed, check the URL field from that
   } else {
-    desc_url <- read.dcf(path, fields = "URL")[[1]]
-    # If there's no URL field, return an empty character
-    if (is.na(desc_url)) {
-      return(character())
-    }
+    # If the package is installed, check the URL field from that
+    url <- url_from_desc(path)
   }
-  parse_urls(desc_url)
+  parse_urls(url)
 }
 
 parse_urls <- function(x) {
@@ -145,9 +136,13 @@ parse_urls <- function(x) {
   sub_special_cases(urls)
 }
 
+url_from_desc <- function(path) {
+  read.dcf(path, fields = "URL")[[1]]
+}
+
 url_from_cran <- function(package) {
   pkgs <- as.data.frame(tools::CRAN_package_db())
-  parse_urls(pkgs[pkgs[["Package"]] == package,"URL"])
+  pkgs[pkgs[["Package"]] == package,"URL"]
 }
 
 url_from_custom_repo <- function(package, repos) {
@@ -159,7 +154,23 @@ url_from_custom_repo <- function(package, repos) {
 
 check_repo_for_package_url <- function(repo, package) {
   pkgs <- fetch_repo_packages(repo)
-  parse_urls(pkgs[pkgs[["Package"]] == package,"URL"])
+  url <- pkgs[pkgs[["Package"]] == package,"URL"]
+  fix_filtered_url_field(url)
+}
+
+#' When filtering a df with package information and trying to get the URL,
+#' you'll get different return values:
+#' If the package exists, but there's no URL, you'll get NA
+#' If the package doesn't exist at all, you'll get character()
+#' This function just levels things out so it's easier to check
+fix_filtered_url_field <- function(x) {
+  if (length(x) == 0) {
+    return(character())
+  }
+  if (is.na(x)) {
+    return(character())
+  }
+  x
 }
 
 fetch_repo_packages <- function(repo) {
