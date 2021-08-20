@@ -109,15 +109,15 @@ package_urls <- function(package, repos = getOption("repos")) {
     custom_repos <- repos[!grepl("(\\bcran\\b)|(\\bCRAN\\b)", repos)]
 
     # Check your custom repos for a URL entry, returning NA_character_ if nothing is found
-    desc_url <- repo_packages_urls(package = package, repos = custom_repos)
+    desc_url <- url_from_custom_repo(package = package, repos = custom_repos)
 
 
     # If nothing is found, move to the next step (checking CRAN)
-    if (is.na(desc_url)) {
+    if (length(desc_url) == 0) {
       # Check CRAN for the URL
-      desc_url <- cran_description_urls(package)
+      desc_url <- url_from_cran(package)
       # If there's no URL in the CRAN package, return an empty character
-      if (is.na(desc_url)) {
+      if (length(desc_url) == 0) {
         return(character())
       }
     }
@@ -133,52 +133,37 @@ package_urls <- function(package, repos = getOption("repos")) {
 }
 
 parse_urls <- function(x) {
+  # This allows parse_urls to deal with any return from checking a data.frame for a URL
+  # If there's no package, you get an empty character(), if there's package but no URL,
+  # you get an NA - this can deal with both
+  if (length(x) == 0) {
+    return(character())
+  }
   urls <- trimws(strsplit(trimws(x), "[,\\s]+", perl = TRUE)[[1]])
   urls <- urls[grepl("^http", urls)]
 
   sub_special_cases(urls)
 }
 
-cran_description_urls <- function(package) {
+url_from_cran <- function(package) {
   pkgs <- as.data.frame(tools::CRAN_package_db())
-
-  pkg_url <- unlist(strsplit(pkgs[pkgs[["Package"]] == package,"URL"], ", "))
-
-  if (is.null(pkg_url)){
-    return(NA_character_)
-  } else {
-    pkg_url
-  }
+  parse_urls(pkgs[pkgs[["Package"]] == package,"URL"])
 }
 
-repo_packages_urls <- function(package, repos) {
+url_from_custom_repo <- function(package, repos) {
   urls <- lapply(
     repos, check_repo_for_package_url, package = package
   )
-  if (length(urls) == 0) {
-    return(NA_character_)
-  } else {
-    urls <- urls[[!is.null(urls)]]
-  }
-  if (length(urls) == 0) {
-    return(NA_character_)
-  } else {
-    urls
-  }
+  unlist(urls)
 }
 
 check_repo_for_package_url <- function(repo, package) {
-  pkgs <- fetch_repo_packages_file(repo)
-  pkg <- pkgs[pkgs[["Package"]] == package,"URL"]
-  if (is.null(pkg)) {
-    return(NULL)
-  }
-  unlist(strsplit(pkg, ", "))
+  pkgs <- fetch_repo_packages(repo)
+  parse_urls(pkgs[pkgs[["Package"]] == package,"URL"])
 }
 
-fetch_repo_packages_file <- function(repo) {
+fetch_repo_packages <- function(repo) {
   as.data.frame(utils::available.packages(utils::contrib.url(repo), fields = "URL"))
-
 }
 
 # All rOpenSci repositories have a known pkgdown URL.
