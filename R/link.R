@@ -299,12 +299,45 @@ href_package_ref <- function(package) {
     reference_url
   } else {
     # Fall back to rdrr.io
-    if (is_base_package(package)) {
-      paste0("https://rdrr.io/r/", package)
-    } else {
-      paste0("https://rdrr.io/pkg/", package, "/man")
-    }
+    package_link_function <- get_default_package_ref()
+    package_link_function(package)
   }
+}
+
+rdrr_package_ref <- function(package) {
+  if (is_base_package(package)) {
+    paste0("https://rdrr.io/r/", package)
+  } else {
+    paste0("https://rdrr.io/pkg/", package, "/man")
+  }
+}
+
+#' Get or register the default package reference function
+#'
+#' @describeIn register_default_package_ref Register the default package reference function
+#' Register a function that will be used to generate the package reference URL if a remote URL for the package cannot be found.
+#' By default, the `rdrr_package_ref()` function is used, using the "http://rdrr.io" website.
+#' @param fn Function to be used to generate the package reference URL. The function should accept a single
+#' parameter (preferably `package`) and return a character string of length one.
+#' @examples
+#' new_ref_function <- function(package) {
+#'    paste0("https://rdocumentationsite/", package)
+#' }
+#' register_default_package_ref(new_ref_function)
+#' autolink("stats::median()")
+#' get_default_package_ref()
+#' @return This function is called for its side-effects, and so returns NULL invisibly.
+#' @export
+register_default_package_ref <- function(fn) {
+  assign(x = "package_ref_function", value = fn, envir = register)
+  invisible(NULL)
+}
+
+#' @describeIn register_default_package_ref Get the currently registered default package reference function
+#' @return Returns the currently registered function.
+#' @export
+get_default_package_ref <- function() {
+  get("package_ref_function", envir = register)
 }
 
 is_base_package <- function(x) {
