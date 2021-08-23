@@ -323,7 +323,13 @@ rdrr_package_ref <- function(package) {
 #' new_ref_function <- function(package) {
 #'    paste0("https://rdocumentationsite/", package)
 #' }
+#' # Register a custom function
 #' register_package_ref_function(new_ref_function)
+#' get_package_ref_function()
+#' autolink("stats::median()")
+#'
+#' # Reset the function back to the default
+#' reset_package_ref_function()
 #' get_package_ref_function()
 #' autolink("stats::median()")
 #' @export
