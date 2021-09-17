@@ -32,6 +32,9 @@ downlit_md_path <- function(in_path, out_path, format = NULL) {
   ast_path <- tempfile()
   on.exit(unlink(ast_path))
 
+  in_path <- path_abs(in_path)
+  out_path <- path_abs(out_path)
+
   md2ast(in_path, ast_path, format = format)
 
   ast <- jsonlite::read_json(ast_path)
@@ -233,4 +236,8 @@ check_packages <- function() {
   if (!is_installed("rmarkdown") || !is_installed("jsonlite")) {
     abort("rmarkdown and jsonlite required for .md transformation")
   }
+}
+
+path_abs <- function(path) {
+  file.path(normalizePath(dirname(path), mustWork = TRUE), basename(path))
 }
