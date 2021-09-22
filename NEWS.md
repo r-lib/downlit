@@ -25,7 +25,9 @@
 * ANSI escapes no longer generate invalid HTML (#79).
 
 * Changes to better support for HTML widgets and rgl in pkgdown 
-  (@dmurdoch, #78).
+  (@dmurdoch, #78). In particular, `evaluate_and_highlight()` now returns
+  an additional attribute containing all extra dependecies needed to render
+  the returned HTML.
 
 ## Auto-linking
 
