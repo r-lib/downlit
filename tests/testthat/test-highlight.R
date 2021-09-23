@@ -97,6 +97,8 @@ test_that("R6 instantiation gets linked", {
 })
 
 test_that("ansi escapes are converted to html", {
+  skip_on_os("windows")
+
   expect_snapshot_output(highlight("# \033[31mhello\033[m"))
   expect_snapshot_output(highlight("# \u2029[31mhello\u2029[m"))
 })
