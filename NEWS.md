@@ -26,7 +26,7 @@
 
 * Changes to better support for HTML widgets and rgl in pkgdown 
   (@dmurdoch, #78). In particular, `evaluate_and_highlight()` now returns
-  an additional attribute containing all extra dependecies needed to render
+  an additional attribute containing all extra dependencies needed to render
   the returned HTML.
 
 ## Auto-linking

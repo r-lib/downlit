@@ -84,7 +84,7 @@ test_that("can include literal HTML", {
   expect_equal(as.character(html), "<span class='r-in'>foo()</span>\n<div>foo</div>")
 })
 
-test_that("captures dependenices", {
+test_that("captures dependencies", {
   output <- evaluate::new_output_handler(value = identity)
 
   dummy_dep <- htmltools::htmlDependency("dummy", "1.0.0", "dummy.js")
