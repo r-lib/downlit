@@ -13,7 +13,8 @@
 #'   defaults to a child of the global environment.
 #' @param output_handler Custom output handler for [evaluate::evaluate()].
 #' @param highlight Optionally suppress highlighting. This is useful for tests.
-#' @return An string containing HTML.
+#' @return An string containing HTML with a `dependencies` attribute
+#'   giving an additional htmltools dependencies required to render the HTML.
 #' @inheritParams highlight
 #' @export
 #' @examples
@@ -72,21 +73,13 @@ replay_html.list <- function(x, ...) {
   # keep only high level plots
   x <- merge_low_plot(x)
 
-  pieces <- character(length(x))
-  dependencies <- list()
-  for (i in seq_along(x)) {
-    piece <- replay_html(x[[i]], ...)
-    dependencies <- c(dependencies, attr(piece, "dependencies"))
-    pieces[i] <- piece
-  }
-  res <- paste0(pieces, collapse = "")
+  html <- lapply(x, replay_html, ...)
+  dependencies <- unlist(lapply(html, attr, "dependencies"), recursive = FALSE)
 
-  if (is_installed("pkgdown") && utils::packageVersion("pkgdown") >= "1.6.1.9001") {
-    # get dependencies from htmlwidgets etc.
-    attr(res, "dependencies") <- dependencies
-  }
-
-  res
+  structure(
+    paste0(html, collapse = ""),
+    dependencies = dependencies
+  )
 }
 
 #' @export
@@ -95,15 +88,6 @@ replay_html.NULL <- function(x, ...) ""
 #' @export
 replay_html.character <- function(x, ...) {
   label_output(escape_html(x), "r-out")
-}
-
-#' @export
-replay_html.value <- function(x, ...) {
-  if (!x$visible) return()
-
-  printed <- paste0(utils::capture.output(print(x$value)), collapse = "\n")
-
-  label_output(escape_html(printed), "r-out")
 }
 
 #' @export
@@ -155,8 +139,34 @@ replay_html.recordedplot <- function(x, fig_save, fig_id, ...) {
   paste0(span(img, class = "r-plt"), "\n")
 }
 
-# helpers -----------------------------------------------------------------
+# htmltools ---------------------------------------------------------------
 
+# These will only be encountered if output_handler has a custom value
+# callback that returns HTML.
+
+#' @export
+replay_html.html <- function(x, ...) {
+  rendered <- htmltools::renderTags(x)
+  structure(
+    rendered$html,
+    dependencies = rendered$dependencies,
+    class = "downlit_html"
+  )
+}
+
+#' @export
+replay_html.shiny.tag <- replay_html.html
+
+#' @export
+replay_html.shiny.tag.function <- replay_html.html
+
+#' @export
+replay_html.shiny.tag.list <- replay_html.html
+
+#' @export
+replay_html.htmlwidget <- replay_html.html
+
+# helpers -----------------------------------------------------------------
 
 label_output <- function(x, class) {
   prompt <- span("#&gt;", class = "r-pr")
