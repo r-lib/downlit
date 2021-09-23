@@ -23,8 +23,6 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
-    
-
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -43,6 +41,12 @@
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
+<li>
+  <a href="index.html">
+    <span class="fas fa-home fa-lg"></span>
+     
+  </a>
+</li>
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
@@ -71,20 +75,20 @@
   <div class="contents col-md-9">
 <div id="downlit" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#downlit" class="anchor" aria-hidden="true"></a>downlit</h1></div>
+<a href="#downlit" class="anchor"></a>downlit</h1></div>
 <!-- badges: start -->
 
-<p>The goal of downlit is to provide syntax highlighting and automatic linking of R code in a way that is easily used from RMarkdown packages like <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>, <a href="https://bookdown.org" class="external-link">bookdown</a>, and <a href="https://hugodown.r-lib.org/" class="external-link">hugodown</a>.</p>
+<p>The goal of downlit is to provide syntax highlighting and automatic linking of R code in a way that is easily used from RMarkdown packages like <a href="https://pkgdown.r-lib.org/">pkgdown</a>, <a href="https://bookdown.org">bookdown</a>, and <a href="https://hugodown.r-lib.org/">hugodown</a>.</p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
-<a href="#installation" class="anchor" aria-hidden="true"></a>Installation</h2>
+<a href="#installation" class="anchor"></a>Installation</h2>
 <p>Install downlit from CRAN with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"downlit"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"downlit"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="features" class="section level2">
 <h2 class="hasAnchor">
-<a href="#features" class="anchor" aria-hidden="true"></a>Features</h2>
+<a href="#features" class="anchor"></a>Features</h2>
 <p>downlit has two slightly different highlighting/linking engines:</p>
 <ul>
 <li>
@@ -96,7 +100,7 @@
 <ul>
 <li>Code syntax highlighted using R’s parser.</li>
 <li>Function calls automatically linked to their corresponding documentation.</li>
-<li>Comments styled by transforming ANSI escapes sequences to their HTML equivalents (thanks <a href="https://github.com/brodieG/fansi" class="external-link">fansi</a> package).</li>
+<li>Comments styled by transforming ANSI escapes sequences to their HTML equivalents (thanks <a href="https://github.com/brodieG/fansi">fansi</a> package).</li>
 </ul>
 <p>The following forms of inline code are recognized and automatically linked:</p>
 <ul>
@@ -105,27 +109,27 @@
 <li>
 <code>?fun</code>, <code>pkg::fun</code>, <code>type?topic</code>.</li>
 <li>
-<code>help("fun")</code>, <code>help("fun", package = "package")</code>, <code><a href="https://rdrr.io/pkg/package/man" class="external-link">help(package = "package")</a></code>.</li>
+<code>help("fun")</code>, <code>help("fun", package = "package")</code>, <code><a href="https://rdrr.io/pkg/package/man">help(package = "package")</a></code>.</li>
 <li>
 <code>vignette("name")</code>, <code>vignette("name", package = "package")</code>.</li>
 <li>
-<code><a href="https://rdrr.io/r/base/library.html" class="external-link">library(package)</a></code>, <code><a href="https://rdrr.io/r/base/library.html" class="external-link">require(package)</a></code>, <code><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace("package")</a></code>.</li>
+<code><a href="https://rdrr.io/r/base/library.html">library(package)</a></code>, <code><a href="https://rdrr.io/r/base/library.html">require(package)</a></code>, <code><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace("package")</a></code>.</li>
 <li>
 <code>{package}</code> gets linked (if possible) <em>and formatted as plain text</em>.</li>
 </ul>
 <div id="cross-package-links" class="section level3">
 <h3 class="hasAnchor">
-<a href="#cross-package-links" class="anchor" aria-hidden="true"></a>Cross-package links</h3>
-<p>If downlit can find a pkgdown site for the remote package, it will link to it; otherwise it will link to <a href="https://rdrr.io/" class="external-link uri">https://rdrr.io/</a> for documentation, and CRAN for vignettes. In order for a pkgdown site to be findable, it needs to be listed in two places:</p>
+<a href="#cross-package-links" class="anchor"></a>Cross-package links</h3>
+<p>If downlit can find a pkgdown site for the remote package, it will link to it; otherwise it will link to <a href="https://rdrr.io/" class="uri">https://rdrr.io/</a> for documentation, and CRAN for vignettes. In order for a pkgdown site to be findable, it needs to be listed in two places:</p>
 <ul>
 <li>
-<p>In the <code>URL</code> field in the <code>DESCRIPTION</code>, as in <a href="https://github.com/tidyverse/dplyr/blob/85faf79c1fd74f4b4f95319e5be6a124a8075502/DESCRIPTION#L15" class="external-link">dplyr</a>:</p>
+<p>In the <code>URL</code> field in the <code>DESCRIPTION</code>, as in <a href="https://github.com/tidyverse/dplyr/blob/85faf79c1fd74f4b4f95319e5be6a124a8075502/DESCRIPTION#L15">dplyr</a>:</p>
 <pre><code>URL: https://dplyr.tidyverse.org, https://github.com/tidyverse/dplyr</code></pre>
 </li>
 <li>
-<p>In the <code>url</code> field in <code>_pkgdown.yml</code>, as in <a href="https://github.com/tidyverse/dplyr/blob/master/_pkgdown.yml#L1" class="external-link">dplyr</a></p>
+<p>In the <code>url</code> field in <code>_pkgdown.yml</code>, as in <a href="https://github.com/tidyverse/dplyr/blob/master/_pkgdown.yml#L1">dplyr</a></p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">url</span><span class="kw">:</span><span class="at"> https://dplyr.tidyverse.org</span></span></code></pre></div>
-<p>When this field is defined, pkgdown generates a public facing <a href="https://dplyr.tidyverse.org/pkgdown.yml" class="external-link"><code>pkgdown.yml</code> file</a> that provides metadata about the site:</p>
+<p>When this field is defined, pkgdown generates a public facing <a href="https://dplyr.tidyverse.org/pkgdown.yml"><code>pkgdown.yml</code> file</a> that provides metadata about the site:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">pandoc</span><span class="kw">:</span><span class="at"> </span><span class="st">'2.2'</span></span>
 <span id="cb4-2"><a href="#cb4-2"></a><span class="fu">pkgdown</span><span class="kw">:</span><span class="at"> </span><span class="fl">1.3.0</span></span>
 <span id="cb4-3"><a href="#cb4-3"></a><span class="fu">pkgdown_sha</span><span class="kw">:</span><span class="at"> </span><span class="ch">~</span></span>
@@ -142,15 +146,15 @@
 </div>
 <div id="usage" class="section level2">
 <h2 class="hasAnchor">
-<a href="#usage" class="anchor" aria-hidden="true"></a>Usage</h2>
-<p>downlit is designed to be used by other packages, and I expect most uses of downlit will use it via another package (e.g. <a href="https://github.com/r-lib/hugodown" class="external-link">hugodown</a>). If you want to use it in your own package, you’ll typically want to apply it as part of some bigger transformation process. You can get some sense of how this might work by reading the source code of <a href="https://github.com/r-lib/downlit/blob/master/R/downlit-html.R" class="external-link"><code>downlit_html()</code></a> and <a href="https://github.com/r-lib/downlit/blob/master/R/downlit-md.R" class="external-link"><code>downlit_md()</code></a>, which transform HTML and markdown documents respectively.</p>
+<a href="#usage" class="anchor"></a>Usage</h2>
+<p>downlit is designed to be used by other packages, and I expect most uses of downlit will use it via another package (e.g. <a href="https://github.com/r-lib/hugodown">hugodown</a>). If you want to use it in your own package, you’ll typically want to apply it as part of some bigger transformation process. You can get some sense of how this might work by reading the source code of <a href="https://github.com/r-lib/downlit/blob/master/R/downlit-html.R"><code>downlit_html()</code></a> and <a href="https://github.com/r-lib/downlit/blob/master/R/downlit-md.R"><code>downlit_md()</code></a>, which transform HTML and markdown documents respectively.</p>
 </div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2 data-toc-skip>Links</h2>
+<h2>Links</h2>
 <ul class="list-unstyled">
 <li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=downlit">https://​cloud.r-project.org/​package=downlit</a>
 </li>
@@ -160,46 +164,40 @@
 </li>
 </ul>
 </div>
-
 <div class="license">
-<h2 data-toc-skip>License</h2>
+<h2>License</h2>
 <ul class="list-unstyled">
 <li><a href="LICENSE.html">Full license</a></li>
 <li><small><a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
 </ul>
 </div>
-
-
 <div class="developers">
-<h2 data-toc-skip>Developers</h2>
+<h2>Developers</h2>
 <ul class="list-unstyled">
 <li>
 <a href="http://hadley.nz">Hadley Wickham</a> <br><small class="roles"> Author, maintainer </small>  </li>
-<li><a href="authors.html">More on authors...</a></li>
+<li><a href="authors.html">All authors...</a></li>
 </ul>
 </div>
 
-<div class="dev-status">
-<h2 data-toc-skip>Dev status</h2>
+  <div class="dev-status">
+<h2>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/r-lib/downlit/actions" class="external-link"><img src="https://github.com/r-lib/downlit/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
-<li><a href="https://codecov.io/gh/r-lib/downlit?branch=master" class="external-link"><img src="https://codecov.io/gh/r-lib/downlit/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
-<li><a href="https://CRAN.R-project.org/package=downlit" class="external-link"><img src="https://www.r-pkg.org/badges/version/downlit" alt="CRAN status"></a></li>
+<li><a href="https://github.com/r-lib/downlit/actions"><img src="https://github.com/r-lib/downlit/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="https://codecov.io/gh/r-lib/downlit?branch=master"><img src="https://codecov.io/gh/r-lib/downlit/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
+<li><a href="https://CRAN.R-project.org/package=downlit"><img src="https://www.r-pkg.org/badges/version/downlit" alt="CRAN status"></a></li>
 </ul>
 </div>
-
-  </div>
+</div>
 </div>
 
 
       <footer><div class="copyright">
-  <p></p>
-<p>Developed by <a href="http://hadley.nz" class="external-link">Hadley Wickham</a>.</p>
+  <p>Developed by <a href="http://hadley.nz">Hadley Wickham</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
@@ -207,8 +205,6 @@
 
   
 
-
-  
 
   </body>
 </html>
