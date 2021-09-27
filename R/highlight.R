@@ -318,7 +318,7 @@ token_escape <- function(token, text) {
 
   is_comment <- token == "COMMENT"
   # \033 can't be represented in xml (and hence is ignored by xml2)
-  text[is_comment] <- gsub("\u2029", "\033", text[is_comment], fixed = TRUE)
+  text[is_comment] <- gsub("\u2029", "\033", text[is_comment], fixed = TRUE, useBytes = TRUE)
   text[is_comment] <- fansi::sgr_to_html(text[is_comment])
 
   text
