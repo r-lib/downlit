@@ -52,6 +52,15 @@ test_that("can parse code with carriage returns", {
   expect_equal(lines[[2]], "<span class='m'>2</span>")
 })
 
+test_that("can highlight code in Latin1", {
+  x <- "'\xfc'"
+  Encoding(x) <- "latin1"
+
+  out <- highlight(x)
+  expect_equal(Encoding(out), "UTF-8")
+  expect_equal(out, "<span class='s'>'\u00fc'</span>")
+})
+
 test_that("syntax can span multiple lines", {
   expect_equal(highlight("f(\n\n)"), "<span class='nf'>f</span><span class='o'>(</span>\n\n<span class='o'>)</span>")
   expect_equal(highlight("'\n\n'"), "<span class='s'>'\n\n'</span>")
@@ -97,8 +106,6 @@ test_that("R6 instantiation gets linked", {
 })
 
 test_that("ansi escapes are converted to html", {
-  skip_on_os("windows")
-
   expect_snapshot_output(highlight("# \033[31mhello\033[m"))
   expect_snapshot_output(highlight("# \u2029[31mhello\u2029[m"))
 })
