@@ -75,17 +75,16 @@ highlight <- function(text, classes = classes_chroma(), pre_class = NULL, code =
   new <- style_token(changes$escaped, changes$href, changes$class)
   out <- replace_in_place(parsed$text, start, end, replacement = new)
 
-  if (is.null(pre_class)) {
-    return(out)
+  if (!is.null(pre_class)) {
+    out <- paste0(
+      "<pre class='", paste0(pre_class, collapse = " "), "'>\n",
+      if (code) paste0("<code class='sourceCode R'>"),
+      out,
+      if (code) paste("</code>"),
+      "</pre>"
+    )
   }
 
-  out <- paste0(
-    "<pre class='", paste0(pre_class, collapse = " "), "'>\n",
-    if (code) paste0("<code class='sourceCode R'>"),
-    out,
-    if (code) paste("</code>"),
-    "</pre>"
-  )
   Encoding(out) <- "UTF-8"
   out
 }

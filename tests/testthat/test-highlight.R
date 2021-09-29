@@ -55,7 +55,10 @@ test_that("can parse code with carriage returns", {
 test_that("can highlight code in Latin1", {
   x <- "'\xfc'"
   Encoding(x) <- "latin1"
-  expect_equal(highlight(x), "<span class='s'>'\u00fc'</span>")
+
+  out <- highlight(x)
+  expect_equal(Encoding(out), "UTF-8")
+  expect_equal(out, "<span class='s'>'\u00fc'</span>")
 })
 
 test_that("syntax can span multiple lines", {
