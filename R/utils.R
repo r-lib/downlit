@@ -44,7 +44,12 @@ invert_index <- function(x) {
 }
 
 safe_parse <- function(text) {
-  text <- gsub("\r", "", text)
+  text <- enc2utf8(text)
+  text <- gsub("\r", "", text, fixed = TRUE, useBytes = TRUE)
+  # \033 can't be represented in xml (and hence is ignored by xml2)
+  # so we convert to \u2029 in order to survive a round trip
+  text <- gsub("\u2029", "\033", text, fixed = TRUE, useBytes = TRUE)
+
   tryCatch(
     parse(text = text, keep.source = TRUE, encoding = "UTF-8"),
     error = function(e) NULL
