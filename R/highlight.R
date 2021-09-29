@@ -79,13 +79,15 @@ highlight <- function(text, classes = classes_chroma(), pre_class = NULL, code =
     return(out)
   }
 
-  paste0(
+  out <- paste0(
     "<pre class='", paste0(pre_class, collapse = " "), "'>\n",
     if (code) paste0("<code class='sourceCode R'>"),
     out,
     if (code) paste("</code>"),
     "</pre>"
   )
+  Encoding(out) <- "UTF-8"
+  out
 }
 
 style_token <- function(x, href = NA, class = NA) {
