@@ -43,10 +43,31 @@ invert_index <- function(x) {
   split(key, val)
 }
 
-safe_parse <- function(text) {
-  text <- gsub("\r", "", text)
+standardise_text <- function(x) {
+  x <- enc2utf8(x)
+  x <- gsub("\t", "  ", x, fixed = TRUE, useBytes = TRUE)
+  x <- gsub("\r", "", x, fixed = TRUE, useBytes = TRUE)
+  # \033 can't be represented in xml (and hence is ignored by xml2)
+  # so we convert to \u2029 in order to survive a round trip
+  x <- gsub("\u2029", "\033", x, fixed = TRUE, useBytes = TRUE)
+  x
+}
+
+safe_parse <- function(text, standardise = TRUE) {
+  if (standardise) {
+    text <- standardise_text(text)
+  }
+
+  lines <- strsplit(text, "\n", fixed = TRUE, useBytes = TRUE)[[1]]
+  srcfile <- srcfilecopy("test.r", lines)
+
+  # https://github.com/gaborcsardi/rencfaq#how-to-parse-utf-8-text-into-utf-8-code
+  Encoding(text) <- "unknown"
+  con <- textConnection(text)
+  on.exit(close(con), add = TRUE)
+
   tryCatch(
-    parse(text = text, keep.source = TRUE, encoding = "UTF-8"),
+    parse(con, keep.source = TRUE, encoding = "UTF-8", srcfile = srcfile),
     error = function(e) NULL
   )
 }

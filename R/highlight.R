@@ -47,8 +47,6 @@
 #' # Unparseable R code returns NA
 #' cat(highlight("base::t("))
 highlight <- function(text, classes = classes_chroma(), pre_class = NULL, code = FALSE) {
-  text <- gsub("\t", "  ", text, fixed = TRUE)
-  text <- gsub("\r", "", text, fixed = TRUE)
   parsed <- parse_data(text)
   if (is.null(parsed)) {
     return(NA_character_)
@@ -70,24 +68,25 @@ highlight <- function(text, classes = classes_chroma(), pre_class = NULL, code =
   changed <- !is.na(out$href) | !is.na(out$class) | out$text != out$escaped
   changes <- out[changed, , drop = FALSE]
 
-  loc <- line_col(text)
+  loc <- line_col(parsed$text)
   start <- vctrs::vec_match(data.frame(line = changes$line1, col = changes$col1), loc)
   end <- vctrs::vec_match(data.frame(line = changes$line2, col = changes$col2), loc)
 
   new <- style_token(changes$escaped, changes$href, changes$class)
-  out <- replace_in_place(text, start, end, replacement = new)
+  out <- replace_in_place(parsed$text, start, end, replacement = new)
 
-  if (is.null(pre_class)) {
-    return(out)
+  if (!is.null(pre_class)) {
+    out <- paste0(
+      "<pre class='", paste0(pre_class, collapse = " "), "'>\n",
+      if (code) paste0("<code class='sourceCode R'>"),
+      out,
+      if (code) paste("</code>"),
+      "</pre>"
+    )
   }
 
-  paste0(
-    "<pre class='", paste0(pre_class, collapse = " "), "'>\n",
-    if (code) paste0("<code class='sourceCode R'>"),
-    out,
-    if (code) paste("</code>"),
-    "</pre>"
-  )
+  Encoding(out) <- "UTF-8"
+  out
 }
 
 style_token <- function(x, href = NA, class = NA) {
@@ -123,14 +122,15 @@ line_col <- function(x) {
 }
 
 parse_data <- function(text) {
+  text <- standardise_text(text)
   stopifnot(is.character(text), length(text) == 1)
 
-  expr <- safe_parse(text)
+  expr <- safe_parse(text, standardise = FALSE)
   if (is.null(expr)) {
     return(NULL)
   }
 
-  list(expr = expr, data = utils::getParseData(expr))
+  list(text = text, expr = expr, data = utils::getParseData(expr))
 }
 
 # Highlighting ------------------------------------------------------------
@@ -317,8 +317,6 @@ token_escape <- function(token, text) {
   text <- escape_html(text)
 
   is_comment <- token == "COMMENT"
-  # \033 can't be represented in xml (and hence is ignored by xml2)
-  text[is_comment] <- gsub("\u2029", "\033", text[is_comment], fixed = TRUE)
   text[is_comment] <- fansi::sgr_to_html(text[is_comment])
 
   text
