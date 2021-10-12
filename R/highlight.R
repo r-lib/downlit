@@ -299,6 +299,7 @@ token_href <- function(token, text) {
     to_end > 3
   )
   pkg <- lib_call + 3 # expr + '(' + STR_CONST
+  pkg <- pkg[nzchar(text[pkg])] # if e.g. library(a$pkg) then text[pkg] is ""
   href[pkg] <- map_chr(gsub("['\"]", "", text[pkg]), href_package)
 
   href

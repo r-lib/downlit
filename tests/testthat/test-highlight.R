@@ -109,3 +109,11 @@ test_that("ansi escapes are converted to html", {
   expect_snapshot_output(highlight("# \033[31mhello\033[m"))
   expect_snapshot_output(highlight("# \u2029[31mhello\u2029[m"))
 })
+
+test_that("package loading is highlighted correctly if possible", {
+  expect_snapshot_output(highlight('library("not.a.pkg")'))
+  expect_snapshot_output(highlight('library(not.a.pkg)'))
+  expect_snapshot_output(highlight('library(a_list$pkg)'))
+
+})
+
