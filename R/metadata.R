@@ -88,6 +88,10 @@ fetch_yaml <- function(url) {
 # Helpers -----------------------------------------------------------------
 
 package_urls <- function(package) {
+  if (package == "") { # if e.g. library(a$pkg) then pkg is ""
+    return(character())
+  }
+
   path <- system.file("DESCRIPTION", package = package)
   if (path == "") {
     return(character())
