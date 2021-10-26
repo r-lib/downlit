@@ -50,6 +50,15 @@ test_that("can link to functions in registered packages", {
   expect_equal(href_expr_(addterm.default()), href_topic_remote("addterm", "MASS"))
 })
 
+test_that("can link to package names in registered packages", {
+  expect_equal(
+    autolink_curly("{downlit}"),
+    "<a href='https://downlit.r-lib.org/'>downlit</a>"
+  )
+
+  expect_equal(autolink_curly("{package}"), NA_character_)
+})
+
 test_that("can link to functions in base packages", {
   expect_equal(href_expr_(abbreviate()), href_topic_remote("abbreviate", "base"))
   expect_equal(href_expr_(median()), href_topic_remote("median", "stats"))
