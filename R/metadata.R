@@ -97,17 +97,17 @@ package_urls <- function(package, repos = getOption("repos")) {
     # If the package is installed, use its DESCRIPTION
     url <- read.dcf(path, fields = "URL")[[1]]
   } else {
-    # Otherwise look for a package from repo metadata, always looking
-    # in cran in user specified repos
+    # Otherwise try repo metadata, always trying CRAN last
     user_repos <- repos[names2(repos) != "CRAN"]
     meta <- c(lapply(user_repos, repo_urls), list(CRAN_urls()))
-    urls <- lapply(meta, function(pkgs) pkgs$URL[pkgs[["Package"]] == package])
+    urls <- map_chr(meta, function(pkgs) pkgs$URL[match(package, pkgs[["Package"]])])
 
-    # Take first non-NA/non-NULL
-    url <- unlist(urls)
-    url <- url[!is.na(url)]
-    if (length(url) > 1) {
-      url <- url[[1]]
+    # Take first non-NA (if any)
+    url <- urls[!is.na(urls)]
+    if (all(is.na(urls))) {
+      url <- NA_character_
+    } else {
+      url <- urls[!is.na(urls)][[1]]
     }
   }
 
@@ -115,12 +115,6 @@ package_urls <- function(package, repos = getOption("repos")) {
 }
 
 parse_urls <- function(x) {
-  # This allows parse_urls to deal with any return from checking a data.frame for a URL
-  # If there's no package, you get an empty character(), if there's package but no URL,
-  # you get an NA - this can deal with both
-  if (length(x) == 0) {
-    return(character())
-  }
   urls <- trimws(strsplit(trimws(x), "[,\\s]+", perl = TRUE)[[1]])
   urls <- urls[grepl("^http", urls)]
 
@@ -129,7 +123,9 @@ parse_urls <- function(x) {
 
 # Both memoised in .onLoad
 repo_urls <- function(repo) {
-  as.data.frame(utils::available.packages(utils::contrib.url(repo), fields = "URL"))
+  # This will only work if the repo exposes the URL field in PACKAGES,
+  # which most repos do not.
+  as.data.frame(utils::available.packages(repos = repo, fields = "URL"))
 }
 CRAN_urls <- function() {
   # Substantially faster to use CRAN: in my testing this reduced download time
