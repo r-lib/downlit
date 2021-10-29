@@ -91,21 +91,6 @@ tweak_children <- function(node, xpath, fun, ..., replace = c("node", "contents"
   invisible()
 }
 
-autolink_curly <- function(text) {
-  package_name <- extract_curly_package(text)
-  if (is.na(package_name)) {
-    return(NA_character_)
-  }
-
-  href <- href_package(package_name)
-  if (is.na(href)) {
-    return(NA_character_)
-  }
-
-  paste0("<a href='", href, "'>", package_name, "</a>")
-}
-
-
 as_xml <- function(x) {
   xml2::xml_contents(xml2::xml_contents(xml2::read_html(x)))[[1]]
 }
