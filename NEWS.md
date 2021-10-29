@@ -51,6 +51,11 @@
 
 * `href_package()` is now exported (#103).
 
+* Auto-linking is more likely to succeed when the remote package is not 
+  installed as downlit now looks for the URL using `tools::CRAN_package_db()`
+  for CRAN packages, and and `available.packages()` for packages installed 
+  from non-CRAN repos (@ARawles, #108).
+
 # downlit 0.2.1
 
 * When auto-linking `vignette(foo)`, downlit now looks for a vignette named

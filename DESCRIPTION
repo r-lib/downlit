@@ -14,7 +14,7 @@ Description: Syntax highlighting of R code, specifically designed
     on the web, and automatic translation of ANSI escapes in output to the
     equivalent HTML.
 License: MIT + file LICENSE
-Depends: R (>= 3.2.0)
+Depends: R (>= 3.4.0)
 Imports: 
     desc,
     brio,
@@ -23,7 +23,8 @@ Imports:
     fansi,
     rlang,
     vctrs,
-    yaml
+    yaml,
+    memoise
 Suggests:
     htmltools,
     rmarkdown,
