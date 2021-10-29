@@ -124,13 +124,16 @@ parse_urls <- function(x) {
 # Both memoised in .onLoad
 repo_urls <- function(repo) {
   # Only works if the repo exposes the URL field in PACKAGES, and most don't
-  as.data.frame(utils::available.packages(repos = repo, fields = "URL"))
+  as.data.frame(
+    utils::available.packages(repos = repo, fields = "URL"),
+    stringsAsFactors = FALSE
+  )
 }
 CRAN_urls <- function() {
   # Substantially faster to use RStudio mirror: in my testing this reduced
   # download time from ~2s to 0.6s
   withr::local_envvar(R_CRAN_WEB = "https://cran.rstudio.com")
-  as.data.frame(tools::CRAN_package_db())
+  tools::CRAN_package_db()
 }
 
 # All rOpenSci repositories have a known pkgdown URL.
