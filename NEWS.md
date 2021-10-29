@@ -1,8 +1,5 @@
 # downlit (development version)
 
-* Functions in HTML `<summary>` elements are no longer autolinked 
-  (@gadenbuie, #105).
-
 ## Syntax highlighting
 
 * Messages, warnings, and errors now get a much more minimal style. 
@@ -55,6 +52,9 @@
   installed as downlit now looks for the URL using `tools::CRAN_package_db()`
   for CRAN packages, and and `available.packages()` for packages installed 
   from non-CRAN repos (@ARawles, #108).
+  
+* Functions in HTML `<summary>` elements are no longer autolinked 
+  (@gadenbuie, #105).
 
 # downlit 0.2.1
 
