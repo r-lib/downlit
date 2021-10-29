@@ -33,6 +33,12 @@
 #'   warning("Now at stage ", blue("blue"), "!")
 #' }
 #' f()
+#'
+#' plot(1:10)
+#'
+#' if (requireNamespace("leaflet", quietly = TRUE)) {
+#' leaflet::addTiles(leaflet::leaflet())
+#' }
 evaluate_and_highlight <- function(code,
                                    fig_save,
                                    classes = downlit::classes_pandoc(),

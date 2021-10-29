@@ -27,6 +27,7 @@ Imports:
     memoise
 Suggests:
     htmltools,
+    leaflet,
     rmarkdown,
     jsonlite,
     MASS,
