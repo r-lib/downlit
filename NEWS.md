@@ -49,6 +49,8 @@
 * Rare warning about incomplete final line in `autolink_url("pkgname::foo")`
   is now suppressed (@dmurdoch, pkgdown#1419).
 
+* `href_package()` is now exported (#103).
+
 # downlit 0.2.1
 
 * When auto-linking `vignette(foo)`, downlit now looks for a vignette named
