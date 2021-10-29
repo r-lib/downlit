@@ -11,4 +11,3 @@ defer <- function(expr, scope = parent.frame()) {
 
   invisible()
 }
-
