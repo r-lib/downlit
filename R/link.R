@@ -299,66 +299,12 @@ href_package_ref <- function(package) {
     reference_url
   } else {
     # Fall back to rdrr.io
-    package_link_function <- get_package_ref_function()
-    package_link_function(package)
+    if (is_base_package(package)) {
+      paste0("https://rdrr.io/r/", package)
+    } else {
+      paste0("https://rdrr.io/pkg/", package, "/man")
+    }
   }
-}
-
-rdrr_package_ref <- function(package) {
-  if (is_base_package(package)) {
-    paste0("https://rdrr.io/r/", package)
-  } else {
-    paste0("https://rdrr.io/pkg/", package, "/man")
-  }
-}
-
-#' Get or register the default package reference function
-#'
-#' @describeIn register_package_ref_function Register the default package reference function
-#' @description Register a function that will be used to generate the package reference URL if a remote URL for the package cannot be found.
-#' By default, the `rdrr_package_ref()` function is used, relying the [https://rdrr.io](https://rdrr.io) website.
-#' @param fn Function to be used to generate the package reference URL. The function should accept a single
-#' parameter (preferably `package`) and return a character string of length one.
-#' @examples
-#' new_ref_function <- function(package) {
-#'    paste0("https://rdocumentationsite/", package)
-#' }
-#' # Register a custom function
-#' register_package_ref_function(new_ref_function)
-#' get_package_ref_function()
-#' autolink("stats::median()")
-#'
-#' # Reset the function back to the default
-#' reset_package_ref_function()
-#' get_package_ref_function()
-#' autolink("stats::median()")
-#' @export
-#' @return `register_package_ref_function()` returns NULL invisibly.
-register_package_ref_function <- function(fn) {
-  assign(x = "package_ref_function", value = fn, envir = register)
-  invisible(NULL)
-}
-
-#' @describeIn register_package_ref_function Get the currently registered default package reference function
-#' @return `get_package_ref_function()` will return the currently registered function. By default, or if the registered function has been unset, this will return the
-#' `rdrr_package_ref()` function which relies on the [https://rdrr.io](https://rdrr.io) site.
-#' @export
-get_package_ref_function <- function() {
-  if (exists("package_ref_function", envir = register)) {
-    get("package_ref_function", envir = register)
-  } else {
-    warn("Could not find a registered package reference function.\n
-         Use the `register_package_ref_function() to register a function to be used when a package URL cannot be found.")
-    rdrr_package_ref()
-  }
-}
-
-#' @describeIn register_package_ref_function Resets the default package reference function to the `rdrr_package_ref()` function that
-#' relies on the [https://rdrr.io](https://rdrr.io) site.
-#' @return `reset_package_ref_function()` returns NULL invisibly.
-#' @export
-reset_package_ref_function <- function() {
-  register_package_ref_function(rdrr_package_ref)
 }
 
 is_base_package <- function(x) {

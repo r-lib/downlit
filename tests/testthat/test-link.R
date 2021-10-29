@@ -221,11 +221,3 @@ test_that("can find other objects", {
   expect_equal(find_reexport_source(na_cpl, "downlit", "na_cpl"), "rlang")
   expect_equal(find_reexport_source(na_cpl, "downlit", "MISSING"), NA_character_)
 })
-
-test_that("can register custom package reference function", {
-  register_package_ref_function(function(package) paste0("http://testhost/", package, "/man"))
-  expect_equal(href_package_ref("MASS"), "http://testhost/MASS/man")
-
-  reset_package_ref_function()
-  expect_equal(href_package_ref("MASS"), "https://rdrr.io/pkg/MASS/man")
-})
