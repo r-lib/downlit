@@ -57,6 +57,9 @@ test_that("can link to package names in registered packages", {
   )
 
   expect_equal(autolink_curly("{package}"), NA_character_)
+
+  # No curly = no link
+  expect_equal(autolink_curly(""), NA_character_)
 })
 
 test_that("can link to functions in base packages", {
