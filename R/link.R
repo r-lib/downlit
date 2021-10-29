@@ -21,7 +21,6 @@ autolink <- function(text) {
   paste0("<a href='", href, "'>", escape_html(text), "</a>")
 }
 
-
 #' @export
 #' @rdname autolink
 autolink_url <- function(text) {
@@ -32,6 +31,21 @@ autolink_url <- function(text) {
 
   href_expr(expr[[1]])
 }
+
+autolink_curly <- function(text) {
+  package_name <- extract_curly_package(text)
+  if (is.na(package_name)) {
+    return(NA_character_)
+  }
+
+  href <- href_package(package_name)
+  if (is.na(href)) {
+    return(NA_character_)
+  }
+
+  paste0("<a href='", href, "'>", package_name, "</a>")
+}
+
 
 # Helper for testing
 href_expr_ <- function(expr, ...) {
