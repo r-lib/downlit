@@ -1,3 +1,5 @@
+# downlit 0.4.0
+
 # downlit 0.3.0
 
 ## Syntax highlighting
