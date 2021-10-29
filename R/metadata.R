@@ -100,7 +100,7 @@ package_urls <- function(package, repos = getOption("repos")) {
     # Otherwise try repo metadata, always trying CRAN last
     user_repos <- repos[names2(repos) != "CRAN"]
     meta <- c(lapply(user_repos, repo_urls), list(CRAN_urls()))
-    urls <- map_chr(meta, function(pkgs) pkgs$URL[match(package, pkgs[["Package"]])])
+    urls <- unlist(lapply(meta, function(pkgs) pkgs$URL[match(package, pkgs[["Package"]])]))
 
     # Take first non-NA (if any)
     url <- urls[!is.na(urls)]
