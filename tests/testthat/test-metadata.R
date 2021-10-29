@@ -18,6 +18,17 @@ test_that("can extract urls for uninstalled packages from CRAN", {
   # but this might not always be true
   expect_equal(package_urls("BMRSr"), "https://bmrsr.arawles.co.uk/")
   expect_equal(package_urls("BMRSr", repos = c()), "https://bmrsr.arawles.co.uk/")
+
+  # Prefers user specified repo
+  cran_repo <- "https://cran.rstudio.com"
+  fake_repo <- paste0("file:", test_path("fake-repo"))
+  expect_equal(package_urls("BMRSr", repos = c(fake_repo)), "https://trick-url.com/")
+
+  # even if CRAN comes first
+  expect_equal(
+    package_urls("BMRSr", repos = c(CRAN = cran_repo, fake_repo)),
+    "https://trick-url.com/"
+  )
 })
 
 test_that("handle common url formats", {
