@@ -65,11 +65,31 @@ test_that("ansi escapes are translated to html", {
     blue <- function(x) paste0("\033[34m", x, "\033[39m")
     f <- function(x) {
       cat("Output: ", blue("blue"), "\n", sep = "")
-      inform(paste0("Message: ", blue("blue")))
-      warn(blue("blue"))
-      abort(blue("blue"))
+      message(paste0("Message: ", blue("blue")))
+      warning(blue("blue"), call. = FALSE)
+      stop(blue("blue"), call. = FALSE)
     }
 
     test_evaluate("f()\n")
   })
+})
+
+# html --------------------------------------------------------------------
+
+test_that("can include literal HTML", {
+  output <- evaluate::new_output_handler(value = identity)
+  env <- env(foo = function() htmltools::div("foo"))
+
+  html <- evaluate_and_highlight("foo()", env = env, output_handler = output, highlight = FALSE)
+  expect_equal(as.character(html), "<span class='r-in'>foo()</span>\n<div>foo</div>")
+})
+
+test_that("captures dependencies", {
+  output <- evaluate::new_output_handler(value = identity)
+
+  dummy_dep <- htmltools::htmlDependency("dummy", "1.0.0", "dummy.js")
+  env <- env(foo = function() htmltools::div("foo", dummy_dep))
+
+  html <- evaluate_and_highlight("foo()", env = env, output_handler = output, highlight = FALSE)
+  expect_equal(attr(html, "dependencies"), list(dummy_dep))
 })

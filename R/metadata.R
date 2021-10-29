@@ -88,6 +88,9 @@ fetch_yaml <- function(url) {
 # Helpers -----------------------------------------------------------------
 
 package_urls <- function(package, repos = getOption("repos")) {
+  if (package == "") { # if e.g. library(a$pkg) then pkg is ""
+    return(character())
+  }
   # Finding the package URL:
   #
   # 1. Check if the package is installed and use the DESCRIPTION

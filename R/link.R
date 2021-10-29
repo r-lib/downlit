@@ -21,7 +21,6 @@ autolink <- function(text) {
   paste0("<a href='", href, "'>", escape_html(text), "</a>")
 }
 
-
 #' @export
 #' @rdname autolink
 autolink_url <- function(text) {
@@ -32,6 +31,21 @@ autolink_url <- function(text) {
 
   href_expr(expr[[1]])
 }
+
+autolink_curly <- function(text) {
+  package_name <- extract_curly_package(text)
+  if (is.na(package_name)) {
+    return(NA_character_)
+  }
+
+  href <- href_package(package_name)
+  if (is.na(href)) {
+    return(NA_character_)
+  }
+
+  paste0("<a href='", href, "'>", package_name, "</a>")
+}
+
 
 # Helper for testing
 href_expr_ <- function(expr, ...) {
@@ -121,7 +135,7 @@ is_help_literal <- function(x) is_string(x) || is_symbol(x)
 
 # Topics ------------------------------------------------------------------
 
-#' Generate url for topic/article
+#' Generate url for topic/article/package
 #'
 #' @param topic,article Topic/article name
 #' @param package Optional package name
@@ -131,6 +145,9 @@ is_help_literal <- function(x) is_string(x) || is_symbol(x)
 #' @examples
 #' href_topic("t")
 #' href_topic("DOESN'T EXIST")
+#' href_topic("href_topic", "downlit")
+#'
+#' href_package("downlit")
 href_topic <- function(topic, package = NULL) {
   if (is_package_local(package)) {
     href_topic_local(topic)
@@ -283,6 +300,8 @@ find_vignette_package <- function(x) {
 
 # Packages ----------------------------------------------------------------
 
+#' @export
+#' @rdname href_topic
 href_package <- function(package) {
   urls <- package_urls(package)
   if (length(urls) == 0) {

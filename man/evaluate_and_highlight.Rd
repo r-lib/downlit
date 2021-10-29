@@ -34,7 +34,8 @@ defaults to a child of the global environment.}
 \item{highlight}{Optionally suppress highlighting. This is useful for tests.}
 }
 \value{
-An string containing HTML.
+An string containing HTML with a \code{dependencies} attribute
+giving an additional htmltools dependencies required to render the HTML.
 }
 \description{
 This function runs \code{code} and captures the output using
