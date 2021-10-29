@@ -2,7 +2,7 @@
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/r-lib/downlit/workflows/R-CMD-check/badge.svg)](https://github.com/r-lib/downlit/actions)
-[![Codecov test coverage](https://codecov.io/gh/r-lib/downlit/branch/main/graph/badge.svg)](https://codecov.io/gh/r-lib/downlit?branch=main)
+[![Codecov test coverage](https://codecov.io/gh/r-lib/downlit/branch/main/graph/badge.svg)](https://app.codecov.io/gh/r-lib/downlit?branch=main)
 [![CRAN status](https://www.r-pkg.org/badges/version/downlit)](https://CRAN.R-project.org/package=downlit)
 <!-- badges: end -->
 
