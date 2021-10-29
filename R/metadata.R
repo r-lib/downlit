@@ -102,8 +102,11 @@ package_urls <- function(package, repos = getOption("repos")) {
     # Check the user's repos - the PACKAGE file will need to have the URL entry
     # otherwise we'd have to download the whole package just to get the DESCRIPTION
 
-    custom_repos <- repos[names2(repos) != "CRAN"]
-
+    # We try and remove CRAN from the list to check here but it's not the end of the world
+    # if it stays because the CRAN PACKAGES files don't include the URL entry, so we won't get
+    # anything back - it's just a bit of a waste of effort
+    # What happens if the custom repo is called something like "mycran"?
+    custom_repos <- repos[!grepl("(\\bcran\\b)|(\\bCRAN\\b)", repos)]
 
     # Check your custom repos for a URL entry, returning NA_character_ if nothing is found
     url <- url_from_custom_repo(package = package, repos = custom_repos)
@@ -111,8 +114,8 @@ package_urls <- function(package, repos = getOption("repos")) {
 
     # If nothing is found, move to the next step (checking CRAN)
     if (length(url) == 0) {
-      url <- url_from_cran(package)
-    }
+        url <- url_from_cran(package)
+      }
   } else {
     # If the package is installed, check the URL field from that
     url <- url_from_desc(path)
@@ -157,11 +160,11 @@ check_repo_for_package_url <- function(repo, package) {
 
 
 
-# When filtering a df with package information and trying to get the URL,
-# you'll get different return values:
-# If the package exists, but there's no URL, you'll get NA
-# If the package doesn't exist at all, you'll get character()
-# This function just levels things out so it's easier to check
+#' When filtering a df with package information and trying to get the URL,
+#' you'll get different return values:
+#' If the package exists, but there's no URL, you'll get NA
+#' If the package doesn't exist at all, you'll get character()
+#' This function just levels things out so it's easier to check
 fix_filtered_url_field <- function(x) {
   if (length(x) == 0) {
     return(character())
