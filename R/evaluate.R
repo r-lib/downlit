@@ -119,7 +119,7 @@ replay_html.error <- function(x, ...) {
   if (is.null(x$call)) {
     prefix <- "Error:"
   } else {
-    prefix <- paste0("Error in ", escape_html(paste0(deparse(x$call), collapse = "")))
+    prefix <- paste0("Error in ", escape_html(paste0(deparse(x$call), collapse = "")), ":")
   }
   message <- paste0(span(prefix, class = "error"), " ", escape_html(conditionMessage(x)))
   label_output(message, "r-err")

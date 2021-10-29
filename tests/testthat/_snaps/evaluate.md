@@ -42,7 +42,7 @@
       test_evaluate("f <- function() stop('x'); f()")
     Output
       <span class='r-in'>f &lt;- function() stop('x'); f()</span>
-      <span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in f()</span> x</span>
+      <span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in f():</span> x</span>
 
 # each line of input gets span
 
@@ -102,9 +102,9 @@
       blue <- (function(x) paste0("\033[34m", x, "\033[39m"))
       f <- (function(x) {
         cat("Output: ", blue("blue"), "\n", sep = "")
-        inform(paste0("Message: ", blue("blue")))
-        warn(blue("blue"))
-        abort(blue("blue"))
+        message(paste0("Message: ", blue("blue")))
+        warning(blue("blue"), call. = FALSE)
+        stop(blue("blue"), call. = FALSE)
       })
       test_evaluate("f()\n")
     Output

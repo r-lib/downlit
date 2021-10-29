@@ -121,7 +121,7 @@ is_help_literal <- function(x) is_string(x) || is_symbol(x)
 
 # Topics ------------------------------------------------------------------
 
-#' Generate url for topic/article
+#' Generate url for topic/article/package
 #'
 #' @param topic,article Topic/article name
 #' @param package Optional package name
@@ -131,6 +131,9 @@ is_help_literal <- function(x) is_string(x) || is_symbol(x)
 #' @examples
 #' href_topic("t")
 #' href_topic("DOESN'T EXIST")
+#' href_topic("href_topic", "downlit")
+#'
+#' href_package("downlit")
 href_topic <- function(topic, package = NULL) {
   if (is_package_local(package)) {
     href_topic_local(topic)
@@ -283,6 +286,8 @@ find_vignette_package <- function(x) {
 
 # Packages ----------------------------------------------------------------
 
+#' @export
+#' @rdname href_topic
 href_package <- function(package) {
   urls <- package_urls(package)
   if (length(urls) == 0) {
