@@ -127,10 +127,6 @@ parse_urls <- function(x) {
   sub_special_cases(urls)
 }
 
-check_repo_for_package_url <- function(repo, package) {
-  fix_filtered_url_field(url)
-}
-
 # Both memoised in .onLoad
 repo_urls <- function(repo) {
   as.data.frame(utils::available.packages(utils::contrib.url(repo), fields = "URL"))
