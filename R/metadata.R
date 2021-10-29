@@ -123,15 +123,13 @@ parse_urls <- function(x) {
 
 # Both memoised in .onLoad
 repo_urls <- function(repo) {
-  # This will only work if the repo exposes the URL field in PACKAGES,
-  # which most repos do not.
+  # Only works if the repo exposes the URL field in PACKAGES, and most don't
   as.data.frame(utils::available.packages(repos = repo, fields = "URL"))
 }
 CRAN_urls <- function() {
-  # Substantially faster to use CRAN: in my testing this reduced download time
-  # from ~2s to 0.6s
+  # Substantially faster to use RStudio mirror: in my testing this reduced
+  # download time from ~2s to 0.6s
   withr::local_envvar(R_CRAN_WEB = "https://cran.rstudio.com")
-  # Can't use available.packages() because it doesn't retrieve URL field
   as.data.frame(tools::CRAN_package_db())
 }
 
