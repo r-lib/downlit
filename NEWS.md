@@ -1,4 +1,4 @@
-# downlit (development version)
+# downlit 0.3.0
 
 ## Syntax highlighting
 
