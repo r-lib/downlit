@@ -91,35 +91,26 @@ package_urls <- function(package, repos = getOption("repos")) {
   if (package == "") { # if e.g. library(a$pkg) then pkg is ""
     return(character())
   }
-  # Finding the package URL:
-  #
-  # 1. Check if the package is installed and use the DESCRIPTION
-  # 2. Then look for the package in the 'repos' repos and find the DESCRIPTION
-  # 2.5. Maybe try using a custom function here that we could register?
-  # 3. Then look for the package on CRAN and look for the DESCRIPTION
+
   path <- system.file("DESCRIPTION", package = package)
-
-  # If the package isn't installed, try repositories in 'repos', then CRAN
-  if (path == "") {
-
-    # Check the user's repos - the PACKAGE file will need to have the URL entry
-    # otherwise we'd have to download the whole package just to get the DESCRIPTION
-
-    custom_repos <- repos[names2(repos) != "CRAN"]
-
-
-    # Check your custom repos for a URL entry, returning NA_character_ if nothing is found
-    url <- url_from_custom_repo(package = package, repos = custom_repos)
-
-
-    # If nothing is found, move to the next step (checking CRAN)
-    if (length(url) == 0) {
-      url <- url_from_cran(package)
-    }
+  if (path != "") {
+    # If the package is installed, use its DESCRIPTION
+    url <- read.dcf(path, fields = "URL")[[1]]
   } else {
-    # If the package is installed, check the URL field from that
-    url <- url_from_desc(path)
+    # Otherwise look for a package from repo metadata, always looking
+    # in cran in user specified repos
+    user_repos <- repos[names2(repos) != "CRAN"]
+    meta <- c(lapply(user_repos, repo_urls), list(CRAN_urls()))
+    urls <- lapply(meta, function(pkgs) pkgs$URL[pkgs[["Package"]] == package])
+
+    # Take first non-NA/non-NULL
+    url <- unlist(urls)
+    url <- url[!is.na(url)]
+    if (length(url) > 1) {
+      url <- url[[1]]
+    }
   }
+
   parse_urls(url)
 }
 
@@ -136,50 +127,19 @@ parse_urls <- function(x) {
   sub_special_cases(urls)
 }
 
-url_from_desc <- function(path) {
-  read.dcf(path, fields = "URL")[[1]]
-}
-
-url_from_cran <- function(package) {
-  pkgs <- memo_fetch_cran_packages()
-  pkgs[pkgs[["Package"]] == package,"URL"]
-}
-
-url_from_custom_repo <- function(package, repos) {
-  urls <- lapply(
-    repos, check_repo_for_package_url, package = package
-  )
-  unlist(urls)
-}
-
 check_repo_for_package_url <- function(repo, package) {
-  pkgs <- memo_fetch_repo_packages(repo)
-  url <- pkgs[pkgs[["Package"]] == package,"URL"]
   fix_filtered_url_field(url)
 }
 
-
-
-# When filtering a df with package information and trying to get the URL,
-# you'll get different return values:
-# If the package exists, but there's no URL, you'll get NA
-# If the package doesn't exist at all, you'll get character()
-# This function just levels things out so it's easier to check
-fix_filtered_url_field <- function(x) {
-  if (length(x) == 0) {
-    return(character())
-  }
-  if (is.na(x)) {
-    return(character())
-  }
-  x
-}
-
-fetch_repo_packages <- function(repo) {
+# Both memoised in .onLoad
+repo_urls <- function(repo) {
   as.data.frame(utils::available.packages(utils::contrib.url(repo), fields = "URL"))
 }
-
-fetch_cran_packages <- function() {
+CRAN_urls <- function() {
+  # Substantially faster to use CRAN: in my testing this reduced download time
+  # from ~2s to 0.6s
+  withr::local_envvar(R_CRAN_WEB = "https://cran.rstudio.com")
+  # Can't use available.packages() because it doesn't retrieve URL field
   as.data.frame(tools::CRAN_package_db())
 }
 

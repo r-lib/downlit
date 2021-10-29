@@ -1,4 +1,4 @@
 .onLoad <- function(libname, pkgname) {
-  memo_fetch_repo_packages <<- memoise::memoise(fetch_repo_packages)
-  memo_fetch_cran_packages <<- memoise::memoise(fetch_cran_packages)
+  repo_urls <<- memoise::memoise(repo_urls)
+  CRAN_urls <<- memoise::memoise(CRAN_urls)
 }
