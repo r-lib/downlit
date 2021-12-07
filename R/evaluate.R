@@ -33,6 +33,12 @@
 #'   warning("Now at stage ", blue("blue"), "!")
 #' }
 #' f()
+#'
+#' plot(1:10)
+#'
+#' if (requireNamespace("leaflet", quietly = TRUE)) {
+#' leaflet::addTiles(leaflet::leaflet())
+#' }
 evaluate_and_highlight <- function(code,
                                    fig_save,
                                    classes = downlit::classes_pandoc(),
@@ -119,7 +125,7 @@ replay_html.error <- function(x, ...) {
   if (is.null(x$call)) {
     prefix <- "Error:"
   } else {
-    prefix <- paste0("Error in ", escape_html(paste0(deparse(x$call), collapse = "")))
+    prefix <- paste0("Error in ", escape_html(paste0(deparse(x$call), collapse = "")), ":")
   }
   message <- paste0(span(prefix, class = "error"), " ", escape_html(conditionMessage(x)))
   label_output(message, "r-err")
@@ -136,7 +142,7 @@ replay_html.recordedplot <- function(x, fig_save, fig_id, ...) {
     "height='", fig$height, "' ",
     "/>"
   )
-  paste0(span(img, class = "r-plt"), "\n")
+  paste0(span(img, class = "r-plt img"), "\n")
 }
 
 # htmltools ---------------------------------------------------------------

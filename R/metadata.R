@@ -87,17 +87,31 @@ fetch_yaml <- function(url) {
 
 # Helpers -----------------------------------------------------------------
 
-package_urls <- function(package) {
-  path <- system.file("DESCRIPTION", package = package)
-  if (path == "") {
+package_urls <- function(package, repos = getOption("repos")) {
+  if (package == "") { # if e.g. library(a$pkg) then pkg is ""
     return(character())
   }
 
-  desc_url <- read.dcf(path, fields = "URL")[[1]]
-  if (is.na(desc_url)) {
-    return(character())
+  path <- system.file("DESCRIPTION", package = package)
+  if (path != "") {
+    # If the package is installed, use its DESCRIPTION
+    url <- read.dcf(path, fields = "URL")[[1]]
+  } else {
+    # Otherwise try repo metadata, always trying CRAN last
+    user_repos <- repos[names2(repos) != "CRAN"]
+    meta <- c(lapply(user_repos, repo_urls), list(CRAN_urls()))
+    urls <- unlist(lapply(meta, function(pkgs) pkgs$URL[match(package, pkgs[["Package"]])]))
+
+    # Take first non-NA (if any)
+    url <- urls[!is.na(urls)]
+    if (all(is.na(urls))) {
+      url <- NA_character_
+    } else {
+      url <- urls[!is.na(urls)][[1]]
+    }
   }
-  parse_urls(desc_url)
+
+  parse_urls(url)
 }
 
 parse_urls <- function(x) {
@@ -105,6 +119,21 @@ parse_urls <- function(x) {
   urls <- urls[grepl("^http", urls)]
 
   sub_special_cases(urls)
+}
+
+# Both memoised in .onLoad
+repo_urls <- function(repo) {
+  # Only works if the repo exposes the URL field in PACKAGES, and most don't
+  as.data.frame(
+    utils::available.packages(repos = repo, fields = "URL"),
+    stringsAsFactors = FALSE
+  )
+}
+CRAN_urls <- function() {
+  # Substantially faster to use RStudio mirror: in my testing this reduced
+  # download time from ~2s to 0.6s
+  withr::local_envvar(R_CRAN_WEB = "https://cran.rstudio.com")
+  tools::CRAN_package_db()
 }
 
 # All rOpenSci repositories have a known pkgdown URL.

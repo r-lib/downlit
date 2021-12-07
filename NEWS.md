@@ -1,7 +1,6 @@
 # downlit (development version)
 
-* Functions in HTML `<summary>` elements are no longer autolinked 
-  (@gadenbuie, #105).
+# downlit 0.4.0
 
 ## Syntax highlighting
 
@@ -48,6 +47,16 @@
 
 * Rare warning about incomplete final line in `autolink_url("pkgname::foo")`
   is now suppressed (@dmurdoch, pkgdown#1419).
+
+* `href_package()` is now exported (#103).
+
+* Auto-linking is more likely to succeed when the remote package is not 
+  installed as downlit now looks for the URL using `tools::CRAN_package_db()`
+  for CRAN packages, and and `available.packages()` for packages installed 
+  from non-CRAN repos (@ARawles, #108).
+  
+* Functions in HTML `<summary>` elements are no longer autolinked 
+  (@gadenbuie, #105).
 
 # downlit 0.2.1
 

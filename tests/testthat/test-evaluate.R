@@ -65,9 +65,9 @@ test_that("ansi escapes are translated to html", {
     blue <- function(x) paste0("\033[34m", x, "\033[39m")
     f <- function(x) {
       cat("Output: ", blue("blue"), "\n", sep = "")
-      inform(paste0("Message: ", blue("blue")))
-      warn(blue("blue"))
-      abort(blue("blue"))
+      message(paste0("Message: ", blue("blue")))
+      warning(blue("blue"), call. = FALSE)
+      stop(blue("blue"), call. = FALSE)
     }
 
     test_evaluate("f()\n")

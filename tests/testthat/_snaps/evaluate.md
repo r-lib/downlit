@@ -42,7 +42,7 @@
       test_evaluate("f <- function() stop('x'); f()")
     Output
       <span class='r-in'>f &lt;- function() stop('x'); f()</span>
-      <span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in f()</span> x</span>
+      <span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in f():</span> x</span>
 
 # each line of input gets span
 
@@ -75,7 +75,7 @@
     Output
       <span class='r-in'>f1()</span>
       <span class='r-in'>f2()</span>
-      <span class='r-plt'><img src='1.png' alt='' width='10' height='10' /></span>
+      <span class='r-plt img'><img src='1.png' alt='' width='10' height='10' /></span>
 
 ---
 
@@ -87,8 +87,8 @@
       test_evaluate("f3()")
     Output
       <span class='r-in'>f3()</span>
-      <span class='r-plt'><img src='1.png' alt='' width='10' height='10' /></span>
-      <span class='r-plt'><img src='2.png' alt='' width='10' height='10' /></span>
+      <span class='r-plt img'><img src='1.png' alt='' width='10' height='10' /></span>
+      <span class='r-plt img'><img src='2.png' alt='' width='10' height='10' /></span>
 
 # handles other plots
 
@@ -102,9 +102,9 @@
       blue <- (function(x) paste0("\033[34m", x, "\033[39m"))
       f <- (function(x) {
         cat("Output: ", blue("blue"), "\n", sep = "")
-        inform(paste0("Message: ", blue("blue")))
-        warn(blue("blue"))
-        abort(blue("blue"))
+        message(paste0("Message: ", blue("blue")))
+        warning(blue("blue"), call. = FALSE)
+        stop(blue("blue"), call. = FALSE)
       })
       test_evaluate("f()\n")
     Output
