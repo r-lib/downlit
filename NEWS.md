@@ -1,5 +1,8 @@
 # downlit (development version)
 
+* New R pipe `|>` is now highlighted correctly as an infix operator like
+  magrittr's `%>%` (#126).
+
 # downlit 0.4.0
 
 ## Syntax highlighting
