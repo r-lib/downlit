@@ -112,13 +112,9 @@ test_that("ansi escapes are converted to html", {
 
 test_that("New R pipes get highlighted and not linked", {
   skip_if_not(getRversion() > 4.1, message = "Pipes are available from R 4.1")
-  expect_equal(
-    highlight("1 |> fun()"),
-    "<span class='m'>1</span> <span class='o'>|&gt;</span> <span class='nf'>fun</span><span class='o'>(</span><span class='o'>)</span>"
-  )
   withr::local_envvar(list("_R_USE_PIPEBIND_" = TRUE))
   expect_equal(
-    highlight("x => fun(2, x)"),
-    "<span class='nv'>x</span> <span class='o'>=&gt;</span> <span class='nf'>fun</span><span class='o'>(</span><span class='m'>2</span>, <span class='nv'>x</span><span class='o'>)</span>"
+    highlight("1 |> x => fun(2, x)"),
+    "<span class='m'>1</span> <span class='o'>|&gt;</span> <span class='nv'>x</span> <span class='o'>=&gt;</span> <span class='nf'>fun</span><span class='o'>(</span><span class='m'>2</span>, <span class='nv'>x</span><span class='o'>)</span>"
   )
 })
