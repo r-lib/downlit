@@ -168,7 +168,9 @@ token_type <- function(x, text) {
     # assignment / equals
     "LEFT_ASSIGN", "RIGHT_ASSIGN", "EQ_ASSIGN", "EQ_FORMALS", "EQ_SUB",
     # miscellaneous
-    "'$'", "'@'","'~'", "'?'", "':'", "SPECIAL"
+    "'$'", "'@'","'~'", "'?'", "':'", "SPECIAL",
+    # pipes
+    "PIPE", "PIPEBIND"
   )
   x[x %in% infix] <- "infix"
 
