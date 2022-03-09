@@ -113,16 +113,10 @@ test_that("ansi escapes are converted to html", {
 test_that("New R pipes get highlighted and not linked", {
   skip_if_not(getRversion() >= 4.1, message = "Pipes are available from R 4.1")
   withr::local_envvar(list("_R_USE_PIPEBIND_" = TRUE))
-  expect_equal(
-    highlight("1 |> x => fun(2, x)"),
-    "<span class='m'>1</span> <span class='o'>|&gt;</span> <span class='nv'>x</span> <span class='o'>=&gt;</span> <span class='nf'>fun</span><span class='o'>(</span><span class='m'>2</span>, <span class='nv'>x</span><span class='o'>)</span>"
-  )
+  expect_snapshot(highlight("1 |> x => fun(2, x)"))
 })
 
 test_that("placeholder in R pipe gets highlighted and not linked", {
   skip_if_not(getRversion() >= 4.2, message = "Pipes are available from R 4.1")
-  expect_equal(
-    highlight("1:10 |> mean(x = _)"),
-    "<span class='m'>1</span><span class='o'>:</span><span class='m'>10</span> <span class='o'>|&gt;</span> <span class='nf'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='o'>(</span>x <span class='o'>=</span> <span class='o'>_</span><span class='o'>)</span>"
-  )
+  expect_snapshot(highlight("1:10 |> mean(x = _)"))
 })
