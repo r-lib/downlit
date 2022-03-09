@@ -170,7 +170,7 @@ token_type <- function(x, text) {
     # miscellaneous
     "'$'", "'@'","'~'", "'?'", "':'", "SPECIAL",
     # pipes
-    "PIPE", "PIPEBIND"
+    "PIPE", "PIPEBIND", "PLACEHOLDER"
   )
   x[x %in% infix] <- "infix"
 
