@@ -1,28 +1,3 @@
-is_infix <- function(x) {
-  ops <- c(
-    "::", ":::", "$", "@", "[", "[[", "^", "-", "+", ":", "*", "/",
-    "<", ">", "<=", ">=", "==", "!=", "!", "&", "&&", "|", "||", "~",
-    "->", "->>", "<-", "<<-", "=", "?"
-  )
-
-  grepl("^%.*%$", x) || x %in% ops
-}
-
-is_prefix <- function(x) {
-  if (is_infix(x)) {
-    return(FALSE)
-  }
-
-  special <- c(
-    "(", "{", "if", "for", "while", "repeat", "next", "break", "function"
-  )
-  if (x %in% special) {
-    return(FALSE)
-  }
-
-  TRUE
-}
-
 devtools_loaded <- function(x) {
   if (!x %in% loadedNamespaces()) {
     return(FALSE)
