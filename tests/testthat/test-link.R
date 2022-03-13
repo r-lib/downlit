@@ -130,6 +130,11 @@ test_that("can link ? calls", {
   expect_equal(href_expr_(package?foo), "foo-package.html")
 })
 
+test_that("can link help function in utils", {
+  expect_equal(href_expr_(help()), "https://rdrr.io/r/utils/help.html")
+  expect_equal(href_expr_(utils::help()), "https://rdrr.io/r/utils/help.html")
+})
+
 test_that("can link help calls", {
   local_options(
     "downlit.package" = "test",
@@ -139,7 +144,6 @@ test_that("can link help calls", {
   expect_equal(href_expr_(help("foo")), "foo.html")
   expect_equal(href_expr_(help("foo", "test")), "foo.html")
   expect_equal(href_expr_(help(package = "MASS")), "https://rdrr.io/pkg/MASS/man")
-  expect_equal(href_expr_(help()), NA_character_)
   expect_equal(href_expr_(help(a$b)), NA_character_)
 })
 

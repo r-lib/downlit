@@ -111,6 +111,8 @@ href_expr <- function(expr) {
       # package?x
       href_topic(paste0(expr[[3]], "-", expr[[2]]))
     }
+  } else if (n_args == 0) {
+    href_topic(fun_name, pkg)
   } else if (fun_name == "help") {
     expr <- call_standardise(expr)
     if (is_help_literal(expr$topic) && is_help_literal(expr$package)) {
@@ -122,8 +124,6 @@ href_expr <- function(expr) {
     } else {
       NA_character_
     }
-  } else if (n_args == 0) {
-    href_topic(fun_name, pkg)
   } else if (fun_name == "::") {
     href_topic(as.character(expr[[3]]), as.character(expr[[2]]))
   } else {
