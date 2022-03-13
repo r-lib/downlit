@@ -67,6 +67,13 @@ test_that("can link to functions in base packages", {
   expect_equal(href_expr_(median()), href_topic_remote("median", "stats"))
 })
 
+test_that("can link to infix operators in base packages", {
+  expect_equal(autolink_url("base::`::`()"), href_topic_remote("::", "base"))
+  expect_equal(autolink_url("base::`:::`()"), href_topic_remote(":::", "base"))
+  expect_equal(autolink_url("base::`::`()"), autolink_url("base::`:::`()"))
+  expect_equal(autolink_url("base::`+`()"), href_topic_remote("+", "base"))
+})
+
 test_that("links to home of re-exported functions", {
   expect_equal(href_expr_(testthat::`%>%`), href_topic_remote("%>%", "magrittr"))
 })
