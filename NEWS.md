@@ -1,5 +1,8 @@
 # downlit (development version)
 
+* Auto-linking works when used with double colon infix operator 
+  (@IndrajeetPatil, #131).
+
 # downlit 0.4.0
 
 ## Syntax highlighting
