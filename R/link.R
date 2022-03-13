@@ -122,10 +122,10 @@ href_expr <- function(expr) {
     } else {
       NA_character_
     }
-  } else if (fun_name == "::") {
-    href_topic(as.character(expr[[3]]), as.character(expr[[2]]))
   } else if (n_args == 0) {
     href_topic(fun_name, pkg)
+  } else if (fun_name == "::") {
+    href_topic(as.character(expr[[3]]), as.character(expr[[2]]))
   } else {
     NA_character_
   }
