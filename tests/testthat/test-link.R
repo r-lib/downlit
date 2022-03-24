@@ -122,10 +122,10 @@ test_that("can link help calls", {
     "downlit.topic_index" = c(foo = "foo", "foo-package" = "foo-package")
   )
 
-  expect_equal(href_expr_(help()), "https://rdrr.io/r/utils/help.html")
   expect_equal(href_expr_(help("foo")), "foo.html")
   expect_equal(href_expr_(help("foo", "test")), "foo.html")
   expect_equal(href_expr_(help(package = "MASS")), "https://rdrr.io/pkg/MASS/man")
+  expect_equal(href_expr_(help()), "https://rdrr.io/r/utils/help.html")
   expect_equal(href_expr_(help(a$b)), NA_character_)
 })
 
