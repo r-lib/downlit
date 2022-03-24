@@ -1,6 +1,6 @@
 # downlit (development version)
 
-* Auto-linking works when used with double colon infix operator 
+* Auto-linking works when used with double colon infix operator and `utils::help()`
   (@IndrajeetPatil, #131).
 
 # downlit 0.4.0
