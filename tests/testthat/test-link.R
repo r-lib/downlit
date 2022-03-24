@@ -38,6 +38,7 @@ test_that("can link remote objects", {
   expect_equal(href_expr_(MASS::abbey), href_topic_remote("abbey", "MASS"))
   expect_equal(href_expr_(MASS::addterm()), href_topic_remote("addterm", "MASS"))
   expect_equal(href_expr_(MASS::addterm.default()), href_topic_remote("addterm", "MASS"))
+  expect_equal(href_expr_(base::`::`), href_topic_remote("::", "base"))
 
   # Doesn't exist
   expect_equal(href_expr_(MASS::blah), NA_character_)
@@ -65,21 +66,6 @@ test_that("can link to package names in registered packages", {
 test_that("can link to functions in base packages", {
   expect_equal(href_expr_(abbreviate()), href_topic_remote("abbreviate", "base"))
   expect_equal(href_expr_(median()), href_topic_remote("median", "stats"))
-})
-
-test_that("can link to namespaced infix operators in base packages", {
-  expect_equal(autolink_url("base::`::`()"), href_topic_remote("::", "base"))
-  expect_equal(autolink_url("base::`::`('base', 'log')"), href_topic_remote("log", "base"))
-  expect_equal(autolink_url("base::`::`()"), autolink_url("base::`:::`()"))
-  expect_equal(autolink_url("base::`:::`()"), href_topic_remote(":::", "base"))
-  expect_equal(autolink_url("base::`+`()"), href_topic_remote("+", "base"))
-})
-
-test_that("can link to non-namespaced infix operators in base packages", {
-  expect_equal(autolink_url("`::`()"), href_topic_remote("::", "base"))
-  expect_equal(autolink_url("`::`('base', 'log')"), href_topic_remote("log", "base"))
-  expect_equal(autolink_url("`:::`()"), href_topic_remote(":::", "base"))
-  expect_equal(autolink_url("`+`()"), href_topic_remote("+", "base"))
 })
 
 test_that("links to home of re-exported functions", {
@@ -130,17 +116,13 @@ test_that("can link ? calls", {
   expect_equal(href_expr_(package?foo), "foo-package.html")
 })
 
-test_that("can link help function in utils", {
-  expect_equal(href_expr_(help()), "https://rdrr.io/r/utils/help.html")
-  expect_equal(href_expr_(utils::help()), "https://rdrr.io/r/utils/help.html")
-})
-
 test_that("can link help calls", {
   local_options(
     "downlit.package" = "test",
     "downlit.topic_index" = c(foo = "foo", "foo-package" = "foo-package")
   )
 
+  expect_equal(href_expr_(help()), "https://rdrr.io/r/utils/help.html")
   expect_equal(href_expr_(help("foo")), "foo.html")
   expect_equal(href_expr_(help("foo", "test")), "foo.html")
   expect_equal(href_expr_(help(package = "MASS")), "https://rdrr.io/pkg/MASS/man")
