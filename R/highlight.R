@@ -133,7 +133,7 @@ getFullParseData <- function(x) {
     nchar(res$text) > 1
 
   if (any(truncated))
-    res[truncated, "text"] <- utils::getParseText(res, res$id[truncated])
+    res$text[truncated] <- utils::getParseText(res, res$id[truncated])
 
   res
 }
