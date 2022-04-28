@@ -1,5 +1,8 @@
 # downlit (development version)
 
+* Very long strings or other tokens are no longer truncated
+  by `downlit::highlight()` (@dmurdoch, #128).
+
 # downlit 0.4.0
 
 ## Syntax highlighting
