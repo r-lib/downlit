@@ -130,7 +130,7 @@ getFullParseData <- function(x) {
 
   truncated <- res$terminal &
     substr(res$text, 1, 1) == "[" &
-    nchar(res$text) > 1
+    nchar(res$text) > 5  # 5 is arbitrary, 2 would probably be enough
 
   if (any(truncated))
     res$text[truncated] <- utils::getParseText(res, res$id[truncated])
