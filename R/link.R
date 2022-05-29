@@ -149,6 +149,9 @@ is_help_literal <- function(x) is_string(x) || is_symbol(x)
 #'
 #' href_package("downlit")
 href_topic <- function(topic, package = NULL) {
+  if (length(topic) != 1L) {
+    return(NA_character_)
+  }
   if (is_package_local(package)) {
     href_topic_local(topic)
   } else {

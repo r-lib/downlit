@@ -99,6 +99,7 @@ test_that("returns NA for bad inputs", {
   expect_equal(autolink_url(""), NA_character_)
   expect_equal(autolink_url("a; b"), NA_character_)
   expect_equal(autolink_url("1"), NA_character_)
+  expect_equal(autolink_url("ls *t??ne.pb"), NA_character_)
 })
 
 # help --------------------------------------------------------------------
