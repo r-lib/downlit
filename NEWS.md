@@ -3,6 +3,9 @@
 * Very long strings or other tokens are no longer truncated
   by `downlit::highlight()` (@dmurdoch, #128).
 
+* Auto-linking works when used with double colon infix operator and `utils::help()`
+  (@IndrajeetPatil, #131).
+
 # downlit 0.4.0
 
 ## Syntax highlighting

@@ -38,6 +38,7 @@ test_that("can link remote objects", {
   expect_equal(href_expr_(MASS::abbey), href_topic_remote("abbey", "MASS"))
   expect_equal(href_expr_(MASS::addterm()), href_topic_remote("addterm", "MASS"))
   expect_equal(href_expr_(MASS::addterm.default()), href_topic_remote("addterm", "MASS"))
+  expect_equal(href_expr_(base::`::`), href_topic_remote("::", "base"))
 
   # Doesn't exist
   expect_equal(href_expr_(MASS::blah), NA_character_)
@@ -125,7 +126,7 @@ test_that("can link help calls", {
   expect_equal(href_expr_(help("foo")), "foo.html")
   expect_equal(href_expr_(help("foo", "test")), "foo.html")
   expect_equal(href_expr_(help(package = "MASS")), "https://rdrr.io/pkg/MASS/man")
-  expect_equal(href_expr_(help()), NA_character_)
+  expect_equal(href_expr_(help()), "https://rdrr.io/r/utils/help.html")
   expect_equal(href_expr_(help(a$b)), NA_character_)
 })
 
