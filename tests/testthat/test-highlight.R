@@ -109,3 +109,9 @@ test_that("ansi escapes are converted to html", {
   expect_snapshot_output(highlight("# \033[31mhello\033[m"))
   expect_snapshot_output(highlight("# \u2029[31mhello\u2029[m"))
 })
+
+test_that("can highlight vers long strings", {
+  val <- paste0(rep('very', 200), collapse = " ")
+  out <- downlit::highlight(sprintf("'%s'", val))
+  expect_equal(out, paste0("<span class='s'>'", val, "'</span>"))
+})
