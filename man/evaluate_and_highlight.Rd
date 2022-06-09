@@ -60,8 +60,4 @@ f <- function(x) {
 f()
 
 plot(1:10)
-
-if (requireNamespace("leaflet", quietly = TRUE)) {
-leaflet::addTiles(leaflet::leaflet())
-}
 }
