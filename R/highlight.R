@@ -121,6 +121,23 @@ line_col <- function(x) {
   data.frame(line, col)
 }
 
+# utils::getParseData will truncate very long strings or tokens;
+# this function checks for that and uses the slow
+# utils::getParseText function when necessary.
+
+getFullParseData <- function(x) {
+  res <- utils::getParseData(x)
+
+  truncated <- res$terminal &
+    substr(res$text, 1, 1) == "[" &
+    nchar(res$text) > 5  # 5 is arbitrary, 2 would probably be enough
+
+  if (any(truncated))
+    res$text[truncated] <- utils::getParseText(res, res$id[truncated])
+
+  res
+}
+
 parse_data <- function(text) {
   text <- standardise_text(text)
   stopifnot(is.character(text), length(text) == 1)
@@ -130,7 +147,7 @@ parse_data <- function(text) {
     return(NULL)
   }
 
-  list(text = text, expr = expr, data = utils::getParseData(expr))
+  list(text = text, expr = expr, data = getFullParseData(expr))
 }
 
 # Highlighting ------------------------------------------------------------
