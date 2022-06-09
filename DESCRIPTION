@@ -29,7 +29,6 @@ Suggests:
     covr,
     htmltools,
     jsonlite,
-    leaflet,
     MASS,
     pkgload,
     rmarkdown,
