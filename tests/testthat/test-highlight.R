@@ -110,6 +110,12 @@ test_that("ansi escapes are converted to html", {
   expect_snapshot_output(highlight("# \u2029[31mhello\u2029[m"))
 })
 
+test_that("can highlight vers long strings", {
+  val <- paste0(rep('very', 200), collapse = " ")
+  out <- downlit::highlight(sprintf("'%s'", val))
+  expect_equal(out, paste0("<span class='s'>'", val, "'</span>"))
+})
+
 test_that("placeholder in R pipe gets highlighted and not linked", {
   skip_if_not(getRversion() >= 4.2, message = "Pipes are available from R 4.1")
   expect_snapshot(highlight("1:10 |> mean(x = _)", classes = classes_pandoc()))

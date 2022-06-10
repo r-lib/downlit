@@ -24,12 +24,12 @@ Imports:
     memoise,
     rlang,
     vctrs,
+    withr,
     yaml
 Suggests:
     covr,
     htmltools,
     jsonlite,
-    leaflet,
     MASS,
     pkgload,
     rmarkdown,

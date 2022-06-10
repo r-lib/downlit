@@ -71,7 +71,9 @@ href_expr <- function(expr) {
   fun_name <- as.character(fun)
   n_args <- length(expr) - 1
 
-  if (fun_name %in% c("library", "require", "requireNamespace")) {
+  if (n_args == 0) {
+    href_topic(fun_name, pkg)
+  } else if (fun_name %in% c("library", "require", "requireNamespace")) {
     if (n_args == 1 && is.null(names(expr))) {
       pkg <- as.character(expr[[2]])
       topic <- href_package(pkg)
@@ -83,10 +85,8 @@ href_expr <- function(expr) {
     } else {
       href_topic(fun_name)
     }
-  } else if (fun_name == "vignette") {
-    if (length(expr) == 1) {
-      return(href_topic(fun_name))
-    }
+  } else if (fun_name == "vignette" && n_args >= 1) {
+    # vignette("foo", "package")
     expr <- call_standardise(expr)
     topic_ok <- is.character(expr$topic)
     package_ok <- is.character(expr$package) || is.null(expr$package)
@@ -95,23 +95,21 @@ href_expr <- function(expr) {
     } else {
       NA_character_
     }
-  } else if (fun_name == "?") {
-    if (n_args == 1) {
-      topic <- expr[[2]]
-      if (is_call(topic, "::")) {
-        # ?pkg::x
-        href_topic(as.character(topic[[3]]), as.character(topic[[2]]))
-      } else if (is_symbol(topic) || is_string(topic)) {
-        # ?x
-        href_topic(as.character(expr[[2]]))
-      } else {
-        NA_character_
-      }
-    } else if (n_args == 2) {
-      # package?x
-      href_topic(paste0(expr[[3]], "-", expr[[2]]))
+  } else if (fun_name == "?" && n_args == 1) {
+    topic <- expr[[2]]
+    if (is_call(topic, "::")) {
+      # ?pkg::x
+      href_topic(as.character(topic[[3]]), as.character(topic[[2]]))
+    } else if (is_symbol(topic) || is_string(topic)) {
+      # ?x
+      href_topic(as.character(expr[[2]]))
+    } else {
+      NA_character_
     }
-  } else if (fun_name == "help") {
+  } else if (fun_name == "?" && n_args == 2) {
+    # package?x
+    href_topic(paste0(expr[[3]], "-", expr[[2]]))
+  } else if (fun_name == "help" && n_args >= 1) {
     expr <- call_standardise(expr)
     if (is_help_literal(expr$topic) && is_help_literal(expr$package)) {
       href_topic(as.character(expr$topic), as.character(expr$package))
@@ -122,10 +120,8 @@ href_expr <- function(expr) {
     } else {
       NA_character_
     }
-  } else if (fun_name == "::") {
+  } else if (fun_name == "::" && n_args == 2) {
     href_topic(as.character(expr[[3]]), as.character(expr[[2]]))
-  } else if (n_args == 0) {
-    href_topic(fun_name, pkg)
   } else {
     NA_character_
   }
@@ -149,6 +145,9 @@ is_help_literal <- function(x) is_string(x) || is_symbol(x)
 #'
 #' href_package("downlit")
 href_topic <- function(topic, package = NULL) {
+  if (length(topic) != 1L) {
+    return(NA_character_)
+  }
   if (is_package_local(package)) {
     href_topic_local(topic)
   } else {
