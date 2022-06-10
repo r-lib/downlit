@@ -147,7 +147,7 @@ token_type <- function(x, text) {
   special <- c(
     "FUNCTION",
     "FOR", "IN", "BREAK", "NEXT", "REPEAT", "WHILE",
-    "IF", "ELSE"
+    "IF", "ELSE", "PLACEHOLDER"
   )
   rstudio_special <- c(
    "return", "switch", "try", "tryCatch", "stop",
@@ -170,7 +170,7 @@ token_type <- function(x, text) {
     # miscellaneous
     "'$'", "'@'","'~'", "'?'", "':'", "SPECIAL",
     # pipes
-    "PIPE", "PIPEBIND", "PLACEHOLDER"
+    "PIPE", "PIPEBIND"
   )
   x[x %in% infix] <- "infix"
 
@@ -184,6 +184,7 @@ token_type <- function(x, text) {
   )
   x[x == "NUM_CONST" & text %in% constant] <- "constant"
   x[x == "SYMBOL" & text %in% c("T", "F")] <- "constant"
+  x[x == "NULL_CONST"] <- "constant"
   x[x == "NULL_CONST"] <- "constant"
 
   x

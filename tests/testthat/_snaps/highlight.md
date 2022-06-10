@@ -17,7 +17,7 @@
 # placeholder in R pipe gets highlighted and not linked
 
     Code
-      highlight("1:10 |> mean(x = _)")
+      highlight("1:10 |> mean(x = _)", classes = classes_pandoc())
     Output
-      [1] "<span class='m'>1</span><span class='o'>:</span><span class='m'>10</span> <span class='o'>|&gt;</span> <span class='nf'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='o'>(</span>x <span class='o'>=</span> <span class='o'>_</span><span class='o'>)</span>"
+      [1] "<span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span> <span class='op'>|&gt;</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='kw'>_</span><span class='op'>)</span>"
 

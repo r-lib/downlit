@@ -112,5 +112,5 @@ test_that("ansi escapes are converted to html", {
 
 test_that("placeholder in R pipe gets highlighted and not linked", {
   skip_if_not(getRversion() >= 4.2, message = "Pipes are available from R 4.1")
-  expect_snapshot(highlight("1:10 |> mean(x = _)"))
+  expect_snapshot(highlight("1:10 |> mean(x = _)", classes = classes_pandoc()))
 })
