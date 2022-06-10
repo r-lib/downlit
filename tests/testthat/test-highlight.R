@@ -110,12 +110,6 @@ test_that("ansi escapes are converted to html", {
   expect_snapshot_output(highlight("# \u2029[31mhello\u2029[m"))
 })
 
-test_that("New R pipes get highlighted and not linked", {
-  skip_if_not(getRversion() >= 4.1, message = "Pipes are available from R 4.1")
-  withr::local_envvar(list("_R_USE_PIPEBIND_" = TRUE))
-  expect_snapshot(highlight("1 |> x => fun(2, x)"))
-})
-
 test_that("placeholder in R pipe gets highlighted and not linked", {
   skip_if_not(getRversion() >= 4.2, message = "Pipes are available from R 4.1")
   expect_snapshot(highlight("1:10 |> mean(x = _)"))
