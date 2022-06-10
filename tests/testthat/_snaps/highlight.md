@@ -19,5 +19,5 @@
     Code
       highlight("1:10 |> mean(x = _)", classes = classes_pandoc())
     Output
-      [1] "<span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span> <span class='op'>|&gt;</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='kw'>_</span><span class='op'>)</span>"
+      [1] "<span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span> <span class='op'>|&gt;</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>_</span><span class='op'>)</span>"
 

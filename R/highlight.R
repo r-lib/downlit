@@ -164,7 +164,7 @@ token_type <- function(x, text) {
   special <- c(
     "FUNCTION",
     "FOR", "IN", "BREAK", "NEXT", "REPEAT", "WHILE",
-    "IF", "ELSE", "PLACEHOLDER"
+    "IF", "ELSE"
   )
   rstudio_special <- c(
    "return", "switch", "try", "tryCatch", "stop",
@@ -231,6 +231,7 @@ classes_pandoc <- function() {
     "SLOT" = "va",
     "SYMBOL" = "va",
     "SYMBOL_FORMALS" = "va",
+    "PLACEHOLDER" = "va",
 
     "NS_GET" = "fu",
     "NS_GET_INT" = "fu",
@@ -257,6 +258,7 @@ classes_chroma <- function() {
     "SLOT" = "nv",
     "SYMBOL" = "nv",
     "SYMBOL_FORMALS" = "nv",
+    "PLACEHOLDER" = "nv",
 
     "NS_GET" = "nf",
     "NS_GET_INT" = "nf",
