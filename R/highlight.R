@@ -204,6 +204,9 @@ token_type <- function(x, text) {
   x[x == "NULL_CONST"] <- "constant"
   x[x == "NULL_CONST"] <- "constant"
 
+  # Treats pipe's placeholder '_' as a SYMBOL
+  x[x == "PLACEHOLDER"] <- "SYMBOL"
+
   x
 }
 
@@ -231,7 +234,6 @@ classes_pandoc <- function() {
     "SLOT" = "va",
     "SYMBOL" = "va",
     "SYMBOL_FORMALS" = "va",
-    "PLACEHOLDER" = "va",
 
     "NS_GET" = "fu",
     "NS_GET_INT" = "fu",
@@ -258,7 +260,6 @@ classes_chroma <- function() {
     "SLOT" = "nv",
     "SYMBOL" = "nv",
     "SYMBOL_FORMALS" = "nv",
-    "PLACEHOLDER" = "nv",
 
     "NS_GET" = "nf",
     "NS_GET_INT" = "nf",
