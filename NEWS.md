@@ -1,5 +1,7 @@
 # downlit (development version)
 
+* Adds support for new R pipe `|>` syntax (#126).
+
 * Very long strings or other tokens are no longer truncated
   by `downlit::highlight()` (@dmurdoch, #128).
 

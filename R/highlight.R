@@ -185,7 +185,9 @@ token_type <- function(x, text) {
     # assignment / equals
     "LEFT_ASSIGN", "RIGHT_ASSIGN", "EQ_ASSIGN", "EQ_FORMALS", "EQ_SUB",
     # miscellaneous
-    "'$'", "'@'","'~'", "'?'", "':'", "SPECIAL"
+    "'$'", "'@'","'~'", "'?'", "':'", "SPECIAL",
+    # pipes
+    "PIPE", "PIPEBIND"
   )
   x[x %in% infix] <- "infix"
 
@@ -200,6 +202,10 @@ token_type <- function(x, text) {
   x[x == "NUM_CONST" & text %in% constant] <- "constant"
   x[x == "SYMBOL" & text %in% c("T", "F")] <- "constant"
   x[x == "NULL_CONST"] <- "constant"
+  x[x == "NULL_CONST"] <- "constant"
+
+  # Treats pipe's placeholder '_' as a SYMBOL
+  x[x == "PLACEHOLDER"] <- "SYMBOL"
 
   x
 }
