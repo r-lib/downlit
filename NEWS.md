@@ -1,5 +1,7 @@
 # downlit (development version)
 
+* Re-exports detection no longer relies on name of `.Rd` file (#134).
+
 * Adds support for new R pipe `|>` syntax (#126).
 
 * Very long strings or other tokens are no longer truncated
