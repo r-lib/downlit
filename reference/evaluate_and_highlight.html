@@ -71,27 +71,40 @@ intermingles it with output.</p>
     <h2>Arguments</h2>
     <dl><dt>code</dt>
 <dd><p>Code to evaluate (as a string).</p></dd>
+
+
 <dt>fig_save</dt>
 <dd><p>A function with arguments <code>plot</code> and <code>id</code> that is
 responsible for saving <code>plot</code> to a file (using <code>id</code> to disambiguate
 multiple plots in the same chunk). It should return a list with
 components <code>path</code>, <code>width</code>, and <code>height</code>.</p></dd>
+
+
 <dt>classes</dt>
 <dd><p>A mapping between token names and CSS class names.
 Bundled <code><a href="highlight.html">classes_pandoc()</a></code> and <code><a href="highlight.html">classes_chroma()</a></code> provide mappings
 that (roughly) match Pandoc and chroma (used by hugo) classes so you
 can use existing themes.</p></dd>
+
+
 <dt>env</dt>
 <dd><p>Environment in which to evaluate code; if not supplied,
 defaults to a child of the global environment.</p></dd>
+
+
 <dt>output_handler</dt>
 <dd><p>Custom output handler for <code><a href="https://rdrr.io/pkg/evaluate/man/evaluate.html" class="external-link">evaluate::evaluate()</a></code>.</p></dd>
+
+
 <dt>highlight</dt>
 <dd><p>Optionally suppress highlighting. This is useful for tests.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>An string containing HTML with a <code>dependencies</code> attribute
+    
+
+<p>An string containing HTML with a <code>dependencies</code> attribute
 giving an additional htmltools dependencies required to render the HTML.</p>
     </div>
 
@@ -137,7 +150,7 @@ giving an additional htmltools dependencies required to render the HTML.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>
