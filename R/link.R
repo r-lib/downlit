@@ -201,26 +201,31 @@ href_topic_remote <- function(topic, package) {
     return(NA_character_)
   }
 
-  if (rdname == "reexports") {
-    return(href_topic_reexported(topic, package))
+  if (is_reexported(topic, package)) {
+    href_topic_reexported(topic, package)
+  } else {
+    paste0(href_package_ref(package), "/", rdname, ".html")
   }
+}
 
-  paste0(href_package_ref(package), "/", rdname, ".html")
+is_reexported <- function(name, package) {
+  is_imported <- env_has(ns_imports_env(package), name)
+  is_exported <- name %in% getNamespaceExports(ns_env(package))
+
+  is_imported && is_exported
 }
 
 # If it's a re-exported function, we need to work a little harder to
 # find out its source so that we can link to it.
 href_topic_reexported <- function(topic, package) {
   ns <- ns_env(package)
-  exports <- .getNamespaceInfo(ns, "exports")
-
-  if (!env_has(exports, topic)) {
-    NA_character_
-  } else {
-    obj <- env_get(ns, topic, inherit = TRUE)
-    package <- find_reexport_source(obj, ns, topic)
-    href_topic_remote(topic, package)
+  if (!env_has(ns, topic, inherit = TRUE)) {
+    return(NA_character_)
   }
+
+  obj <- env_get(ns, topic, inherit = TRUE)
+  ex_package <- find_reexport_source(obj, ns, topic)
+  href_topic_remote(topic, ex_package)
 }
 
 find_reexport_source <- function(obj, ns, topic) {
