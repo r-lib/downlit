@@ -41,7 +41,8 @@ topics and articles/vignettes relative to the "current" file.
 
 \examples{
 autolink("stats::median()")
+\dontrun{
 autolink("vignette('grid', package = 'grid')")
-
+}
 autolink_url("stats::median()")
 }
