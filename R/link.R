@@ -278,11 +278,16 @@ href_article <- function(article, package = NULL) {
   }
 
   base_url <- remote_package_article_url(package)
-  if (is.null(base_url)) {
-    paste0("https://cran.rstudio.com/web/packages/", package, "/vignettes/", path)
-  } else {
-    paste0(base_url, "/", path)
+  if (!is.null(base_url)) {
+    return(paste0(base_url, "/", path))
   }
+  if (package %in% rownames(repo_urls(repo = getOption("repos")))) {
+    return(paste0("https://cran.rstudio.com/web/packages/", package, "/vignettes/", path))
+  }
+  if (package %in% BioconductorPkgs()) {
+    return(paste0("https://bioconductor.org/packages/release/bioc/vignettes/", package, "/inst/doc/", path))
+  }
+  return(paste0("https://cran.rstudio.com/web/packages/", package, "/vignettes/", path))
 }
 
 # Try to figure out package name from attached packages
