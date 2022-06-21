@@ -34,16 +34,12 @@ topic_index_installed <- function(package) {
   readRDS(path)
 }
 
-# A helper that can warn if the topic is not found
-find_rdname <- function(package, topic, warn_if_not_found = FALSE) {
+find_rdname <- function(package, topic) {
   index <- topic_index(package)
 
   if (has_name(index, topic)) {
     index[[topic]]
   } else {
-    if (warn_if_not_found) {
-      warn(paste0("Failed to find topic `", topic, "`"))
-    }
     NULL
   }
 }

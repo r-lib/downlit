@@ -24,7 +24,6 @@ test_that("can find topic in specified package", {
   grid_index <- topic_index("grid")
   expect_equal(find_rdname("grid", "unit"), "unit")
   expect_equal(find_rdname("grid", "DOESNOTEXIST"), NULL)
-  expect_warning(find_rdname("grid", "DOESNOTEXIST", TRUE), "Failed to find")
 })
 
 test_that("can find topic in attached packages", {
