@@ -161,13 +161,33 @@ test_that("can link to local articles", {
   expect_equal(href_expr_(vignette("y")), NA_character_)
 })
 
+test_that("can link to bioconductor vignettes", {
+  skip_on_cran()
+  skip_if_not_installed("MassSpecWavelet")
+  skip_if_not_installed("BiocManager")
+
+  local_options(
+    "repos" = c("CRAN" = "https://cran.rstudio.com")
+  )
+
+  expect_equal(
+    href_expr_(vignette("MassSpecWavelet", "MassSpecWavelet")),
+    "https://bioconductor.org/packages/release/bioc/vignettes/MassSpecWavelet/inst/doc/MassSpecWavelet.html"
+  )
+})
+
 test_that("can link to remote articles", {
   skip_on_cran()
+
+  local_options(
+    "repos" = c("CRAN" = "https://cran.rstudio.com")
+  )
 
   expect_equal(
     href_expr_(vignette("sha1", "digest")),
     "https://cran.rstudio.com/web/packages/digest/vignettes/sha1.html"
   )
+
   expect_equal(href_expr_(vignette("blah1", "digest")), NA_character_)
 
   expect_equal(
@@ -187,7 +207,11 @@ test_that("or local sites, if registered", {
 })
 
 test_that("looks in attached packages", {
-  local_options("downlit.attached" = c("grid", "digest"))
+  skip_on_cran()
+  local_options(
+    "downlit.attached" = c("grid", "digest"),
+    "repos" = c("CRAN" = "https://cran.rstudio.com")
+  )
 
   expect_equal(
     href_expr_(vignette("sha1")),
