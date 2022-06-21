@@ -144,7 +144,16 @@ BioconductorPkgs <- function() {
     )
     return(character(0L))
   }
-  suppressMessages(BiocManager::available())
+  is_bioconductor_supported <- function() {
+    tryCatch(
+      {suppressMessages(BiocManager::repositories()); TRUE},
+      error = function(err) { FALSE})
+  }
+  if (is_bioconductor_supported()) {
+    suppressMessages(BiocManager::available())
+  } else {
+    character(0L)
+  }
 }
 
 # All rOpenSci repositories have a known pkgdown URL.
