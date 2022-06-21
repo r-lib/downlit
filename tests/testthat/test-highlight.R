@@ -62,8 +62,8 @@ test_that("can highlight code in Latin1", {
 })
 
 test_that("syntax can span multiple lines", {
-  expect_equal(highlight("f(\n\n)"), "<span class='nf'>f</span><span class='o'>(</span>\n\n<span class='o'>)</span>")
-  expect_equal(highlight("'\n\n'"), "<span class='s'>'\n\n'</span>")
+  expect_snapshot(cat(highlight("f(\n\n)")))
+  expect_snapshot(cat(highlight("'\n\n'")))
 })
 
 test_that("code with tab is not mangled", {

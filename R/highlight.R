@@ -90,9 +90,21 @@ highlight <- function(text, classes = classes_chroma(), pre_class = NULL, code =
 }
 
 style_token <- function(x, href = NA, class = NA) {
-  x <- ifelse(is.na(href), x, paste0("<a href='", href, "'>", x, "</a>"))
-  x <- ifelse(is.na(class), x, paste0("<span class='", class, "'>", x, "</span>"))
-  x
+  # Split tokens in to lines
+  lines <- strsplit(x, "\n")
+  n <- lengths(lines)
+
+  xs <- unlist(lines)
+  href <- rep(href, n)
+  class <- rep(class, n)
+
+  # Add links and class
+  xs <- ifelse(is.na(href), xs, paste0("<a href='", href, "'>", xs, "</a>"))
+  xs <- ifelse(is.na(class), xs, paste0("<span class='", class, "'>", xs, "</span>"))
+
+  # Re-combine back into lines
+  new_lines <- split(xs, rep(seq_along(x), n))
+  map_chr(new_lines, paste0, collapse = "\n")
 }
 
 # From prettycode:::replace_in_place

@@ -6,6 +6,24 @@
 
     <span class='nv'>x</span> <span class='o'>+</span> <span class='nv'>y</span>
 
+# syntax can span multiple lines
+
+    Code
+      cat(highlight("f(\n\n)"))
+    Output
+      <span class='nf'>f</span><span class='o'>(</span>
+      
+      <span class='o'>)</span>
+
+---
+
+    Code
+      cat(highlight("'\n\n'"))
+    Output
+      <span class='s'>'</span>
+      <span class='s'></span>
+      <span class='s'>'</span>
+
 # ansi escapes are converted to html
 
     [1] "<span class='c'># <span style='color: #BB0000;'>hello</span></span>"
