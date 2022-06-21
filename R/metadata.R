@@ -135,6 +135,17 @@ CRAN_urls <- function() {
   withr::local_envvar(R_CRAN_WEB = "https://cran.rstudio.com")
   tools::CRAN_package_db()
 }
+BioconductorPkgs <- function() {
+  if (!requireNamespace("BiocManager", quietly = TRUE)) {
+    rlang::warn(message = c(
+      "Can't check for Bioconductor packages",
+      "i" = "Please install BiocManager if you want to link to Bioconductor packages"
+      )
+    )
+    return(character(0L))
+  }
+  suppressMessages(BiocManager::available())
+}
 
 # All rOpenSci repositories have a known pkgdown URL.
 # Todo: could generalise this concept for other orgs.

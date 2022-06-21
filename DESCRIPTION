@@ -27,6 +27,7 @@ Imports:
     withr,
     yaml
 Suggests:
+    BiocManager,
     covr,
     htmltools,
     jsonlite,
