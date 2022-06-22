@@ -57,14 +57,14 @@ intermingles it with output.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">evaluate_and_highlight</span><span class="op">(</span>
-  <span class="va">code</span>,
-  <span class="va">fig_save</span>,
-  classes <span class="op">=</span> <span class="fu">downlit</span><span class="fu">::</span><span class="fu"><a href="highlight.html">classes_pandoc</a></span><span class="op">(</span><span class="op">)</span>,
-  env <span class="op">=</span> <span class="cn">NULL</span>,
-  output_handler <span class="op">=</span> <span class="fu">evaluate</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/evaluate/man/new_output_handler.html" class="external-link">new_output_handler</a></span><span class="op">(</span><span class="op">)</span>,
-  highlight <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">evaluate_and_highlight</span><span class="op">(</span></span>
+<span>  <span class="va">code</span>,</span>
+<span>  <span class="va">fig_save</span>,</span>
+<span>  classes <span class="op">=</span> <span class="fu">downlit</span><span class="fu">::</span><span class="fu"><a href="highlight.html">classes_pandoc</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  env <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  output_handler <span class="op">=</span> <span class="fu">evaluate</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/evaluate/man/new_output_handler.html" class="external-link">new_output_handler</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  highlight <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -110,31 +110,31 @@ giving an additional htmltools dependencies required to render the HTML.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu">evaluate_and_highlight</span><span class="op">(</span><span class="st">"1 + 2"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;span class='r-in'&gt;&lt;span class='fl'&gt;1&lt;/span&gt; &lt;span class='op'&gt;+&lt;/span&gt; &lt;span class='fl'&gt;2&lt;/span&gt;&lt;/span&gt;</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu">evaluate_and_highlight</span><span class="op">(</span><span class="st">"1 + 2"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;span class='r-in'&gt;&lt;span&gt;&lt;span class='fl'&gt;1&lt;/span&gt; &lt;span class='op'&gt;+&lt;/span&gt; &lt;span class='fl'&gt;2&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;span class='r-out co'&gt;&lt;span class='r-pr'&gt;#&amp;gt;&lt;/span&gt; [1] 3&lt;/span&gt;</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu">evaluate_and_highlight</span><span class="op">(</span><span class="st">"x &lt;- 1:10\nmean(x)"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;span class='r-in'&gt;&lt;span class='va'&gt;x&lt;/span&gt; &lt;span class='op'&gt;&amp;lt;-&lt;/span&gt; &lt;span class='fl'&gt;1&lt;/span&gt;&lt;span class='op'&gt;:&lt;/span&gt;&lt;span class='fl'&gt;10&lt;/span&gt;&lt;/span&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;span class='r-in'&gt;&lt;span class='fu'&gt;&lt;a href='https://rdrr.io/r/base/mean.html'&gt;mean&lt;/a&gt;&lt;/span&gt;&lt;span class='op'&gt;(&lt;/span&gt;&lt;span class='va'&gt;x&lt;/span&gt;&lt;span class='op'&gt;)&lt;/span&gt;&lt;/span&gt;</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu">evaluate_and_highlight</span><span class="op">(</span><span class="st">"x &lt;- 1:10\nmean(x)"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;span class='r-in'&gt;&lt;span&gt;&lt;span class='va'&gt;x&lt;/span&gt; &lt;span class='op'&gt;&amp;lt;-&lt;/span&gt; &lt;span class='fl'&gt;1&lt;/span&gt;&lt;span class='op'&gt;:&lt;/span&gt;&lt;span class='fl'&gt;10&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;span class='r-in'&gt;&lt;span&gt;&lt;span class='fu'&gt;&lt;a href='https://rdrr.io/r/base/mean.html'&gt;mean&lt;/a&gt;&lt;/span&gt;&lt;span class='op'&gt;(&lt;/span&gt;&lt;span class='va'&gt;x&lt;/span&gt;&lt;span class='op'&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;span class='r-out co'&gt;&lt;span class='r-pr'&gt;#&amp;gt;&lt;/span&gt; [1] 5.5&lt;/span&gt;</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># -----------------------------------------------------------------</span></span>
-<span class="r-in"><span class="co"># evaluate_and_highlight() powers pkgdown's documentation formatting so</span></span>
-<span class="r-in"><span class="co"># here I include a few examples to make sure everything looks good</span></span>
-<span class="r-in"><span class="co"># -----------------------------------------------------------------</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">blue</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"\033[34m"</span>, <span class="va">x</span>, <span class="st">"\033[39m"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"This is some output. My favourite colour is "</span>, <span class="fu">blue</span><span class="op">(</span><span class="st">"blue"</span><span class="op">)</span>, <span class="st">".\n"</span>, sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"This is a message. My favourite fruit is "</span>, <span class="fu">blue</span><span class="op">(</span><span class="st">"blueberries"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in">  <span class="kw"><a href="https://rdrr.io/r/base/warning.html" class="external-link">warning</a></span><span class="op">(</span><span class="st">"Now at stage "</span>, <span class="fu">blue</span><span class="op">(</span><span class="st">"blue"</span><span class="op">)</span>, <span class="st">"!"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"><span class="fu">f</span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># -----------------------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co"># evaluate_and_highlight() powers pkgdown's documentation formatting so</span></span></span>
+<span class="r-in"><span><span class="co"># here I include a few examples to make sure everything looks good</span></span></span>
+<span class="r-in"><span><span class="co"># -----------------------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">blue</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"\033[34m"</span>, <span class="va">x</span>, <span class="st">"\033[39m"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"This is some output. My favourite colour is "</span>, <span class="fu">blue</span><span class="op">(</span><span class="st">"blue"</span><span class="op">)</span>, <span class="st">".\n"</span>, sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"This is a message. My favourite fruit is "</span>, <span class="fu">blue</span><span class="op">(</span><span class="st">"blueberries"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="kw"><a href="https://rdrr.io/r/base/warning.html" class="external-link">warning</a></span><span class="op">(</span><span class="st">"Now at stage "</span>, <span class="fu">blue</span><span class="op">(</span><span class="st">"blue"</span><span class="op">)</span>, <span class="st">"!"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="fu">f</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> This is some output. My favourite colour is <span style="color: #0000BB;">blue</span>.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> This is a message. My favourite fruit is <span style="color: #0000BB;">blueberries</span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Now at stage <span style="color: #0000BB;">blue</span>!</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="evaluate_and_highlight-1.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>

@@ -46,7 +46,9 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="downlit-development-version">downlit (development version)<a class="anchor" aria-label="anchor" href="#downlit-development-version"></a></h2>
-<ul><li><p>Re-exports detection no longer relies on name of <code>.Rd</code> file (<a href="https://github.com/r-lib/downlit/issues/134" class="external-link">#134</a>).</p></li>
+<ul><li><p>Every line get its own <code>&lt;span&gt;</code> to match pandoc (<a href="https://github.com/r-lib/downlit/issues/122" class="external-link">#122</a>).</p></li>
+<li><p>Multi-line tokens (mostly strings) now get a <code>&lt;span&gt;</code> per line (<a href="https://github.com/r-lib/downlit/issues/139" class="external-link">#139</a>).</p></li>
+<li><p>Re-exports detection no longer relies on name of <code>.Rd</code> file (<a href="https://github.com/r-lib/downlit/issues/134" class="external-link">#134</a>).</p></li>
 <li><p>Adds support for new R pipe <code>|&gt;</code> syntax (<a href="https://github.com/r-lib/downlit/issues/126" class="external-link">#126</a>).</p></li>
 <li><p>Very long strings or other tokens are no longer truncated by <code><a href="../reference/highlight.html">downlit::highlight()</a></code> (<a href="https://github.com/dmurdoch" class="external-link">@dmurdoch</a>, <a href="https://github.com/r-lib/downlit/issues/128" class="external-link">#128</a>).</p></li>
 <li><p>Auto-linking works when used with double colon infix operator and <code><a href="https://rdrr.io/r/utils/help.html" class="external-link">utils::help()</a></code> (<a href="https://github.com/IndrajeetPatil" class="external-link">@IndrajeetPatil</a>, <a href="https://github.com/r-lib/downlit/issues/131" class="external-link">#131</a>).</p></li>
