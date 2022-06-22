@@ -51,7 +51,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">href_topic</span><span class="op">(</span><span class="va">topic</span>, package <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">href_topic</span><span class="op">(</span><span class="va">topic</span>, package <span class="op">=</span> <span class="cn">NULL</span>, is_fun <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">href_article</span><span class="op">(</span><span class="va">article</span>, package <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
@@ -65,7 +65,12 @@
 
 
 <dt>package</dt>
-<dd><p>Optional package name</p></dd>
+<dd><p>Optional package name. If not supplied, will search
+in all attached packages.</p></dd>
+
+
+<dt>is_fun</dt>
+<dd><p>Only return topics that are (probably) for functions.</p></dd>
 
 </dl></div>
     <div class="section level2">
