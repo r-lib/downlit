@@ -330,7 +330,7 @@ token_href <- function(token, text) {
 
   fun <- c(fun, r6_new_call - 3)
 
-  href[fun] <- map_chr(text[fun], href_topic_local)
+  href[fun] <- map_chr(text[fun], href_topic_local, is_fun = TRUE)
 
   # Highlight packages
   lib_call <- which(

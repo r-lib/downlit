@@ -44,13 +44,17 @@ find_rdname <- function(package, topic) {
   }
 }
 
-find_rdname_attached <- function(topic) {
+find_rdname_attached <- function(topic, is_fun = FALSE) {
   packages <- c(
     getOption("downlit.attached"),
     c("datasets", "utils", "grDevices", "graphics", "stats", "base")
   )
 
   for (package in packages) {
+    if (is_fun && !is_exported(topic, package)) {
+      next
+    }
+
     rdname <- find_rdname(package, topic)
     if (!is.null(rdname)) {
       return(list(rdname = rdname, package = package))
