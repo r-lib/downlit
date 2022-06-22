@@ -1,21 +1,23 @@
 # downlit (development version)
 
-* Function calls (in inline and code blocks) will no longer to non-function
-  topics (#135).
+## Syntax highlighting
+
+* Supports new base pipe `|>` syntax (#126).
 
 * Every line get its own `<span>` to match pandoc (#122).
 
-* Multi-line tokens (mostly strings) now get a `<span>` per line (#139).
+* Multi-line tokens (e.g. strings) now get a `<span>` per line (#139).
+
+* Very long strings or other tokens are no longer truncated (@dmurdoch, #128).
+
+## Auto-linkg
+
+* Function calls (in inline and code blocks) will no longer to non-function
+  topics (#135).
 
 * Re-exports detection no longer relies on name of `.Rd` file (#134).
 
-* Adds support for new R pipe `|>` syntax (#126).
-
-* Very long strings or other tokens are no longer truncated
-  by `downlit::highlight()` (@dmurdoch, #128).
-
-* Auto-linking works when used with double colon infix operator and `utils::help()`
-  (@IndrajeetPatil, #131).
+* Link to correct topic with `::()` and `utils::help()` (@IndrajeetPatil, #131).
 
 # downlit 0.4.0
 
