@@ -46,14 +46,20 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="downlit-development-version">downlit (development version)<a class="anchor" aria-label="anchor" href="#downlit-development-version"></a></h2>
-<ul><li><p>Function calls (in inline and code blocks) will no longer to non-function topics (<a href="https://github.com/r-lib/downlit/issues/135" class="external-link">#135</a>).</p></li>
+<div class="section level3">
+<h3 id="syntax-highlighting-development-version">Syntax highlighting<a class="anchor" aria-label="anchor" href="#syntax-highlighting-development-version"></a></h3>
+<ul><li><p>Supports new base pipe <code>|&gt;</code> syntax (<a href="https://github.com/r-lib/downlit/issues/126" class="external-link">#126</a>).</p></li>
 <li><p>Every line get its own <code>&lt;span&gt;</code> to match pandoc (<a href="https://github.com/r-lib/downlit/issues/122" class="external-link">#122</a>).</p></li>
-<li><p>Multi-line tokens (mostly strings) now get a <code>&lt;span&gt;</code> per line (<a href="https://github.com/r-lib/downlit/issues/139" class="external-link">#139</a>).</p></li>
-<li><p>Re-exports detection no longer relies on name of <code>.Rd</code> file (<a href="https://github.com/r-lib/downlit/issues/134" class="external-link">#134</a>).</p></li>
-<li><p>Adds support for new R pipe <code>|&gt;</code> syntax (<a href="https://github.com/r-lib/downlit/issues/126" class="external-link">#126</a>).</p></li>
-<li><p>Very long strings or other tokens are no longer truncated by <code><a href="../reference/highlight.html">downlit::highlight()</a></code> (<a href="https://github.com/dmurdoch" class="external-link">@dmurdoch</a>, <a href="https://github.com/r-lib/downlit/issues/128" class="external-link">#128</a>).</p></li>
-<li><p>Auto-linking works when used with double colon infix operator and <code><a href="https://rdrr.io/r/utils/help.html" class="external-link">utils::help()</a></code> (<a href="https://github.com/IndrajeetPatil" class="external-link">@IndrajeetPatil</a>, <a href="https://github.com/r-lib/downlit/issues/131" class="external-link">#131</a>).</p></li>
+<li><p>Multi-line tokens (e.g. strings) now get a <code>&lt;span&gt;</code> per line (<a href="https://github.com/r-lib/downlit/issues/139" class="external-link">#139</a>).</p></li>
+<li><p>Very long strings or other tokens are no longer truncated (<a href="https://github.com/dmurdoch" class="external-link">@dmurdoch</a>, <a href="https://github.com/r-lib/downlit/issues/128" class="external-link">#128</a>).</p></li>
 </ul></div>
+<div class="section level3">
+<h3 id="auto-linkg-development-version">Auto-linkg<a class="anchor" aria-label="anchor" href="#auto-linkg-development-version"></a></h3>
+<ul><li><p>Function calls (in inline and code blocks) will no longer to non-function topics (<a href="https://github.com/r-lib/downlit/issues/135" class="external-link">#135</a>).</p></li>
+<li><p>Re-exports detection no longer relies on name of <code>.Rd</code> file (<a href="https://github.com/r-lib/downlit/issues/134" class="external-link">#134</a>).</p></li>
+<li><p>Link to correct topic with <code>::()</code> and <code><a href="https://rdrr.io/r/utils/help.html" class="external-link">utils::help()</a></code> (<a href="https://github.com/IndrajeetPatil" class="external-link">@IndrajeetPatil</a>, <a href="https://github.com/r-lib/downlit/issues/131" class="external-link">#131</a>).</p></li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.4.0" id="downlit-040">downlit 0.4.0<a class="anchor" aria-label="anchor" href="#downlit-040"></a></h2><p class="text-muted">CRAN release: 2021-10-29</p>
 <div class="section level3">
