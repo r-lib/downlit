@@ -29,6 +29,15 @@ test_that("can link to external topics that use ::", {
   })
 })
 
+test_that("don't link to non-functions with matching topic name", {
+  local_options("downlit.attached" = "MASS")
+
+  expect_equal(
+    highlight("abbey()"),
+    "<span><span class='nf'>abbey</span><span class='o'>(</span><span class='o'>)</span></span>"
+  )
+})
+
 test_that("unicode is not mangled", {
   skip_on_os("windows")
 

@@ -44,11 +44,14 @@ test_that("can link remote objects", {
   expect_equal(href_expr_(MASS::blah), NA_character_)
 })
 
-test_that("can link to functions in registered packages", {
+test_that("can link to topics in registered packages", {
   local_options("downlit.attached" = "MASS")
 
   expect_equal(href_expr_(addterm()), href_topic_remote("addterm", "MASS"))
-  expect_equal(href_expr_(addterm.default()), href_topic_remote("addterm", "MASS"))
+  expect_equal(href_expr_(?abbey), href_topic_remote("abbey", "MASS"))
+
+  # but has to be a function
+  expect_equal(href_expr_(abbey()), NA_character_)
 })
 
 test_that("can link to package names in registered packages", {

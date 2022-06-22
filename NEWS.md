@@ -1,5 +1,8 @@
 # downlit (development version)
 
+* Function calls (in inline and code blocks) will no longer to non-function
+  topics (#135).
+
 * Every line get its own `<span>` to match pandoc (#122).
 
 * Multi-line tokens (mostly strings) now get a `<span>` per line (#139).
