@@ -1,5 +1,9 @@
 # downlit (development version)
 
+* Every line get its own `<span>` to match pandoc (#122).
+
+* Multi-line tokens (mostly strings) now get a `<span>` per line (#139).
+
 * Re-exports detection no longer relies on name of `.Rd` file (#134).
 
 * Adds support for new R pipe `|>` syntax (#126).

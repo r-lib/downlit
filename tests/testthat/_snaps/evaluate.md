@@ -13,8 +13,8 @@
     Code
       test_evaluate("1 + \n 2 + 3", highlight = TRUE)
     Output
-      <span class='r-in'><span class='fl'>1</span> <span class='op'>+</span> </span>
-      <span class='r-in'> <span class='fl'>2</span> <span class='op'>+</span> <span class='fl'>3</span></span>
+      <span class='r-in'><span><span class='fl'>1</span> <span class='op'>+</span> </span></span>
+      <span class='r-in'><span> <span class='fl'>2</span> <span class='op'>+</span> <span class='fl'>3</span></span></span>
       <span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 6</span>
 
 # handles basic cases
