@@ -76,9 +76,11 @@ highlight <- function(text, classes = classes_chroma(), pre_class = NULL, code =
   out <- replace_in_place(parsed$text, start, end, replacement = new)
 
   # Add per-line span to match pandoc
-  out <- strsplit(out, "\n")[[1]]
-  out <- paste0("<span>", out, "</span>")
-  out <- paste0(out, collapse = "\n")
+  lines <- strsplit(out, "\n")[[1]]
+  if (length(lines) > 0) {
+    lines <- paste0("<span>", lines, "</span>")
+  }
+  out <- paste0(lines, collapse = "\n")
 
   if (!is.null(pre_class)) {
     out <- paste0(

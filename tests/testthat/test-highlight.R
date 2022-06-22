@@ -38,6 +38,10 @@ test_that("don't link to non-functions with matching topic name", {
   )
 })
 
+test_that("empty string returns empty string", {
+  expect_equal(highlight(""), "")
+})
+
 test_that("unicode is not mangled", {
   skip_on_os("windows")
 
