@@ -10,6 +10,7 @@
 #' @examples
 #' autolink("stats::median()")
 #' autolink("vignette('grid', package = 'grid')")
+#'
 #' autolink_url("stats::median()")
 autolink <- function(text) {
   href <- autolink_url(text)
@@ -278,11 +279,8 @@ href_article <- function(article, package = NULL) {
 
   base_url <- remote_package_article_url(package)
   if (!is.null(base_url)) {
-    return(paste0(base_url, "/", path))
-  }
-
-  # Assume it is either from Bioconductor or CRAN:
-  if (isTRUE(is_bioc_pkg(package))) {
+    paste0(base_url, "/", path)
+  } else if (isTRUE(is_bioc_pkg(package))) {
     paste0("https://bioconductor.org/packages/release/bioc/vignettes/", package, "/inst/doc/", path)
   } else {
     paste0("https://cran.rstudio.com/web/packages/", package, "/vignettes/", path)
