@@ -19,7 +19,7 @@
 
 * Link to correct topic with `::()` and `utils::help()` (@IndrajeetPatil, #131).
 
-* Auto-linking works with Bioconductor vignettes (@zeehio, #145)
+* Generate correct link for Bioconductor vignettes (@zeehio, #145)
 
 # downlit 0.4.0
 
