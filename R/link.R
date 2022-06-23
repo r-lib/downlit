@@ -9,9 +9,7 @@
 #' @export
 #' @examples
 #' autolink("stats::median()")
-#' \dontrun{
 #' autolink("vignette('grid', package = 'grid')")
-#'}
 #' autolink_url("stats::median()")
 autolink <- function(text) {
   href <- autolink_url(text)
