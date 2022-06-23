@@ -280,7 +280,7 @@ href_article <- function(article, package = NULL) {
   base_url <- remote_package_article_url(package)
   if (!is.null(base_url)) {
     paste0(base_url, "/", path)
-  } else if (isTRUE(is_bioc_pkg(package))) {
+  } else if (is_bioc_pkg(package)) {
     paste0("https://bioconductor.org/packages/release/bioc/vignettes/", package, "/inst/doc/", path)
   } else {
     paste0("https://cran.rstudio.com/web/packages/", package, "/vignettes/", path)
@@ -291,7 +291,7 @@ href_article <- function(article, package = NULL) {
 # Returns TRUE if `package` is from Bioconductor, FALSE otherwise
 is_bioc_pkg <- function(package) {
   if (!rlang::is_installed(package)) {
-    return(NA)
+    return(FALSE)
   }
   biocviews <- utils::packageDescription(package, fields = "biocViews")
   !is.na(biocviews) && biocviews != ""
