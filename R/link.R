@@ -290,13 +290,11 @@ href_article <- function(article, package = NULL) {
 # Returns NA if package is not installed.
 # Returns TRUE if `package` is from Bioconductor, FALSE otherwise
 is_bioc_pkg <- function(package) {
-  desc <- suppressWarnings({
-    utils::packageDescription(package, fields = "biocViews", drop = FALSE)
-  })
-  if (is.na(desc)) {
+  if (!rlang::is_installed(package)) {
     return(NA)
   }
-  !is.na(desc[["biocViews"]]) && desc[["biocViews"]] != ""
+  biocviews <- utils::packageDescription(package, fields = "biocViews")
+  !is.na(biocviews) && biocviews != ""
 }
 
 
