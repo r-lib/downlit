@@ -3,7 +3,7 @@ Title: Syntax Highlighting and Automatic Linking
 Version: 0.4.0.9000
 Authors@R: c(
     person("Hadley", "Wickham", , "hadley@rstudio.com", role = c("aut", "cre")),
-    person("RStudio", role = "cph")
+    person("RStudio", role = c("cph", "fnd"))
   )
 Description: Syntax highlighting of R code, specifically designed for the
     needs of 'RMarkdown' packages like 'pkgdown', 'hugodown', and
@@ -35,7 +35,8 @@ Suggests:
     rmarkdown,
     testthat (>= 3.0.0),
     xml2
+Config/Needs/website: tidyverse/tidytemplate
 Config/testthat/edition: 3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.0

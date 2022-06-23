@@ -29,10 +29,23 @@ test_that("can link to external topics that use ::", {
   })
 })
 
+test_that("don't link to non-functions with matching topic name", {
+  local_options("downlit.attached" = "MASS")
+
+  expect_equal(
+    highlight("abbey()"),
+    "<span><span class='nf'>abbey</span><span class='o'>(</span><span class='o'>)</span></span>"
+  )
+})
+
+test_that("empty string returns empty string", {
+  expect_equal(highlight(""), "")
+})
+
 test_that("unicode is not mangled", {
   skip_on_os("windows")
 
-  expect_equal(highlight("# \u2714"), "<span class='c'># \u2714</span>")
+  expect_equal(highlight("# \u2714"), "<span><span class='c'># \u2714</span></span>")
 })
 
 test_that("custom infix operators are linked, but regular are not", {
@@ -41,15 +54,15 @@ test_that("custom infix operators are linked, but regular are not", {
 })
 
 test_that("distinguish logical and numeric",{
-  expect_equal(highlight("TRUE"), "<span class='kc'>TRUE</span>")
-  expect_equal(highlight("FALSE"), "<span class='kc'>FALSE</span>")
-  expect_equal(highlight("1"), "<span class='m'>1</span>")
+  expect_equal(highlight("TRUE"), "<span><span class='kc'>TRUE</span></span>")
+  expect_equal(highlight("FALSE"), "<span><span class='kc'>FALSE</span></span>")
+  expect_equal(highlight("1"), "<span><span class='m'>1</span></span>")
 })
 test_that("can parse code with carriage returns", {
   lines <- strsplit(highlight("1\r\n2"), "\n")[[1]]
 
-  expect_equal(lines[[1]], "<span class='m'>1</span>")
-  expect_equal(lines[[2]], "<span class='m'>2</span>")
+  expect_equal(lines[[1]], "<span><span class='m'>1</span></span>")
+  expect_equal(lines[[2]], "<span><span class='m'>2</span></span>")
 })
 
 test_that("can highlight code in Latin1", {
@@ -58,17 +71,17 @@ test_that("can highlight code in Latin1", {
 
   out <- highlight(x)
   expect_equal(Encoding(out), "UTF-8")
-  expect_equal(out, "<span class='s'>'\u00fc'</span>")
+  expect_equal(out, "<span><span class='s'>'\u00fc'</span></span>")
 })
 
 test_that("syntax can span multiple lines", {
-  expect_equal(highlight("f(\n\n)"), "<span class='nf'>f</span><span class='o'>(</span>\n\n<span class='o'>)</span>")
-  expect_equal(highlight("'\n\n'"), "<span class='s'>'\n\n'</span>")
+  expect_snapshot(cat(highlight("f(\n\n)")))
+  expect_snapshot(cat(highlight("'\n\n'")))
 })
 
 test_that("code with tab is not mangled", {
-  expect_equal(highlight("\tf()"), "  <span class='nf'>f</span><span class='o'>(</span><span class='o'>)</span>")
-  expect_equal(highlight("'\t'"), "<span class='s'>'  '</span>")
+  expect_equal(highlight("\tf()"), "<span>  <span class='nf'>f</span><span class='o'>(</span><span class='o'>)</span></span>")
+  expect_equal(highlight("'\t'"), "<span><span class='s'>'  '</span></span>")
 })
 
 test_that("unparsable code returns NULL", {
@@ -76,19 +89,19 @@ test_that("unparsable code returns NULL", {
   # but pure comments still highlighted
   expect_equal(
     highlight("#"),
-    "<span class='c'>#</span>"
+    "<span><span class='c'>#</span></span>"
   )
 })
 
 test_that("R6 methods don't get linked", {
   expect_equal(
     highlight("x$get()"),
-    "<span class='nv'>x</span><span class='o'>$</span><span class='nf'>get</span><span class='o'>(</span><span class='o'>)</span>"
+    "<span><span class='nv'>x</span><span class='o'>$</span><span class='nf'>get</span><span class='o'>(</span><span class='o'>)</span></span>"
   )
 
   expect_equal(
     highlight("x$library()"),
-    "<span class='nv'>x</span><span class='o'>$</span><span class='kr'>library</span><span class='o'>(</span><span class='o'>)</span>"
+    "<span><span class='nv'>x</span><span class='o'>$</span><span class='kr'>library</span><span class='o'>(</span><span class='o'>)</span></span>"
   )
 
 })
@@ -96,12 +109,12 @@ test_that("R6 methods don't get linked", {
 test_that("R6 instantiation gets linked", {
   expect_equal(
     highlight("mean$new()"),
-    "<span class='nv'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='o'>$</span><span class='nf'>new</span><span class='o'>(</span><span class='o'>)</span>"
+    "<span><span class='nv'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='o'>$</span><span class='nf'>new</span><span class='o'>(</span><span class='o'>)</span></span>"
   )
   # But not new itself
   expect_equal(
     highlight("new()"),
-    "<span class='nf'>new</span><span class='o'>(</span><span class='o'>)</span>"
+    "<span><span class='nf'>new</span><span class='o'>(</span><span class='o'>)</span></span>"
   )
 })
 
@@ -113,7 +126,7 @@ test_that("ansi escapes are converted to html", {
 test_that("can highlight vers long strings", {
   val <- paste0(rep('very', 200), collapse = " ")
   out <- downlit::highlight(sprintf("'%s'", val))
-  expect_equal(out, paste0("<span class='s'>'", val, "'</span>"))
+  expect_equal(out, paste0("<span><span class='s'>'", val, "'</span></span>"))
 })
 
 test_that("placeholder in R pipe gets highlighted and not linked", {

@@ -72,7 +72,7 @@ href_expr <- function(expr) {
   n_args <- length(expr) - 1
 
   if (n_args == 0) {
-    href_topic(fun_name, pkg)
+    href_topic(fun_name, pkg, is_fun = TRUE)
   } else if (fun_name %in% c("library", "require", "requireNamespace")) {
     if (n_args == 1 && is.null(names(expr))) {
       pkg <- as.character(expr[[2]])
@@ -83,7 +83,7 @@ href_expr <- function(expr) {
         topic
       }
     } else {
-      href_topic(fun_name)
+      href_topic(fun_name, is_fun = TRUE)
     }
   } else if (fun_name == "vignette" && n_args >= 1) {
     # vignette("foo", "package")
@@ -134,7 +134,9 @@ is_help_literal <- function(x) is_string(x) || is_symbol(x)
 #' Generate url for topic/article/package
 #'
 #' @param topic,article Topic/article name
-#' @param package Optional package name
+#' @param package Optional package name. If not supplied, will search
+#'   in all attached packages.
+#' @param is_fun Only return topics that are (probably) for functions.
 #' @keywords internal
 #' @export
 #' @return URL topic or article; `NA` if can't find one.
@@ -144,12 +146,12 @@ is_help_literal <- function(x) is_string(x) || is_symbol(x)
 #' href_topic("href_topic", "downlit")
 #'
 #' href_package("downlit")
-href_topic <- function(topic, package = NULL) {
+href_topic <- function(topic, package = NULL, is_fun = FALSE) {
   if (length(topic) != 1L) {
     return(NA_character_)
   }
   if (is_package_local(package)) {
-    href_topic_local(topic)
+    href_topic_local(topic, is_fun = is_fun)
   } else {
     href_topic_remote(topic, package)
   }
@@ -167,11 +169,11 @@ is_package_local <- function(package) {
   package == cur
 }
 
-href_topic_local <- function(topic) {
+href_topic_local <- function(topic, is_fun = FALSE) {
   rdname <- find_rdname(NULL, topic)
   if (is.null(rdname)) {
     # Check attached packages
-    loc <- find_rdname_attached(topic)
+    loc <- find_rdname_attached(topic, is_fun = is_fun)
     if (is.null(loc)) {
       return(NA_character_)
     } else {
@@ -210,9 +212,11 @@ href_topic_remote <- function(topic, package) {
 
 is_reexported <- function(name, package) {
   is_imported <- env_has(ns_imports_env(package), name)
-  is_exported <- name %in% getNamespaceExports(ns_env(package))
+  is_imported && is_exported(name, package)
+}
 
-  is_imported && is_exported
+is_exported <- function(name, package) {
+  name %in% getNamespaceExports(ns_env(package))
 }
 
 # If it's a re-exported function, we need to work a little harder to
