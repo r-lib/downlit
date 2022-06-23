@@ -282,14 +282,27 @@ href_article <- function(article, package = NULL) {
   if (!is.null(base_url)) {
     return(paste0(base_url, "/", path))
   }
-  if (package %in% rownames(repo_urls(repo = getOption("repos")))) {
-    return(paste0("https://cran.rstudio.com/web/packages/", package, "/vignettes/", path))
+
+  # Assume it is either from Bioconductor or CRAN:
+  if (isTRUE(is_bioc_pkg(package))) {
+    paste0("https://bioconductor.org/packages/release/bioc/vignettes/", package, "/inst/doc/", path)
+  } else {
+    paste0("https://cran.rstudio.com/web/packages/", package, "/vignettes/", path)
   }
-  if (package %in% BioconductorPkgs()) {
-    return(paste0("https://bioconductor.org/packages/release/bioc/vignettes/", package, "/inst/doc/", path))
-  }
-  return(paste0("https://cran.rstudio.com/web/packages/", package, "/vignettes/", path))
 }
+
+# Returns NA if package is not installed.
+# Returns TRUE if `package` is from Bioconductor, FALSE otherwise
+is_bioc_pkg <- function(package) {
+  desc <- suppressWarnings({
+    utils::packageDescription(package, fields = "biocViews", drop = FALSE)
+  })
+  if (is.na(desc)) {
+    return(NA)
+  }
+  !is.na(desc[["biocViews"]]) && desc[["biocViews"]] != ""
+}
+
 
 # Try to figure out package name from attached packages
 find_vignette_package <- function(x) {
