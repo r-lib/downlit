@@ -10,6 +10,8 @@
 * Auto-linking works when used with double colon infix operator and `utils::help()`
   (@IndrajeetPatil, #131).
 
+* Auto-linking works with Bioconductor vignettes (@zeehio, #145)
+
 # downlit 0.4.0
 
 ## Syntax highlighting
