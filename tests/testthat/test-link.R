@@ -164,10 +164,6 @@ test_that("can link to local articles", {
 test_that("can link to bioconductor vignettes", {
   skip_if_not_installed("MassSpecWavelet")
 
-  # local_options(
-  #   "repos" = c("CRAN" = "https://cran.rstudio.com")
-  #)
-
   expect_equal(
     href_expr_(vignette("MassSpecWavelet", "MassSpecWavelet")),
     "https://bioconductor.org/packages/release/bioc/vignettes/MassSpecWavelet/inst/doc/MassSpecWavelet.html"
