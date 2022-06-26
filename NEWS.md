@@ -1,5 +1,8 @@
 # downlit (development version)
 
+* `highlight()` no longer errors if a package imputed to have been attached
+  isn't installed.
+
 # downlit 0.4.1
 
 ## Syntax highlighting

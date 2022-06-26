@@ -51,6 +51,10 @@ find_rdname_attached <- function(topic, is_fun = FALSE) {
   )
 
   for (package in packages) {
+    if (!is_installed(package)) {
+      next
+    }
+
     if (is_fun && !is_exported(topic, package)) {
       next
     }

@@ -31,3 +31,8 @@ test_that("can find topic in attached packages", {
   expect_equal(find_rdname_attached("unit"), list(rdname = "unit", package = "grid"))
   expect_equal(find_rdname_attached("DOESNOTEXIST"), NULL)
 })
+
+test_that("doesn't error if 'attached' package not installed", {
+  local_options(downlit.attached = "uninstalled")
+  expect_equal(find_rdname_attached("foo"), NULL)
+})
