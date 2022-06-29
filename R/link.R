@@ -229,6 +229,11 @@ href_topic_reexported <- function(topic, package) {
 
   obj <- env_get(ns, topic, inherit = TRUE)
   ex_package <- find_reexport_source(obj, ns, topic)
+  # Give up if we're stuck in an infinite loop
+  if (package == ex_package) {
+    return(NA_character_)
+  }
+
   href_topic_remote(topic, ex_package)
 }
 
