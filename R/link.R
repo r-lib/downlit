@@ -211,10 +211,6 @@ href_topic_remote <- function(topic, package) {
 }
 
 is_reexported <- function(name, package) {
-  if (is_base_package(package))  {
-    return(FALSE)
-  }
-
   is_imported <- env_has(ns_imports_env(package), name)
   is_imported && is_exported(name, package)
 }

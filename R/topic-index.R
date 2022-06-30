@@ -66,3 +66,8 @@ find_rdname_attached <- function(topic, is_fun = FALSE) {
   }
   NULL
 }
+
+# https://github.com/r-lib/rlang/issues/1434
+is_installed <- function(x) {
+  !identical(system.file(package = x), "")
+}
