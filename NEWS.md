@@ -1,3 +1,5 @@
+# downlit (development version)
+
 # downlit 0.4.2
 
 * `highlight()` no longer errors if a package imputed to have been attached
