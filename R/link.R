@@ -74,7 +74,11 @@ href_expr <- function(expr) {
   if (n_args == 0) {
     href_topic(fun_name, pkg, is_fun = TRUE)
   } else if (fun_name %in% c("library", "require", "requireNamespace")) {
-    if (n_args == 1 && is.null(names(expr))) {
+    simple_call <- n_args == 1 &&
+      is.null(names(expr)) &&
+      (is_string(expr[[2]]) || (fun_name != "requireNamespace") && is_symbol(expr[[2]]))
+
+    if (simple_call) {
       pkg <- as.character(expr[[2]])
       topic <- href_package(pkg)
       if (is.na(topic)) {

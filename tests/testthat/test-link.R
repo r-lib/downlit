@@ -144,10 +144,19 @@ test_that("library() linked to package reference", {
 })
 
 test_that("except when not possible", {
-  expect_equal(href_expr_(library()), "https://rdrr.io/r/base/library.html")
-  expect_equal(href_expr_(library(doesntexist)), "https://rdrr.io/r/base/library.html")
-  expect_equal(href_expr_(library(package = )), "https://rdrr.io/r/base/library.html")
-  expect_equal(href_expr_(library("x", "y", "z")), "https://rdrr.io/r/base/library.html")
+  topic_library <- href_topic("library", "base")
+
+  expect_equal(href_expr_(library()), topic_library)
+  expect_equal(href_expr_(library(doesntexist)), topic_library)
+  expect_equal(href_expr_(library(package = )), topic_library)
+  expect_equal(href_expr_(library("x", "y", "z")), topic_library)
+})
+
+test_that("requireNamespace doesn't use NSE", {
+  require_topic <- href_topic("requireNamespace", "base")
+
+  expect_equal(href_expr_(requireNamespace(rlang)), require_topic)
+  expect_equal(href_expr_(requireNamespace("rlang")), "https://rlang.r-lib.org")
 })
 
 # vignette ----------------------------------------------------------------
