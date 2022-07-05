@@ -175,10 +175,11 @@ test_that("can link to local articles", {
 
 test_that("can link to bioconductor vignettes", {
   skip_if_not_installed("MassSpecWavelet")
+  skip_on_cran()
 
   expect_equal(
     href_expr_(vignette("MassSpecWavelet", "MassSpecWavelet")),
-    "https://bioconductor.org/packages/release/bioc/vignettes/MassSpecWavelet/inst/doc/MassSpecWavelet.html"
+    "https://bioconductor.org/packages/release/bioc/vignettes/MassSpecWavelet/inst/doc/MassSpecWavelet.pdf"
   )
 })
 
