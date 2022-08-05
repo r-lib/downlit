@@ -50,14 +50,14 @@ downlit_html_node <- function(x, classes = classes_pandoc()) {
     ".//div[contains(@class, 'downlit')]//pre"
   )
   xpath_block <- paste(xpath, collapse = "|")
-  pre_classes <- "downlit sourceCode r"
+  pre_classes <- c("downlit",  "sourceCode", "r")
   new_pre_classes <- xml2::xml_find_all(x, xpath_block)
 
   if (length(new_pre_classes) > 0) {
-    new_pre_classes <- xml2::xml_attr(new_pre_classes, "class")
-    new_pre_classes <- gsub("\\bsourceCode\\b|\\br\\b", "", new_pre_classes)
-    new_pre_classes <- trimws(new_pre_classes[!is.na(new_pre_classes)])
-    pre_classes <- paste(pre_classes, new_pre_classes)
+    new_pre_classes <- strsplit(xml2::xml_attr(new_pre_classes, "class"), " ")[[1]]
+    new_pre_classes <- new_pre_classes[!new_pre_classes %in% pre_classes]
+    new_pre_classes <- new_pre_classes[!is.na(new_pre_classes)]
+    pre_classes <- trimws(paste(unique(c(pre_classes, new_pre_classes))))
   }
 
   tweak_children(x, xpath_block, highlight,
