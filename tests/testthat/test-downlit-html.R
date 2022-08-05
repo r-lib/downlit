@@ -32,3 +32,17 @@ test_that("special package string gets linked", {
   downlit_html_node(html)
   expect_snapshot_output(show_xml(html))
 })
+
+test_that("keeps all pre classes", {
+  html <- xml2::read_xml("
+    <div class='sourceCode'>
+      <pre class='sourceCode r my-class'>
+        <code class='sourceCode r'>
+          <span>Hello</span>
+        </code>
+      </pre>
+    </div>"
+  )
+  downlit_html_node(html)
+  expect_snapshot_output(show_xml(html))
+})
