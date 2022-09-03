@@ -6,7 +6,7 @@
 \alias{href_package}
 \title{Generate url for topic/article/package}
 \usage{
-href_topic(topic, package = NULL)
+href_topic(topic, package = NULL, is_fun = FALSE)
 
 href_article(article, package = NULL)
 
@@ -15,7 +15,10 @@ href_package(package)
 \arguments{
 \item{topic, article}{Topic/article name}
 
-\item{package}{Optional package name}
+\item{package}{Optional package name. If not supplied, will search
+in all attached packages.}
+
+\item{is_fun}{Only return topics that are (probably) for functions.}
 }
 \value{
 URL topic or article; \code{NA} if can't find one.

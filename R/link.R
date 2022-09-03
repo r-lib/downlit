@@ -72,9 +72,13 @@ href_expr <- function(expr) {
   n_args <- length(expr) - 1
 
   if (n_args == 0) {
-    href_topic(fun_name, pkg)
+    href_topic(fun_name, pkg, is_fun = TRUE)
   } else if (fun_name %in% c("library", "require", "requireNamespace")) {
-    if (n_args == 1 && is.null(names(expr))) {
+    simple_call <- n_args == 1 &&
+      is.null(names(expr)) &&
+      (is_string(expr[[2]]) || (fun_name != "requireNamespace") && is_symbol(expr[[2]]))
+
+    if (simple_call) {
       pkg <- as.character(expr[[2]])
       topic <- href_package(pkg)
       if (is.na(topic)) {
@@ -83,7 +87,7 @@ href_expr <- function(expr) {
         topic
       }
     } else {
-      href_topic(fun_name)
+      href_topic(fun_name, is_fun = TRUE)
     }
   } else if (fun_name == "vignette" && n_args >= 1) {
     # vignette("foo", "package")
@@ -134,7 +138,9 @@ is_help_literal <- function(x) is_string(x) || is_symbol(x)
 #' Generate url for topic/article/package
 #'
 #' @param topic,article Topic/article name
-#' @param package Optional package name
+#' @param package Optional package name. If not supplied, will search
+#'   in all attached packages.
+#' @param is_fun Only return topics that are (probably) for functions.
 #' @keywords internal
 #' @export
 #' @return URL topic or article; `NA` if can't find one.
@@ -144,12 +150,12 @@ is_help_literal <- function(x) is_string(x) || is_symbol(x)
 #' href_topic("href_topic", "downlit")
 #'
 #' href_package("downlit")
-href_topic <- function(topic, package = NULL) {
+href_topic <- function(topic, package = NULL, is_fun = FALSE) {
   if (length(topic) != 1L) {
     return(NA_character_)
   }
   if (is_package_local(package)) {
-    href_topic_local(topic)
+    href_topic_local(topic, is_fun = is_fun)
   } else {
     href_topic_remote(topic, package)
   }
@@ -167,11 +173,11 @@ is_package_local <- function(package) {
   package == cur
 }
 
-href_topic_local <- function(topic) {
+href_topic_local <- function(topic, is_fun = FALSE) {
   rdname <- find_rdname(NULL, topic)
   if (is.null(rdname)) {
     # Check attached packages
-    loc <- find_rdname_attached(topic)
+    loc <- find_rdname_attached(topic, is_fun = is_fun)
     if (is.null(loc)) {
       return(NA_character_)
     } else {
@@ -201,26 +207,41 @@ href_topic_remote <- function(topic, package) {
     return(NA_character_)
   }
 
-  if (rdname == "reexports") {
-    return(href_topic_reexported(topic, package))
+  if (is_reexported(topic, package)) {
+    href_topic_reexported(topic, package)
+  } else {
+    paste0(href_package_ref(package), "/", rdname, ".html")
   }
+}
 
-  paste0(href_package_ref(package), "/", rdname, ".html")
+is_reexported <- function(name, package) {
+  if (package == "base") {
+    return(FALSE)
+  }
+  is_imported <- env_has(ns_imports_env(package), name)
+  is_imported && is_exported(name, package)
+}
+
+is_exported <- function(name, package) {
+  name %in% getNamespaceExports(ns_env(package))
 }
 
 # If it's a re-exported function, we need to work a little harder to
 # find out its source so that we can link to it.
 href_topic_reexported <- function(topic, package) {
   ns <- ns_env(package)
-  exports <- .getNamespaceInfo(ns, "exports")
-
-  if (!env_has(exports, topic)) {
-    NA_character_
-  } else {
-    obj <- env_get(ns, topic, inherit = TRUE)
-    package <- find_reexport_source(obj, ns, topic)
-    href_topic_remote(topic, package)
+  if (!env_has(ns, topic, inherit = TRUE)) {
+    return(NA_character_)
   }
+
+  obj <- env_get(ns, topic, inherit = TRUE)
+  ex_package <- find_reexport_source(obj, ns, topic)
+  # Give up if we're stuck in an infinite loop
+  if (package == ex_package) {
+    return(NA_character_)
+  }
+
+  href_topic_remote(topic, ex_package)
 }
 
 find_reexport_source <- function(obj, ns, topic) {
@@ -273,12 +294,25 @@ href_article <- function(article, package = NULL) {
   }
 
   base_url <- remote_package_article_url(package)
-  if (is.null(base_url)) {
-    paste0("https://cran.rstudio.com/web/packages/", package, "/vignettes/", path)
-  } else {
+  if (!is.null(base_url)) {
     paste0(base_url, "/", path)
+  } else if (is_bioc_pkg(package)) {
+    paste0("https://bioconductor.org/packages/release/bioc/vignettes/", package, "/inst/doc/", path)
+  } else {
+    paste0("https://cran.rstudio.com/web/packages/", package, "/vignettes/", path)
   }
 }
+
+# Returns NA if package is not installed.
+# Returns TRUE if `package` is from Bioconductor, FALSE otherwise
+is_bioc_pkg <- function(package) {
+  if (!rlang::is_installed(package)) {
+    return(FALSE)
+  }
+  biocviews <- utils::packageDescription(package, fields = "biocViews")
+  !is.na(biocviews) && biocviews != ""
+}
+
 
 # Try to figure out package name from attached packages
 find_vignette_package <- function(x) {
