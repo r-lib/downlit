@@ -50,18 +50,9 @@ downlit_html_node <- function(x, classes = classes_pandoc()) {
     ".//div[contains(@class, 'downlit')]//pre"
   )
   xpath_block <- paste(xpath, collapse = "|")
-  pre_classes <- c("downlit",  "sourceCode", "r")
-  new_pre_classes <- xml2::xml_find_all(x, xpath_block)
-
-  if (length(new_pre_classes) > 0) {
-    new_pre_classes <- strsplit(xml2::xml_attr(new_pre_classes, "class"), " ")[[1]]
-    new_pre_classes <- new_pre_classes[!new_pre_classes %in% pre_classes]
-    new_pre_classes <- new_pre_classes[!is.na(new_pre_classes)]
-    pre_classes <- trimws(paste(unique(c(pre_classes, new_pre_classes))))
-  }
 
   tweak_children(x, xpath_block, highlight,
-    pre_class = pre_classes,
+    pre_class = "downlit sourceCode r",
     classes = classes,
     replace = "node",
     code = TRUE
@@ -86,9 +77,19 @@ tweak_children <- function(node, xpath, fun, ..., replace = c("node", "contents"
   replace <- arg_match(replace)
 
   nodes <- xml2::xml_find_all(node, xpath)
+  dots <- rlang::list2(...)
 
   text <- xml2::xml_text(nodes)
-  replacement <- map_chr(text, fun, ...)
+  replacement <- unlist(lapply(seq_along(nodes), function(x) {
+    if ("pre_class" %in% names(dots)) {
+      old_pre_classes <- strsplit(dots$pre_class, " ")[[1]]
+      new_pre_classes <- strsplit(xml2::xml_attr(nodes[x], "class"), " ")[[1]]
+      new_pre_classes <- new_pre_classes[!new_pre_classes %in% old_pre_classes]
+      new_pre_classes <- new_pre_classes[!is.na(new_pre_classes)]
+      dots$pre_class <- trimws(paste(unique(c(old_pre_classes, new_pre_classes))))
+    }
+    rlang::exec(fun, text[x], !!!dots)
+  }))
   to_update <- !is.na(replacement)
 
   old <- nodes[to_update]

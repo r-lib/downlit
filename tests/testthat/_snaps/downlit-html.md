@@ -18,10 +18,36 @@
 
     <p>before <code>{notapkg}</code> after</p>
 
-# keeps all pre classes
+# keeps all pre classes for each codeblock
 
     <div class="sourceCode">
       <pre class="downlit sourceCode r my-class">
     <code class="sourceCode R"><span><span class="va">Hello</span></span></code></pre>
+    </div>
+
+---
+
+    <div>
+      <div class="sourceCode">
+        <pre class="downlit sourceCode r my-class">
+    <code class="sourceCode R"><span><span class="va">Hello</span></span></code></pre>
+      </div>
+      <div class="sourceCode">
+        <pre class="downlit sourceCode r another-class">
+    <code class="sourceCode R"><span><span class="va">Hello</span></span></code></pre>
+      </div>
+    </div>
+
+---
+
+    <div>
+      <div class="sourceCode">
+        <pre class="downlit sourceCode r my-class">
+    <code class="sourceCode R"><span><span class="va">Hello</span></span></code></pre>
+      </div>
+      <div class="sourceCode">
+        <pre class="downlit sourceCode r">
+    <code class="sourceCode R"><span><span class="va">Hello</span></span></code></pre>
+      </div>
     </div>
 
