@@ -84,9 +84,8 @@ tweak_children <- function(node, xpath, fun, ..., replace = c("node", "contents"
     if ("pre_class" %in% names(dots)) {
       old_pre_classes <- strsplit(dots$pre_class, " ")[[1]]
       new_pre_classes <- strsplit(xml2::xml_attr(nodes[x], "class"), " ")[[1]]
-      new_pre_classes <- new_pre_classes[!new_pre_classes %in% old_pre_classes]
       new_pre_classes <- new_pre_classes[!is.na(new_pre_classes)]
-      dots$pre_class <- trimws(paste(unique(c(old_pre_classes, new_pre_classes))))
+      dots$pre_class <- unique(c(old_pre_classes, new_pre_classes))
     }
     rlang::exec(fun, text[x], !!!dots)
   }))
