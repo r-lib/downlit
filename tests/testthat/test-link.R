@@ -179,7 +179,7 @@ test_that("can link to bioconductor vignettes", {
 
   expect_equal(
     href_expr_(vignette("MassSpecWavelet", "MassSpecWavelet")),
-    "https://bioconductor.org/packages/release/bioc/vignettes/MassSpecWavelet/inst/doc/MassSpecWavelet.pdf"
+    "https://bioconductor.org/packages/release/bioc/vignettes/MassSpecWavelet/inst/doc/MassSpecWavelet.html"
   )
 })
 
