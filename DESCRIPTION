@@ -1,6 +1,6 @@
 Package: downlit
 Title: Syntax Highlighting and Automatic Linking
-Version: 0.4.2.9000
+Version: 0.4.3
 Authors@R: c(
     person("Hadley", "Wickham", , "hadley@posit.co", role = c("aut", "cre")),
     person("RStudio", role = c("cph", "fnd"))

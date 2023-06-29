@@ -1,4 +1,4 @@
-# downlit (development version)
+# downlit 0.4.3
 
 * Fix for upcoming R-devel (#169).
 
