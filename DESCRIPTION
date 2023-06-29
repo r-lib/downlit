@@ -2,7 +2,7 @@ Package: downlit
 Title: Syntax Highlighting and Automatic Linking
 Version: 0.4.2.9000
 Authors@R: c(
-    person("Hadley", "Wickham", , "hadley@rstudio.com", role = c("aut", "cre")),
+    person("Hadley", "Wickham", , "hadley@posit.co", role = c("aut", "cre")),
     person("RStudio", role = c("cph", "fnd"))
   )
 Description: Syntax highlighting of R code, specifically designed for the
