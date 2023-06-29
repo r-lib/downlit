@@ -91,7 +91,7 @@ href_expr <- function(expr) {
     }
   } else if (fun_name == "vignette" && n_args >= 1) {
     # vignette("foo", "package")
-    expr <- call_standardise(expr)
+    expr <- match.call(vignette, expr)
     topic_ok <- is.character(expr$topic)
     package_ok <- is.character(expr$package) || is.null(expr$package)
     if (topic_ok && package_ok) {
@@ -114,7 +114,7 @@ href_expr <- function(expr) {
     # package?x
     href_topic(paste0(expr[[3]], "-", expr[[2]]))
   } else if (fun_name == "help" && n_args >= 1) {
-    expr <- call_standardise(expr)
+    expr <- match.call(help, expr)
     if (is_help_literal(expr$topic) && is_help_literal(expr$package)) {
       href_topic(as.character(expr$topic), as.character(expr$package))
     } else if (is_help_literal(expr$topic) && is.null(expr$package)) {
