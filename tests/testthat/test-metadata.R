@@ -9,24 +9,23 @@ test_that("can extract urls for package", {
 })
 
 test_that("can extract urls for uninstalled packages from CRAN", {
-  skip_on_cran()
-  pkg <- "BMRSr"
-  skip_if(requireNamespace(pkg, quietly = TRUE), "BMRSr package is installed")
+  # Pretend that rlang isn't installed
+  local_mocked_bindings(is_installed = function(...) FALSE)
 
-  # We're testing here that we can find URLs for packages that aren't installed
-  # I'm assuming that BMRSr isn't going to be installed (because why would it),
-  # but this might not always be true
-  expect_equal(package_urls("BMRSr"), "https://bmrsr.arawles.co.uk/")
-  expect_equal(package_urls("BMRSr", repos = c()), "https://bmrsr.arawles.co.uk/")
+  rlang_urls <- c("https://rlang.r-lib.org", "https://github.com/r-lib/rlang")
+  expect_equal(package_urls("rlang"), rlang_urls)
 
-  # Prefers user specified repo
-  cran_repo <- "https://cran.rstudio.com"
+  # Always adds CRAN
+  expect_equal(package_urls("rlang", repos = c()), rlang_urls)
+
+  # But prefers user specified repo
   fake_repo <- paste0("file:", test_path("fake-repo"))
-  expect_equal(package_urls("BMRSr", repos = c(fake_repo)), "https://trick-url.com/")
+  expect_equal(package_urls("rlang", repos = fake_repo), "https://trick-url.com/")
 
   # even if CRAN comes first
+  cran_repo <- "https://cran.rstudio.com"
   expect_equal(
-    package_urls("BMRSr", repos = c(CRAN = cran_repo, fake_repo)),
+    package_urls("rlang", repos = c(CRAN = cran_repo, fake_repo)),
     "https://trick-url.com/"
   )
 })

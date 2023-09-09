@@ -4,7 +4,12 @@ extract_package_attach <- function(expr) {
     unlist(packages)
   } else if (is_call(expr)) {
     if (is_call(expr, c("library", "require"))) {
-      expr <- call_standardise(expr)
+      if (is_call(expr, "library")) {
+        expr <- match.call(library, expr)
+      } else {
+        expr <- match.call(require, expr)
+      }
+
       if (!is_true(expr$character.only)) {
         as.character(expr$package)
       } else {

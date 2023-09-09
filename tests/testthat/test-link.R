@@ -177,9 +177,10 @@ test_that("can link to bioconductor vignettes", {
   skip_if_not_installed("MassSpecWavelet")
   skip_on_cran()
 
+  # Varies between .html and .pdf based on R version
   expect_equal(
-    href_expr_(vignette("MassSpecWavelet", "MassSpecWavelet")),
-    "https://bioconductor.org/packages/release/bioc/vignettes/MassSpecWavelet/inst/doc/MassSpecWavelet.html"
+    tools::file_path_sans_ext(href_expr_(vignette("MassSpecWavelet", "MassSpecWavelet"))),
+    "https://bioconductor.org/packages/release/bioc/vignettes/MassSpecWavelet/inst/doc/MassSpecWavelet"
   )
 })
 
