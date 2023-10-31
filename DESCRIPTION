@@ -3,7 +3,7 @@ Title: Syntax Highlighting and Automatic Linking
 Version: 0.4.3.9000
 Authors@R: c(
     person("Hadley", "Wickham", , "hadley@posit.co", role = c("aut", "cre")),
-    person("RStudio", role = c("cph", "fnd"))
+    person("Posit Software, PBC", role = c("cph", "fnd"))
   )
 Description: Syntax highlighting of R code, specifically designed for the
     needs of 'RMarkdown' packages like 'pkgdown', 'hugodown', and
@@ -14,7 +14,7 @@ License: MIT + file LICENSE
 URL: https://downlit.r-lib.org/, https://github.com/r-lib/downlit
 BugReports: https://github.com/r-lib/downlit/issues
 Depends: 
-    R (>= 3.4.0)
+    R (>= 3.6)
 Imports: 
     brio,
     desc,
