@@ -92,8 +92,8 @@ package_urls <- function(package, repos = getOption("repos")) {
     return(character())
   }
 
-  path <- system.file("DESCRIPTION", package = package)
-  if (path != "") {
+  if (is_installed(package)) {
+    path <- system.file("DESCRIPTION", package = package)
     # If the package is installed, use its DESCRIPTION
     url <- read.dcf(path, fields = "URL")[[1]]
   } else {

@@ -4,6 +4,10 @@
   so that code chunk argument `class.source` is preserved (#149, #155, 
   @etiennebacher).
 
+# downlit 0.4.3
+
+* Fix for upcoming R-devel (#169).
+
 # downlit 0.4.2
 
 * `highlight()` no longer errors if a package imputed to have been attached
