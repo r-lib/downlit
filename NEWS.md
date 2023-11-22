@@ -1,5 +1,9 @@
 # downlit (development version)
 
+* `downlit_html_node()` now keeps additional classes specified in `pre` tags,
+  so that code chunk argument `class.source` is preserved (#149, #155, 
+  @etiennebacher).
+
 # downlit 0.4.3
 
 * Fix for upcoming R-devel (#169).

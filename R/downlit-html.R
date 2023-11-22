@@ -50,6 +50,7 @@ downlit_html_node <- function(x, classes = classes_pandoc()) {
     ".//div[contains(@class, 'downlit')]//pre"
   )
   xpath_block <- paste(xpath, collapse = "|")
+
   tweak_children(x, xpath_block, highlight,
     pre_class = "downlit sourceCode r",
     classes = classes,
@@ -76,9 +77,18 @@ tweak_children <- function(node, xpath, fun, ..., replace = c("node", "contents"
   replace <- arg_match(replace)
 
   nodes <- xml2::xml_find_all(node, xpath)
+  dots <- rlang::list2(...)
 
   text <- xml2::xml_text(nodes)
-  replacement <- map_chr(text, fun, ...)
+  replacement <- unlist(lapply(seq_along(nodes), function(x) {
+    if ("pre_class" %in% names(dots)) {
+      old_pre_classes <- strsplit(dots$pre_class, " ")[[1]]
+      new_pre_classes <- strsplit(xml2::xml_attr(nodes[x], "class"), " ")[[1]]
+      new_pre_classes <- new_pre_classes[!is.na(new_pre_classes)]
+      dots$pre_class <- unique(c(old_pre_classes, new_pre_classes))
+    }
+    rlang::exec(fun, text[x], !!!dots)
+  }))
   to_update <- !is.na(replacement)
 
   old <- nodes[to_update]
