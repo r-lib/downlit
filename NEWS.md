@@ -1,5 +1,7 @@
 # downlit (development version)
 
+* Expands meta-package support for tidymodels (#173).
+
 # downlit 0.4.3
 
 * Fix for upcoming R-devel (#169).
