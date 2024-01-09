@@ -55,3 +55,8 @@ test_that("adds tidyverse packages", {
   skip_if_not_installed("tidyverse")
   expect_true("ggplot2" %in% add_depends("tidyverse"))
 })
+
+test_that("adds tidymodels packages", {
+  skip_if_not_installed("tidymodels")
+  expect_true("tune" %in% add_depends("tidymodels"))
+})

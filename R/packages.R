@@ -34,10 +34,13 @@ register_attached_packages <- function(packages) {
   options("downlit.attached" = union(packages, getOption("downlit.attached")))
 }
 
+meta_packages <- c("tidyverse", "tidymodels")
 add_depends <- function(packages) {
-  if ("tidyverse" %in% packages && is_installed("tidyverse")) {
-    core <- getNamespace("tidyverse")$core
-    packages <- union(packages, core)
+  for (meta in meta_packages) {
+    if (meta %in% packages && is_installed(meta)) {
+      core <- getNamespace(meta)$core
+      packages <- union(packages, core)
+    }
   }
 
   # add packages attached by depends
