@@ -1,5 +1,8 @@
 # downlit (development version)
 
+* Provide `tokenize_code()` to allow access to the tokenization of R code 
+  without formatting it as HTML.
+
 # downlit 0.4.3
 
 * Fix for upcoming R-devel (#169).
