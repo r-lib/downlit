@@ -47,7 +47,7 @@
 #' # Unparseable R code returns NA
 #' cat(highlight("base::t("))
 highlight <- function(text, classes = classes_chroma(), pre_class = NULL, code = FALSE) {
-  parsed <- parse_data(text)
+  parsed <- tokenize_code(text, classes)
   if (is.null(parsed)) {
     return(NA_character_)
   }
@@ -58,11 +58,7 @@ highlight <- function(text, classes = classes_chroma(), pre_class = NULL, code =
   packages <- extract_package_attach(parsed$expr)
   register_attached_packages(packages)
 
-  # Highlight, link, and escape
   out <- parsed$data
-  out$class <- token_class(out$token, out$text, classes)
-  out$href <- token_href(out$token, out$text)
-  out$escaped <- token_escape(out$token, out$text)
 
   # Update input - basic idea from prettycode
   changed <- !is.na(out$href) | !is.na(out$class) | out$text != out$escaped
