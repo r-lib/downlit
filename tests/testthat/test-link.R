@@ -90,6 +90,7 @@ test_that("can link to remote pkgdown sites", {
 })
 
 test_that("or local sites, if registered", {
+  skip_if_not_installed("MASS")
   local_options("downlit.local_packages" = c("MASS" = "MASS"))
   expect_equal(href_expr_(MASS::abbey), "MASS/reference/abbey.html")
 })
