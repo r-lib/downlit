@@ -19,7 +19,7 @@
 #' @return `downlit_html_path()` invisibly returns `output_path`;
 #'   `downlit_html_node()` modifies `x` in place and returns nothing.
 #' @export
-#' @examples
+#' @examplesIf rlang::is_installed("xml2")
 #' node <- xml2::read_xml("<p><code>base::t()</code></p>")
 #' node
 #'
