@@ -1,3 +1,7 @@
+Compared to the last submission this passes all noSuggests checks.
+
+---
+
 ## R CMD check results
 
 0 errors | 0 warnings | 0 notes
