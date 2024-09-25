@@ -17,7 +17,7 @@
 #'   greater, otherwise "markdown_github".
 #' @return `downlit_md_path()` invisibly returns `output_path`;
 #'   `downlit_md_string()` returns a string containing markdown.
-#' @examples
+#' @examplesIf rlang::is_installed("rmarkdown")
 #' if (rmarkdown::pandoc_available("1.19")) {
 #' downlit_md_string("`base::t()`")
 #' downlit_md_string("`base::t`")

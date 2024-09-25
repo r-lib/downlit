@@ -1,4 +1,5 @@
 test_that("can highlight html file", {
+  skip_if_not_installed("xml2")
   # verify_output() seems to be generating the wrong line endings
   skip_on_os("windows")
 
@@ -9,6 +10,7 @@ test_that("can highlight html file", {
 })
 
 test_that("highlight all pre inside div.downlit", {
+  skip_if_not_installed("xml2")
   html <- xml2::read_xml("
     <body>
     <div class = 'downlit'>
@@ -23,6 +25,7 @@ test_that("highlight all pre inside div.downlit", {
 })
 
 test_that("special package string gets linked", {
+  skip_if_not_installed("xml2")
   html <- xml2::read_xml("<p>before <code>{downlit}</code> after</p>")
   downlit_html_node(html)
   expect_snapshot_output(show_xml(html))

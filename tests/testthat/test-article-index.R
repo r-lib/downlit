@@ -16,6 +16,7 @@ test_that("can capture index from in-development package", {
 })
 
 test_that("can capture index of installed package (no vignettes)", {
+  skip_if_not_installed("MASS")
   # Ensure we skip this test if MASS ever gets vignettes
   skip_if_not(nrow(vignette(package = "MASS")$results) == 0)
   expect_equal(
@@ -37,5 +38,3 @@ test_that("can capture index of installed package (vignettes + pkgdown)", {
 })
 
 # find_article ------------------------------------------------------------
-
-

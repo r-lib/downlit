@@ -77,6 +77,7 @@ test_that("ansi escapes are translated to html", {
 # html --------------------------------------------------------------------
 
 test_that("can include literal HTML", {
+  skip_if_not_installed("htmltools")
   output <- evaluate::new_output_handler(value = identity)
   env <- env(foo = function() htmltools::div("foo"))
 
@@ -85,6 +86,7 @@ test_that("can include literal HTML", {
 })
 
 test_that("captures dependencies", {
+  skip_if_not_installed("htmltools")
   output <- evaluate::new_output_handler(value = identity)
 
   dummy_dep <- htmltools::htmlDependency("dummy", "1.0.0", "dummy.js")
