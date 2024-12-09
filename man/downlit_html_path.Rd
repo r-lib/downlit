@@ -38,10 +38,12 @@ use \code{downlit_html_node()} to process an in-memory \code{xml_node} as part o
 larger pipeline.
 }
 \examples{
+\dontshow{if (rlang::is_installed("xml2")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 node <- xml2::read_xml("<p><code>base::t()</code></p>")
 node
 
 # node is modified in place
 downlit_html_node(node)
 node
+\dontshow{\}) # examplesIf}
 }

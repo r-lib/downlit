@@ -2,6 +2,7 @@
 # rmarkdown::find_pandoc(cache = FALSE)
 
 test_that("common across multiple versions", {
+  skip_if_not_installed("rmarkdown")
   skip_if_not(rmarkdown::pandoc_version() > "2.0.0")
 
   verify_output(test_path("test-downlit-md.txt"), {
@@ -26,6 +27,7 @@ test_that("common across multiple versions", {
 })
 
 test_that("pandoc AST v1.20", {
+  skip_if_not_installed("rmarkdown")
   skip_if_not(rmarkdown::pandoc_version() > "2.0.0")
   skip_if_not(rmarkdown::pandoc_version() < "2.10")
 
@@ -37,6 +39,7 @@ test_that("pandoc AST v1.20", {
 })
 
 test_that("pandoc AST v1.21", {
+  skip_if_not_installed("rmarkdown")
   skip_if_not(rmarkdown::pandoc_version() >= "2.10")
   skip_if_not(rmarkdown::pandoc_version() < "2.11")
 
@@ -49,6 +52,7 @@ test_that("pandoc AST v1.21", {
 
 test_that("Special package string gets linked", {
   # needed for eof setting on windows
+  skip_if_not_installed("rmarkdown")
   skip_if_not(rmarkdown::pandoc_version() > "2.0.0")
 
   expect_equal(

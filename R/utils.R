@@ -36,13 +36,8 @@ safe_parse <- function(text, standardise = TRUE) {
   lines <- strsplit(text, "\n", fixed = TRUE, useBytes = TRUE)[[1]]
   srcfile <- srcfilecopy("test.r", lines)
 
-  # https://github.com/gaborcsardi/rencfaq#how-to-parse-utf-8-text-into-utf-8-code
-  Encoding(text) <- "unknown"
-  con <- textConnection(text)
-  on.exit(close(con), add = TRUE)
-
   tryCatch(
-    parse(con, keep.source = TRUE, encoding = "UTF-8", srcfile = srcfile),
+    parse(text = text, keep.source = TRUE, encoding = "UTF-8", srcfile = srcfile),
     error = function(e) NULL
   )
 }

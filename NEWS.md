@@ -3,6 +3,10 @@
 * `downlit_html_node()` now keeps additional classes specified in `pre` tags,
   so that code chunk argument `class.source` is preserved (#149, #155, 
   @etiennebacher).
+  
+# downlit 0.4.4
+
+* Use simpler parsing algorithm for R 4.0, which avoids crash with certain UTF-8 characters (#189).
 
 # downlit 0.4.3
 
