@@ -35,3 +35,59 @@ test_that("special package string gets linked", {
   downlit_html_node(html)
   expect_snapshot_output(show_xml(html))
 })
+
+test_that("keeps all pre classes for each codeblock", {
+  # one codeblock
+  html <- xml2::read_xml("
+    <div class='sourceCode'>
+      <pre class='sourceCode r my-class'>
+        <code class='sourceCode r'>
+          <span>Hello</span>
+        </code>
+      </pre>
+    </div>")
+  downlit_html_node(html)
+  expect_snapshot_output(show_xml(html))
+
+  # two codeblocks with different classes
+  html <- xml2::read_xml("
+  <div>
+    <div class='sourceCode'>
+      <pre class='sourceCode r my-class'>
+        <code class='sourceCode r'>
+          <span>Hello</span>
+        </code>
+      </pre>
+    </div>
+    <div class='sourceCode'>
+      <pre class='sourceCode r another-class'>
+        <code class='sourceCode r'>
+          <span>Hello</span>
+        </code>
+      </pre>
+    </div>
+  </div>")
+  downlit_html_node(html)
+  expect_snapshot_output(show_xml(html))
+
+  # two codeblocks: one with custom class and one without any custom class
+  html <- xml2::read_xml("
+  <div>
+    <div class='sourceCode'>
+      <pre class='sourceCode r my-class'>
+        <code class='sourceCode r'>
+          <span>Hello</span>
+        </code>
+      </pre>
+    </div>
+    <div class='sourceCode'>
+      <pre class='sourceCode r'>
+        <code class='sourceCode r'>
+          <span>Hello</span>
+        </code>
+      </pre>
+    </div>
+  </div>")
+  downlit_html_node(html)
+  expect_snapshot_output(show_xml(html))
+})
