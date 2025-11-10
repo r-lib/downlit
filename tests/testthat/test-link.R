@@ -215,7 +215,10 @@ test_that("looks in attached packages", {
 
   expect_equal(
     href_expr_(vignette("sha1")),
-    "https://eddelbuettel.github.io/digest/vignettes/sha1.html"
+    if (packageVersion("digest") >= "0.6.38")
+      "https://eddelbuettel.github.io/digest/vignettes/sha1.html"
+    else
+      "https://cran.rstudio.com/web/packages/digest/vignettes/sha1.html"
   )
   expect_equal(
     href_expr_(vignette("moveline")),
