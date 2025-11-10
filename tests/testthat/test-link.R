@@ -215,7 +215,7 @@ test_that("looks in attached packages", {
 
   expect_equal(
     href_expr_(vignette("sha1")),
-    "https://cran.rstudio.com/web/packages/digest/vignettes/sha1.html"
+    "https://eddelbuettel.github.io/digest/vignettes/sha1.html"
   )
   expect_equal(
     href_expr_(vignette("moveline")),
