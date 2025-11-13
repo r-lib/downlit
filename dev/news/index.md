@@ -2,6 +2,8 @@
 
 ## downlit (development version)
 
+- Fix broken test
+
 ## downlit 0.4.4
 
 CRAN release: 2024-06-10
