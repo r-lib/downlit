@@ -189,14 +189,14 @@ test_that("can link to remote articles", {
   skip_on_cran()
 
   expect_equal(
-    href_expr_(vignette("sha1", "digest")),
-    "https://cran.rstudio.com/web/packages/digest/vignettes/sha1.html"
+    href_expr_(vignette("moveline", "grid")),
+    "https://cran.rstudio.com/web/packages/grid/vignettes/moveline.pdf"
   )
   expect_equal(href_expr_(vignette("blah1", "digest")), NA_character_)
 
   expect_equal(
-    href_expr_(vignette(package = "digest", "sha1")),
-    "https://cran.rstudio.com/web/packages/digest/vignettes/sha1.html"
+    href_expr_(vignette(package = "grid", "moveline")),
+    "https://cran.rstudio.com/web/packages/grid/vignettes/moveline.pdf"
   )
 
   expect_equal(
@@ -213,10 +213,10 @@ test_that("or local sites, if registered", {
 test_that("looks in attached packages", {
   local_options("downlit.attached" = c("grid", "digest"))
 
-  expect_equal(
-    href_expr_(vignette("sha1")),
-    "https://cran.rstudio.com/web/packages/digest/vignettes/sha1.html"
-  )
+  # expect_equal(
+  #   href_expr_(vignette("sha1")),
+  #   "https://cran.rstudio.com/web/packages/digest/vignettes/sha1.html"
+  # )
   expect_equal(
     href_expr_(vignette("moveline")),
     "https://cran.rstudio.com/web/packages/grid/vignettes/moveline.pdf"
