@@ -45,7 +45,10 @@ test_that("empty string returns empty string", {
 test_that("unicode is not mangled", {
   skip_on_os("windows")
 
-  expect_equal(highlight("# \u2714"), "<span><span class='c'># \u2714</span></span>")
+  expect_equal(
+    highlight("# \u2714"),
+    "<span><span class='c'># \u2714</span></span>"
+  )
 })
 
 test_that("custom infix operators are linked, but regular are not", {
@@ -53,7 +56,7 @@ test_that("custom infix operators are linked, but regular are not", {
   expect_snapshot_output(cat(highlight("x + y\n")))
 })
 
-test_that("distinguish logical and numeric",{
+test_that("distinguish logical and numeric", {
   expect_equal(highlight("TRUE"), "<span><span class='kc'>TRUE</span></span>")
   expect_equal(highlight("FALSE"), "<span><span class='kc'>FALSE</span></span>")
   expect_equal(highlight("1"), "<span><span class='m'>1</span></span>")
@@ -80,7 +83,10 @@ test_that("syntax can span multiple lines", {
 })
 
 test_that("code with tab is not mangled", {
-  expect_equal(highlight("\tf()"), "<span>  <span class='nf'>f</span><span class='o'>(</span><span class='o'>)</span></span>")
+  expect_equal(
+    highlight("\tf()"),
+    "<span>  <span class='nf'>f</span><span class='o'>(</span><span class='o'>)</span></span>"
+  )
   expect_equal(highlight("'\t'"), "<span><span class='s'>'  '</span></span>")
 })
 
@@ -103,7 +109,6 @@ test_that("R6 methods don't get linked", {
     highlight("x$library()"),
     "<span><span class='nv'>x</span><span class='o'>$</span><span class='kr'>library</span><span class='o'>(</span><span class='o'>)</span></span>"
   )
-
 })
 
 test_that("R6 instantiation gets linked", {
@@ -130,6 +135,9 @@ test_that("can highlight vers long strings", {
 })
 
 test_that("placeholder in R pipe gets highlighted and not linked", {
-  skip_if_not(getRversion() >= "4.2", message = "Pipes are available from R 4.1")
+  skip_if_not(
+    getRversion() >= "4.2",
+    message = "Pipes are available from R 4.1"
+  )
   expect_snapshot(highlight("1:10 |> mean(x = _)", classes = classes_pandoc()))
 })

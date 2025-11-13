@@ -11,7 +11,8 @@ test_that("can highlight html file", {
 
 test_that("highlight all pre inside div.downlit", {
   skip_if_not_installed("xml2")
-  html <- xml2::read_xml("
+  html <- xml2::read_xml(
+    "
     <body>
     <div class = 'downlit'>
       <pre>1 + 2</pre>

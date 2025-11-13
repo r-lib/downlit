@@ -38,19 +38,30 @@ test_that("combines plots as needed", {
   })
 
   expect_snapshot({
-    f3 <- function() { plot(1); plot(2) }
+    f3 <- function() {
+      plot(1)
+      plot(2)
+    }
     test_evaluate("f3()")
   })
 })
 
 test_that("handles other plots", {
   # Check that we can drop the inclusion of the first one
-  registerS3method("is_low_change", "fakePlot", function(p1, p2) TRUE,
+  registerS3method(
+    "is_low_change",
+    "fakePlot",
+    function(p1, p2) TRUE,
     envir = asNamespace("downlit")
   )
-  registerS3method("replay_html", "fakePlot", function(x, ...) {
-    paste0("<HTML for plot ", unclass(x), ">")
-  }, envir = asNamespace("downlit"))
+  registerS3method(
+    "replay_html",
+    "fakePlot",
+    function(x, ...) {
+      paste0("<HTML for plot ", unclass(x), ">")
+    },
+    envir = asNamespace("downlit")
+  )
   registerS3method("print", "fakePlot", function(x, ...) x)
 
   expect_snapshot_output({
@@ -81,8 +92,16 @@ test_that("can include literal HTML", {
   output <- evaluate::new_output_handler(value = identity)
   env <- env(foo = function() htmltools::div("foo"))
 
-  html <- evaluate_and_highlight("foo()", env = env, output_handler = output, highlight = FALSE)
-  expect_equal(as.character(html), "<span class='r-in'>foo()</span>\n<div>foo</div>")
+  html <- evaluate_and_highlight(
+    "foo()",
+    env = env,
+    output_handler = output,
+    highlight = FALSE
+  )
+  expect_equal(
+    as.character(html),
+    "<span class='r-in'>foo()</span>\n<div>foo</div>"
+  )
 })
 
 test_that("captures dependencies", {
@@ -92,6 +111,11 @@ test_that("captures dependencies", {
   dummy_dep <- htmltools::htmlDependency("dummy", "1.0.0", "dummy.js")
   env <- env(foo = function() htmltools::div("foo", dummy_dep))
 
-  html <- evaluate_and_highlight("foo()", env = env, output_handler = output, highlight = FALSE)
+  html <- evaluate_and_highlight(
+    "foo()",
+    env = env,
+    output_handler = output,
+    highlight = FALSE
+  )
   expect_equal(attr(html, "dependencies"), list(dummy_dep))
 })

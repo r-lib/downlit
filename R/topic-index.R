@@ -28,8 +28,9 @@ topic_index_source <- function(package) {
 
 topic_index_installed <- function(package) {
   path <- system.file("help", "aliases.rds", package = package)
-  if (path == "")
+  if (path == "") {
     return(character())
+  }
 
   readRDS(path)
 }

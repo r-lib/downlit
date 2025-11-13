@@ -46,7 +46,12 @@
 #'
 #' # Unparseable R code returns NA
 #' cat(highlight("base::t("))
-highlight <- function(text, classes = classes_chroma(), pre_class = NULL, code = FALSE) {
+highlight <- function(
+  text,
+  classes = classes_chroma(),
+  pre_class = NULL,
+  code = FALSE
+) {
   parsed <- parse_data(text)
   if (is.null(parsed)) {
     return(NA_character_)
@@ -69,8 +74,14 @@ highlight <- function(text, classes = classes_chroma(), pre_class = NULL, code =
   changes <- out[changed, , drop = FALSE]
 
   loc <- line_col(parsed$text)
-  start <- vctrs::vec_match(data.frame(line = changes$line1, col = changes$col1), loc)
-  end <- vctrs::vec_match(data.frame(line = changes$line2, col = changes$col2), loc)
+  start <- vctrs::vec_match(
+    data.frame(line = changes$line1, col = changes$col1),
+    loc
+  )
+  end <- vctrs::vec_match(
+    data.frame(line = changes$line2, col = changes$col2),
+    loc
+  )
 
   new <- style_token(changes$escaped, changes$href, changes$class)
   out <- replace_in_place(parsed$text, start, end, replacement = new)
@@ -84,7 +95,9 @@ highlight <- function(text, classes = classes_chroma(), pre_class = NULL, code =
 
   if (!is.null(pre_class)) {
     out <- paste0(
-      "<pre class='", paste0(pre_class, collapse = " "), "'>\n",
+      "<pre class='",
+      paste0(pre_class, collapse = " "),
+      "'>\n",
       if (code) paste0("<code class='sourceCode R'>"),
       out,
       if (code) paste("</code>"),
@@ -107,7 +120,11 @@ style_token <- function(x, href = NA, class = NA) {
 
   # Add links and class
   xs <- ifelse(is.na(href), xs, paste0("<a href='", href, "'>", xs, "</a>"))
-  xs <- ifelse(is.na(class), xs, paste0("<span class='", class, "'>", xs, "</span>"))
+  xs <- ifelse(
+    is.na(class),
+    xs,
+    paste0("<span class='", class, "'>", xs, "</span>")
+  )
 
   # Re-combine back into lines
   new_lines <- split(xs, rep(seq_along(x), n))
@@ -117,7 +134,8 @@ style_token <- function(x, href = NA, class = NA) {
 # From prettycode:::replace_in_place
 replace_in_place <- function(str, start, end, replacement) {
   stopifnot(
-    length(str) == 1, length(start) == length(end),
+    length(str) == 1,
+    length(start) == length(end),
     length(end) == length(replacement)
   )
 
@@ -149,10 +167,11 @@ getFullParseData <- function(x) {
 
   truncated <- res$terminal &
     substr(res$text, 1, 1) == "[" &
-    nchar(res$text) > 5  # 5 is arbitrary, 2 would probably be enough
+    nchar(res$text) > 5 # 5 is arbitrary, 2 would probably be enough
 
-  if (any(truncated))
+  if (any(truncated)) {
     res$text[truncated] <- utils::getParseText(res, res$id[truncated])
+  }
 
   res
 }
@@ -182,31 +201,76 @@ token_class <- function(token, text, classes) {
 token_type <- function(x, text) {
   special <- c(
     "FUNCTION",
-    "FOR", "IN", "BREAK", "NEXT", "REPEAT", "WHILE",
-    "IF", "ELSE"
+    "FOR",
+    "IN",
+    "BREAK",
+    "NEXT",
+    "REPEAT",
+    "WHILE",
+    "IF",
+    "ELSE"
   )
   rstudio_special <- c(
-   "return", "switch", "try", "tryCatch", "stop",
-   "warning", "require", "library", "attach", "detach",
-   "source", "setMethod", "setGeneric", "setGroupGeneric",
-   "setClass", "setRefClass", "R6Class", "UseMethod", "NextMethod"
+    "return",
+    "switch",
+    "try",
+    "tryCatch",
+    "stop",
+    "warning",
+    "require",
+    "library",
+    "attach",
+    "detach",
+    "source",
+    "setMethod",
+    "setGeneric",
+    "setGroupGeneric",
+    "setClass",
+    "setRefClass",
+    "R6Class",
+    "UseMethod",
+    "NextMethod"
   )
   x[x %in% special] <- "special"
   x[x == "SYMBOL_FUNCTION_CALL" & text %in% rstudio_special] <- "special"
 
   infix <- c(
     # algebra
-    "'-'", "'+'", "'~'", "'*'", "'/'", "'^'",
+    "'-'",
+    "'+'",
+    "'~'",
+    "'*'",
+    "'/'",
+    "'^'",
     # comparison
-    "LT", "GT", "EQ", "GE", "LE", "NE",
+    "LT",
+    "GT",
+    "EQ",
+    "GE",
+    "LE",
+    "NE",
     # logical
-    "'!'", "AND", "AND2", "OR", "OR2",
+    "'!'",
+    "AND",
+    "AND2",
+    "OR",
+    "OR2",
     # assignment / equals
-    "LEFT_ASSIGN", "RIGHT_ASSIGN", "EQ_ASSIGN", "EQ_FORMALS", "EQ_SUB",
+    "LEFT_ASSIGN",
+    "RIGHT_ASSIGN",
+    "EQ_ASSIGN",
+    "EQ_FORMALS",
+    "EQ_SUB",
     # miscellaneous
-    "'$'", "'@'","'~'", "'?'", "':'", "SPECIAL",
+    "'$'",
+    "'@'",
+    "'~'",
+    "'?'",
+    "':'",
+    "SPECIAL",
     # pipes
-    "PIPE", "PIPEBIND"
+    "PIPE",
+    "PIPEBIND"
   )
   x[x %in% infix] <- "infix"
 
@@ -215,8 +279,15 @@ token_type <- function(x, text) {
 
   # Matches treatment of constants in RStudio
   constant <- c(
-    "NA", "Inf", "NaN", "TRUE", "FALSE",
-    "NA_integer_", "NA_real_", "NA_character_", "NA_complex_"
+    "NA",
+    "Inf",
+    "NaN",
+    "TRUE",
+    "FALSE",
+    "NA_integer_",
+    "NA_real_",
+    "NA_character_",
+    "NA_complex_"
   )
   x[x == "NUM_CONST" & text %in% constant] <- "constant"
   x[x == "SYMBOL" & text %in% c("T", "F")] <- "constant"
@@ -318,7 +389,7 @@ token_href <- function(token, text) {
   # earlier library() statements to affect the highlighting of later blocks
   fun <- which(token %in% "SYMBOL_FUNCTION_CALL")
   fun <- setdiff(fun, ns_fun)
-  fun <- fun[token[fun-1] != "'$'"]
+  fun <- fun[token[fun - 1] != "'$'"]
 
   # Include custom infix operators
   fun <- c(fun, which(token %in% "SPECIAL"))
@@ -337,8 +408,8 @@ token_href <- function(token, text) {
   # Highlight packages
   lib_call <- which(
     token == "SYMBOL_FUNCTION_CALL" &
-    text %in% c("library", "require") &
-    to_end > 3
+      text %in% c("library", "require") &
+      to_end > 3
   )
   pkg <- lib_call + 3 # expr + '(' + STR_CONST
   href[pkg] <- map_chr(gsub("['\"]", "", text[pkg]), href_package)

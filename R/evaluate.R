@@ -35,17 +35,24 @@
 #' f()
 #'
 #' plot(1:10)
-evaluate_and_highlight <- function(code,
-                                   fig_save,
-                                   classes = downlit::classes_pandoc(),
-                                   env = NULL,
-                                   output_handler = evaluate::new_output_handler(),
-                                   highlight = TRUE) {
+evaluate_and_highlight <- function(
+  code,
+  fig_save,
+  classes = downlit::classes_pandoc(),
+  env = NULL,
+  output_handler = evaluate::new_output_handler(),
+  highlight = TRUE
+) {
   env <- env %||% child_env(global_env())
 
-  expr <- evaluate::evaluate(code, child_env(env), new_device = TRUE,
-                             output_handler = output_handler)
-  replay_html(expr,
+  expr <- evaluate::evaluate(
+    code,
+    child_env(env),
+    new_device = TRUE,
+    output_handler = output_handler
+  )
+  replay_html(
+    expr,
     fig_save = fig_save,
     fig_id = unique_id(),
     classes = classes,
@@ -106,7 +113,10 @@ replay_html.source <- function(x, ..., classes, highlight = FALSE) {
 
 #' @export
 replay_html.warning <- function(x, ...) {
-  message <- paste0(span("Warning: ", class = "warning"), escape_html(conditionMessage(x)))
+  message <- paste0(
+    span("Warning: ", class = "warning"),
+    escape_html(conditionMessage(x))
+  )
   label_output(message, "r-wrn")
 }
 
@@ -121,9 +131,17 @@ replay_html.error <- function(x, ...) {
   if (is.null(x$call)) {
     prefix <- "Error:"
   } else {
-    prefix <- paste0("Error in ", escape_html(paste0(deparse(x$call), collapse = "")), ":")
+    prefix <- paste0(
+      "Error in ",
+      escape_html(paste0(deparse(x$call), collapse = "")),
+      ":"
+    )
   }
-  message <- paste0(span(prefix, class = "error"), " ", escape_html(conditionMessage(x)))
+  message <- paste0(
+    span(prefix, class = "error"),
+    " ",
+    escape_html(conditionMessage(x))
+  )
   label_output(message, "r-err")
 }
 
@@ -132,10 +150,16 @@ replay_html.recordedplot <- function(x, fig_save, fig_id, ...) {
   fig <- fig_save(x, fig_id())
   img <- paste0(
     "<img ",
-    "src='", escape_html(fig$path), "' ",
+    "src='",
+    escape_html(fig$path),
+    "' ",
     "alt='' ",
-    "width='", fig$width, "' ",
-    "height='", fig$height, "' ",
+    "width='",
+    fig$width,
+    "' ",
+    "height='",
+    fig$height,
+    "' ",
     "/>"
   )
   paste0(span(img, class = "r-plt img"), "\n")
@@ -189,7 +213,9 @@ label_input <- function(x, class) {
 
 span <- function(..., class = NULL) {
   paste0(
-    "<span", if (!is.null(class)) paste0(" class='", class, "'"), ">",
+    "<span",
+    if (!is.null(class)) paste0(" class='", class, "'"),
+    ">",
     ...,
     "</span>"
   )
@@ -209,10 +235,12 @@ unique_id <- function() {
 
 # get MD5 digests of recorded plots so that merge_low_plot works
 digest_plot = function(x, level = 1) {
-  if (inherits(x, "otherRecordedplot"))
+  if (inherits(x, "otherRecordedplot")) {
     return(x)
-  if (!is.list(x) || level >= 3) return(structure(digest::digest(x),
-                                                  class = "plot_digest"))
+  }
+  if (!is.list(x) || level >= 3) {
+    return(structure(digest::digest(x), class = "plot_digest"))
+  }
   lapply(x, digest_plot, level = level + 1)
 }
 
@@ -222,16 +250,23 @@ is_plot_output = function(x) {
 
 # merge low-level plotting changes
 merge_low_plot = function(x, idx = vapply(x, is_plot_output, logical(1L))) {
-  idx = which(idx); n = length(idx); m = NULL # store indices that will be removed
-  if (n <= 1) return(x)
+  idx = which(idx)
+  n = length(idx)
+  m = NULL # store indices that will be removed
+  if (n <= 1) {
+    return(x)
+  }
 
   # digest of recorded plots
   rp_dg <- lapply(x[idx], digest_plot)
 
-  i1 = idx[1]; i2 = idx[2]  # compare plots sequentially
+  i1 = idx[1]
+  i2 = idx[2] # compare plots sequentially
   for (i in 1:(n - 1)) {
     # remove the previous plot and move its index to the next plot
-    if (is_low_change(rp_dg[[i]], rp_dg[[i+1]])) m = c(m, i1)
+    if (is_low_change(rp_dg[[i]], rp_dg[[i + 1]])) {
+      m = c(m, i1)
+    }
     i1 = idx[i + 1]
     i2 = idx[i + 2]
   }
@@ -250,7 +285,10 @@ is_low_change = function(p1, p2) {
 
 #' @export
 is_low_change.default = function(p1, p2) {
-  p1 = p1[[1]]; p2 = p2[[1]]  # real plot info is in [[1]]
-  if ((n2 <- length(p2)) < (n1 <- length(p1))) return(FALSE)  # length must increase
+  p1 = p1[[1]]
+  p2 = p2[[1]] # real plot info is in [[1]]
+  if ((n2 <- length(p2)) < (n1 <- length(p1))) {
+    return(FALSE)
+  } # length must increase
   identical(p1[1:n1], p2[1:n1])
 }

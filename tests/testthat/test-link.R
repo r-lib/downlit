@@ -36,8 +36,14 @@ test_that("respects options that define current location", {
 
 test_that("can link remote objects", {
   expect_equal(href_expr_(MASS::abbey), href_topic_remote("abbey", "MASS"))
-  expect_equal(href_expr_(MASS::addterm()), href_topic_remote("addterm", "MASS"))
-  expect_equal(href_expr_(MASS::addterm.default()), href_topic_remote("addterm", "MASS"))
+  expect_equal(
+    href_expr_(MASS::addterm()),
+    href_topic_remote("addterm", "MASS")
+  )
+  expect_equal(
+    href_expr_(MASS::addterm.default()),
+    href_topic_remote("addterm", "MASS")
+  )
   expect_equal(href_expr_(base::`::`), href_topic_remote("::", "base"))
 
   # Doesn't exist
@@ -67,12 +73,18 @@ test_that("can link to package names in registered packages", {
 })
 
 test_that("can link to functions in base packages", {
-  expect_equal(href_expr_(abbreviate()), href_topic_remote("abbreviate", "base"))
+  expect_equal(
+    href_expr_(abbreviate()),
+    href_topic_remote("abbreviate", "base")
+  )
   expect_equal(href_expr_(median()), href_topic_remote("median", "stats"))
 })
 
 test_that("links to home of re-exported functions", {
-  expect_equal(href_expr_(testthat::`%>%`), href_topic_remote("%>%", "magrittr"))
+  expect_equal(
+    href_expr_(testthat::`%>%`),
+    href_topic_remote("%>%", "magrittr")
+  )
 })
 
 test_that("fails gracely if can't find re-exported function", {
@@ -85,8 +97,14 @@ test_that("fails gracely if can't find re-exported function", {
 
 test_that("can link to remote pkgdown sites", {
   # use autolink() to avoid R CMD check NOTE
-  expect_equal(autolink_url("pkgdown::add_slug"), href_topic_remote("pkgdown", "add_slug"))
-  expect_equal(autolink_url("pkgdown::add_slug(1)"), href_topic_remote("pkgdown", "add_slug"))
+  expect_equal(
+    autolink_url("pkgdown::add_slug"),
+    href_topic_remote("pkgdown", "add_slug")
+  )
+  expect_equal(
+    autolink_url("pkgdown::add_slug(1)"),
+    href_topic_remote("pkgdown", "add_slug")
+  )
 })
 
 test_that("or local sites, if registered", {
@@ -129,7 +147,10 @@ test_that("can link help calls", {
 
   expect_equal(href_expr_(help("foo")), "foo.html")
   expect_equal(href_expr_(help("foo", "test")), "foo.html")
-  expect_equal(href_expr_(help(package = "MASS")), "https://rdrr.io/pkg/MASS/man")
+  expect_equal(
+    href_expr_(help(package = "MASS")),
+    "https://rdrr.io/pkg/MASS/man"
+  )
   expect_equal(href_expr_(help()), "https://rdrr.io/r/utils/help.html")
   expect_equal(href_expr_(help(a$b)), NA_character_)
 })
@@ -141,7 +162,10 @@ test_that("library() linked to package reference", {
   skip_on_os("solaris")
 
   expect_equal(href_expr_(library(rlang)), "https://rlang.r-lib.org")
-  expect_equal(href_expr_(library(MASS)), "http://www.stats.ox.ac.uk/pub/MASS4/")
+  expect_equal(
+    href_expr_(library(MASS)),
+    "http://www.stats.ox.ac.uk/pub/MASS4/"
+  )
 })
 
 test_that("except when not possible", {
@@ -180,7 +204,10 @@ test_that("can link to bioconductor vignettes", {
 
   # Varies between .html and .pdf based on R version
   expect_equal(
-    tools::file_path_sans_ext(href_expr_(vignette("MassSpecWavelet", "MassSpecWavelet"))),
+    tools::file_path_sans_ext(href_expr_(vignette(
+      "MassSpecWavelet",
+      "MassSpecWavelet"
+    ))),
     "https://bioconductor.org/packages/release/bioc/vignettes/MassSpecWavelet/inst/doc/MassSpecWavelet"
   )
 })
@@ -207,7 +234,10 @@ test_that("can link to remote articles", {
 
 test_that("or local sites, if registered", {
   local_options("downlit.local_packages" = c("digest" = "digest"))
-  expect_equal(href_expr_(vignette("sha1", "digest")), "digest/articles/sha1.html")
+  expect_equal(
+    href_expr_(vignette("sha1", "digest")),
+    "digest/articles/sha1.html"
+  )
 })
 
 test_that("looks in attached packages", {
@@ -227,13 +257,13 @@ test_that("fail gracefully with non-working calls", {
   expect_equal(href_expr_(vignette()), "https://rdrr.io/r/utils/vignette.html")
   expect_equal(href_expr_(vignette(package = package)), NA_character_)
   expect_equal(href_expr_(vignette(1, 2)), NA_character_)
-  expect_equal(href_expr_(vignette(, )), NA_character_)
+  expect_equal(href_expr_(vignette(,)), NA_character_)
 })
 
 test_that("spurious functions are not linked (#889)", {
   expect_equal(href_expr_(Authors@R), NA_character_)
-  expect_equal(href_expr_(content-home.html), NA_character_)
-  expect_equal(href_expr_(toc: depth), NA_character_)
+  expect_equal(href_expr_(content - home.html), NA_character_)
+  expect_equal(href_expr_(toc:depth), NA_character_)
 })
 
 test_that("autolink generates HTML if linkable", {
@@ -257,5 +287,8 @@ test_that("can find functions", {
 
 test_that("can find other objects", {
   expect_equal(find_reexport_source(na_cpl, "downlit", "na_cpl"), "rlang")
-  expect_equal(find_reexport_source(na_cpl, "downlit", "MISSING"), NA_character_)
+  expect_equal(
+    find_reexport_source(na_cpl, "downlit", "MISSING"),
+    NA_character_
+  )
 })

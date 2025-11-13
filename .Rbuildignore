@@ -10,3 +10,5 @@
 ^CRAN-RELEASE$
 ^revdep$
 ^CRAN-SUBMISSION$
+^[.]?air[.]toml$
+^\.vscode$
