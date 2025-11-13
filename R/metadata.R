@@ -88,7 +88,8 @@ fetch_yaml <- function(url) {
 # Helpers -----------------------------------------------------------------
 
 package_urls <- function(package, repos = getOption("repos")) {
-  if (package == "") { # if e.g. library(a$pkg) then pkg is ""
+  if (package == "") {
+    # if e.g. library(a$pkg) then pkg is ""
     return(character())
   }
 
@@ -100,7 +101,9 @@ package_urls <- function(package, repos = getOption("repos")) {
     # Otherwise try repo metadata, always trying CRAN last
     user_repos <- repos[names2(repos) != "CRAN"]
     meta <- c(lapply(user_repos, repo_urls), list(CRAN_urls()))
-    urls <- unlist(lapply(meta, function(pkgs) pkgs$URL[match(package, pkgs[["Package"]])]))
+    urls <- unlist(lapply(meta, function(pkgs) {
+      pkgs$URL[match(package, pkgs[["Package"]])]
+    }))
 
     # Take first non-NA (if any)
     url <- urls[!is.na(urls)]
@@ -138,6 +141,10 @@ CRAN_urls <- function() {
 
 # All rOpenSci repositories have a known pkgdown URL.
 # Todo: could generalise this concept for other orgs.
-sub_special_cases <- function(urls){
-  sub("^https?://github.com/ropensci/(\\w+).*$", "https://docs.ropensci.org/\\1", urls)
+sub_special_cases <- function(urls) {
+  sub(
+    "^https?://github.com/ropensci/(\\w+).*$",
+    "https://docs.ropensci.org/\\1",
+    urls
+  )
 }

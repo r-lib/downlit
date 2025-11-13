@@ -65,8 +65,9 @@ href_expr <- function(expr) {
     pkg <- NULL
   }
 
-  if (!is_symbol(fun))
+  if (!is_symbol(fun)) {
     return(NA_character_)
+  }
 
   fun_name <- as.character(fun)
   n_args <- length(expr) - 1
@@ -76,7 +77,8 @@ href_expr <- function(expr) {
   } else if (fun_name %in% c("library", "require", "requireNamespace")) {
     simple_call <- n_args == 1 &&
       is.null(names(expr)) &&
-      (is_string(expr[[2]]) || (fun_name != "requireNamespace") && is_symbol(expr[[2]]))
+      (is_string(expr[[2]]) ||
+        (fun_name != "requireNamespace") && is_symbol(expr[[2]]))
 
     if (simple_call) {
       pkg <- as.character(expr[[2]])
@@ -297,9 +299,19 @@ href_article <- function(article, package = NULL) {
   if (!is.null(base_url)) {
     paste0(base_url, "/", path)
   } else if (is_bioc_pkg(package)) {
-    paste0("https://bioconductor.org/packages/release/bioc/vignettes/", package, "/inst/doc/", path)
+    paste0(
+      "https://bioconductor.org/packages/release/bioc/vignettes/",
+      package,
+      "/inst/doc/",
+      path
+    )
   } else {
-    paste0("https://cran.rstudio.com/web/packages/", package, "/vignettes/", path)
+    paste0(
+      "https://cran.rstudio.com/web/packages/",
+      package,
+      "/vignettes/",
+      path
+    )
   }
 }
 
@@ -360,9 +372,21 @@ href_package_ref <- function(package) {
 }
 
 is_base_package <- function(x) {
-  x %in% c(
-    "base", "compiler", "datasets", "graphics", "grDevices", "grid",
-    "methods", "parallel", "splines", "stats", "stats4", "tcltk",
-    "tools", "utils"
-  )
+  x %in%
+    c(
+      "base",
+      "compiler",
+      "datasets",
+      "graphics",
+      "grDevices",
+      "grid",
+      "methods",
+      "parallel",
+      "splines",
+      "stats",
+      "stats4",
+      "tcltk",
+      "tools",
+      "utils"
+    )
 }

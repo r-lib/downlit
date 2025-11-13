@@ -6,18 +6,21 @@ test_that("extracts typical library()/require() calls", {
 })
 
 test_that("detects in nested code", {
-  expect_equal(extract_package_attach_({
-    library(a)
-    x <- 2
-    {
-      library(b)
-      y <- 3
+  expect_equal(
+    extract_package_attach_({
+      library(a)
+      x <- 2
       {
-        library(c)
-        z <- 4
+        library(b)
+        y <- 3
+        {
+          library(c)
+          z <- 4
+        }
       }
-    }
-  }), c("a", "b", "c"))
+    }),
+    c("a", "b", "c")
+  )
 })
 
 test_that("handles expressions", {

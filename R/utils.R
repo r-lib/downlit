@@ -9,8 +9,9 @@ devtools_loaded <- function(x) {
 invert_index <- function(x) {
   stopifnot(is.list(x))
 
-  if (length(x) == 0)
+  if (length(x) == 0) {
     return(list())
+  }
 
   key <- rep(names(x), lengths(x))
   val <- unlist(x, use.names = FALSE)
@@ -37,7 +38,12 @@ safe_parse <- function(text, standardise = TRUE) {
   srcfile <- srcfilecopy("test.r", lines)
 
   tryCatch(
-    parse(text = text, keep.source = TRUE, encoding = "UTF-8", srcfile = srcfile),
+    parse(
+      text = text,
+      keep.source = TRUE,
+      encoding = "UTF-8",
+      srcfile = srcfile
+    ),
     error = function(e) NULL
   )
 }
@@ -45,7 +51,7 @@ safe_parse <- function(text, standardise = TRUE) {
 
 extract_curly_package <- function(x) {
   # regex adapted from https://github.com/r-lib/usethis/blob/d5857737b4780c3c3d8fe6fb44ef70e81796ac8e/R/description.R#L134
-  if (! grepl("^\\{[a-zA-Z][a-zA-Z0-9.]+\\}$", x)) {
+  if (!grepl("^\\{[a-zA-Z][a-zA-Z0-9.]+\\}$", x)) {
     return(NA)
   }
 

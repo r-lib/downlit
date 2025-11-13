@@ -50,7 +50,10 @@ downlit_html_node <- function(x, classes = classes_pandoc()) {
     ".//div[contains(@class, 'downlit')]//pre"
   )
   xpath_block <- paste(xpath, collapse = "|")
-  tweak_children(x, xpath_block, highlight,
+  tweak_children(
+    x,
+    xpath_block,
+    highlight,
     pre_class = "downlit sourceCode r",
     classes = classes,
     replace = "node",
@@ -72,7 +75,13 @@ downlit_html_node <- function(x, classes = classes_pandoc()) {
   invisible()
 }
 
-tweak_children <- function(node, xpath, fun, ..., replace = c("node", "contents")) {
+tweak_children <- function(
+  node,
+  xpath,
+  fun,
+  ...,
+  replace = c("node", "contents")
+) {
   replace <- arg_match(replace)
 
   nodes <- xml2::xml_find_all(node, xpath)

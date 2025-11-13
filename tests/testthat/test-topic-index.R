@@ -28,7 +28,10 @@ test_that("can find topic in specified package", {
 
 test_that("can find topic in attached packages", {
   local_options("downlit.attached" = "grid")
-  expect_equal(find_rdname_attached("unit"), list(rdname = "unit", package = "grid"))
+  expect_equal(
+    find_rdname_attached("unit"),
+    list(rdname = "unit", package = "grid")
+  )
   expect_equal(find_rdname_attached("DOESNOTEXIST"), NULL)
 })
 

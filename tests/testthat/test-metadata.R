@@ -20,7 +20,10 @@ test_that("can extract urls for uninstalled packages from CRAN", {
 
   # But prefers user specified repo
   fake_repo <- paste0("file:", test_path("fake-repo"))
-  expect_equal(package_urls("rlang", repos = fake_repo), "https://trick-url.com/")
+  expect_equal(
+    package_urls("rlang", repos = fake_repo),
+    "https://trick-url.com/"
+  )
 
   # even if CRAN comes first
   cran_repo <- "https://cran.rstudio.com"

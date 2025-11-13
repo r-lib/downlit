@@ -4,7 +4,7 @@
       test_evaluate("1 + ", highlight = TRUE)
     Output
       <span class='r-in'>1 + </span>
-      <span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error:</span> &lt;text&gt;:2:0: unexpected end of input</span>
+      <span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in parse(text = input):</span> &lt;text&gt;:2:0: unexpected end of input</span>
       <span class='r-err co'><span class='r-pr'>#&gt;</span> 1: 1 + </span>
       <span class='r-err co'><span class='r-pr'>#&gt;</span>    ^</span>
 

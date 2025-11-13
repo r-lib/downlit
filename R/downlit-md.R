@@ -109,21 +109,47 @@ transform_code <- function(x, version) {
   # Blocks that are a list of blocks
   block_list <- c(
     # Block
-    "Plain", "Para", "LineBlock", "BlockQuote", "BulletList",
+    "Plain",
+    "Para",
+    "LineBlock",
+    "BlockQuote",
+    "BulletList",
     # Inline
-    "Emph", "Strong", "Strikeout", "Superscript", "Subscript",
-    "SmallCaps", "Note", "Underline"
+    "Emph",
+    "Strong",
+    "Strikeout",
+    "Superscript",
+    "Subscript",
+    "SmallCaps",
+    "Note",
+    "Underline"
   )
   # Blocks that have a list of blocks as second child
   block_list2 <- c(
-    "OrderedList", "Quoted",
-    "Div", "Span",
-    "Caption", "TableHead", "TableFoot", "Row"
+    "OrderedList",
+    "Quoted",
+    "Div",
+    "Span",
+    "Caption",
+    "TableHead",
+    "TableFoot",
+    "Row"
   )
   skip <- c(
-    "Header", "CodeBlock", "RawBlock", "HorizontalRule", "Null",
-    "Math", "RawInline", "Link", "Image", "Cite",
-    "Str", "Space", "SoftBreak", "LineBreak"
+    "Header",
+    "CodeBlock",
+    "RawBlock",
+    "HorizontalRule",
+    "Null",
+    "Math",
+    "RawInline",
+    "Link",
+    "Image",
+    "Cite",
+    "Str",
+    "Space",
+    "SoftBreak",
+    "LineBreak"
   )
 
   if (!is_named(x)) {
@@ -132,14 +158,14 @@ transform_code <- function(x, version) {
     if (x$t == "Code") {
       package_name <- extract_curly_package(x$c[[2]])
       # packages à la {pkgname}
-      if(!is.na(package_name)) {
+      if (!is.na(package_name)) {
         href <- href_package(package_name)
         if (!is.na(href)) {
-          x <-  list(t = "Str", c = package_name)
+          x <- list(t = "Str", c = package_name)
           x <- pandoc_link(pandoc_attr(), list(x), pandoc_target(href))
         } # otherwise we do not touch x
       } else {
-      # other cases
+        # other cases
         href <- autolink_url(x$c[[2]])
         if (!is.na(href)) {
           x <- pandoc_link(pandoc_attr(), list(x), pandoc_target(href))
@@ -177,10 +203,18 @@ transform_code <- function(x, version) {
     } else if (x$t %in% "Table") {
       if (version >= "1.21") {
         # Attr Caption [ColSpec] TableHead [TableBody] TableFoot
-        x$c[c(2, 4, 5, 6)] <- lapply(x$c[c(2, 4, 5, 6)], transform_code, version = version)
+        x$c[c(2, 4, 5, 6)] <- lapply(
+          x$c[c(2, 4, 5, 6)],
+          transform_code,
+          version = version
+        )
       } else {
         # [Inline] [Alignment] [Double] [TableCell] [[TableCell]]
-        x$c[c(1, 4, 5)] <- lapply(x$c[c(1, 4, 5)], transform_code, version = version)
+        x$c[c(1, 4, 5)] <- lapply(
+          x$c[c(1, 4, 5)],
+          transform_code,
+          version = version
+        )
       }
     } else if (x$t %in% "TableBody") {
       # Attr RowHeadColumns [Row] [Row] <v1.21>
@@ -190,15 +224,13 @@ transform_code <- function(x, version) {
       x$c[[5]] <- lapply(x$c[[5]], transform_code, version = version)
     } else if (x$t %in% "DefinitionList") {
       # DefinitionList [([Inline], [[Block]])]
-      x$c <- lapply(x$c,
-        function(x) list(
+      x$c <- lapply(x$c, function(x) {
+        list(
           transform_code(x[[1]], version = version),
           transform_code(x[[2]], version = version)
         )
-      )
-    } else if (x$t %in% skip) {
-
-    } else {
+      })
+    } else if (x$t %in% skip) {} else {
       inform(paste0("Unknown type: ", x$t))
     }
 
