@@ -2,8 +2,8 @@
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/r-lib/downlit/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/r-lib/downlit/actions/workflows/R-CMD-check.yaml)
-[![Codecov test coverage](https://codecov.io/gh/r-lib/downlit/branch/main/graph/badge.svg)](https://app.codecov.io/gh/r-lib/downlit?branch=main)
 [![CRAN status](https://www.r-pkg.org/badges/version/downlit)](https://CRAN.R-project.org/package=downlit)
+[![Codecov test coverage](https://codecov.io/gh/r-lib/downlit/graph/badge.svg)](https://app.codecov.io/gh/r-lib/downlit)
 <!-- badges: end -->
 
 The goal of downlit is to provide syntax highlighting and automatic linking of R code in a way that is easily used from RMarkdown packages like [pkgdown](https://pkgdown.r-lib.org/), [bookdown](https://bookdown.org), and [hugodown](https://hugodown.r-lib.org/).
