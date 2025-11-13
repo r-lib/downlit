@@ -1,4 +1,4 @@
-# downlit (development version)
+# downlit 0.4.5
 
 * Fix broken test
 
