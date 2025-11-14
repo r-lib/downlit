@@ -2,6 +2,10 @@
 
 ## downlit (development version)
 
+## downlit 0.4.5
+
+CRAN release: 2025-11-14
+
 - Fix broken test
 
 ## downlit 0.4.4
