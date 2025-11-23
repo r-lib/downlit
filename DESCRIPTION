@@ -28,6 +28,7 @@ Imports:
     yaml
 Suggests:
     covr,
+    ggraph,
     htmltools,
     jsonlite,
     MASS,
@@ -35,6 +36,7 @@ Suggests:
     pkgload,
     rmarkdown,
     testthat (>= 3.0.0),
+    tidyverse,
     xml2
 Config/Needs/website: tidyverse/tidytemplate
 Config/testthat/edition: 3
