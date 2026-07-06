@@ -22,6 +22,7 @@ Imports:
     evaluate,
     fansi,
     memoise,
+    rdtools,
     rlang,
     vctrs,
     withr,
@@ -36,6 +37,8 @@ Suggests:
     rmarkdown,
     testthat (>= 3.0.0),
     xml2
+Remotes:
+    r-lib/rdtools
 Config/Needs/website: tidyverse/tidytemplate
 Config/roxygen2/version: 8.0.0
 Config/testthat/edition: 3

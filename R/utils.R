@@ -6,19 +6,6 @@ devtools_loaded <- function(x) {
   env_has(ns, ".__DEVTOOLS__")
 }
 
-invert_index <- function(x) {
-  stopifnot(is.list(x))
-
-  if (length(x) == 0) {
-    return(list())
-  }
-
-  key <- rep(names(x), lengths(x))
-  val <- unlist(x, use.names = FALSE)
-
-  split(key, val)
-}
-
 standardise_text <- function(x) {
   x <- enc2utf8(x)
   x <- gsub("\t", "  ", x, fixed = TRUE, useBytes = TRUE)
