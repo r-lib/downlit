@@ -234,7 +234,7 @@ unique_id <- function() {
 # The functions below come from package knitr (Yihui Xie) in file plot.R
 
 # get MD5 digests of recorded plots so that merge_low_plot works
-digest_plot = function(x, level = 1) {
+digest_plot <- function(x, level = 1) {
   if (inherits(x, "otherRecordedplot")) {
     return(x)
   }
@@ -244,15 +244,15 @@ digest_plot = function(x, level = 1) {
   lapply(x, digest_plot, level = level + 1)
 }
 
-is_plot_output = function(x) {
+is_plot_output <- function(x) {
   evaluate::is.recordedplot(x) || inherits(x, 'otherRecordedplot')
 }
 
 # merge low-level plotting changes
-merge_low_plot = function(x, idx = vapply(x, is_plot_output, logical(1L))) {
-  idx = which(idx)
-  n = length(idx)
-  m = NULL # store indices that will be removed
+merge_low_plot <- function(x, idx = vapply(x, is_plot_output, logical(1L))) {
+  idx <- which(idx)
+  n <- length(idx)
+  m <- NULL # store indices that will be removed
   if (n <= 1) {
     return(x)
   }
@@ -260,15 +260,15 @@ merge_low_plot = function(x, idx = vapply(x, is_plot_output, logical(1L))) {
   # digest of recorded plots
   rp_dg <- lapply(x[idx], digest_plot)
 
-  i1 = idx[1]
-  i2 = idx[2] # compare plots sequentially
+  i1 <- idx[1]
+  i2 <- idx[2] # compare plots sequentially
   for (i in 1:(n - 1)) {
     # remove the previous plot and move its index to the next plot
     if (is_low_change(rp_dg[[i]], rp_dg[[i + 1]])) {
-      m = c(m, i1)
+      m <- c(m, i1)
     }
-    i1 = idx[i + 1]
-    i2 = idx[i + 2]
+    i1 <- idx[i + 1]
+    i2 <- idx[i + 2]
   }
   if (is.null(m)) x else x[-m]
 }
@@ -279,14 +279,14 @@ merge_low_plot = function(x, idx = vapply(x, is_plot_output, logical(1L))) {
 #'
 #' @return Logical value indicating whether `p2` is a low-level update of `p1`.
 #' @export
-is_low_change = function(p1, p2) {
+is_low_change <- function(p1, p2) {
   UseMethod("is_low_change")
 }
 
 #' @export
-is_low_change.default = function(p1, p2) {
-  p1 = p1[[1]]
-  p2 = p2[[1]] # real plot info is in [[1]]
+is_low_change.default <- function(p1, p2) {
+  p1 <- p1[[1]]
+  p2 <- p2[[1]] # real plot info is in [[1]]
   if ((n2 <- length(p2)) < (n1 <- length(p1))) {
     return(FALSE)
   } # length must increase
