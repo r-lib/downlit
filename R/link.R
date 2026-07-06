@@ -231,44 +231,13 @@ is_exported <- function(name, package) {
 # If it's a re-exported function, we need to work a little harder to
 # find out its source so that we can link to it.
 href_topic_reexported <- function(topic, package) {
-  ns <- ns_env(package)
-  if (!env_has(ns, topic, inherit = TRUE)) {
-    return(NA_character_)
-  }
-
-  obj <- env_get(ns, topic, inherit = TRUE)
-  ex_package <- find_reexport_source(obj, ns, topic)
-  # Give up if we're stuck in an infinite loop
+  ex_package <- rdtools::topic_source(topic, package)
+  # Give up if it isn't re-exported from somewhere else
   if (package == ex_package) {
     return(NA_character_)
   }
 
   href_topic_remote(topic, ex_package)
-}
-
-find_reexport_source <- function(obj, ns, topic) {
-  if (is.primitive(obj)) {
-    # primitive functions all live in base
-    "base"
-  } else if (is.function(obj)) {
-    ## For functions, we can just take their environment.
-    ns_env_name(get_env(obj))
-  } else {
-    ## For other objects, we need to check the import env of the package,
-    ## to see where 'topic' is coming from. The import env has redundant
-    ## information. It seems that we just need to find a named list
-    ## entry that contains `topic`.
-    imp <- getNamespaceImports(ns)
-    imp <- imp[names(imp) != ""]
-    wpkgs <- vapply(imp, `%in%`, x = topic, FUN.VALUE = logical(1))
-
-    if (!any(wpkgs)) {
-      return(NA_character_)
-    }
-    pkgs <- names(wpkgs)[wpkgs]
-    # Take the last match, in case imports have name clashes.
-    pkgs[[length(pkgs)]]
-  }
 }
 
 # Articles ----------------------------------------------------------------

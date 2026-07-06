@@ -278,17 +278,16 @@ test_that("href_package can handle non-existing packages", {
   expect_equal(href_package("NotAPackage"), NA_character_)
 })
 
-# find_reexport_source ----------------------------------------------------
+# href_topic_reexported ---------------------------------------------------
 
-test_that("can find functions", {
-  expect_equal(find_reexport_source(is.null), "base")
-  expect_equal(find_reexport_source(mean), "base")
+test_that("resolves a re-exported object to its source package", {
+  # na_cpl is imported into downlit from rlang
+  expect_equal(
+    href_topic_reexported("na_cpl", "downlit"),
+    href_topic_remote("na_cpl", "rlang")
+  )
 })
 
-test_that("can find other objects", {
-  expect_equal(find_reexport_source(na_cpl, "downlit", "na_cpl"), "rlang")
-  expect_equal(
-    find_reexport_source(na_cpl, "downlit", "MISSING"),
-    NA_character_
-  )
+test_that("returns NA if topic isn't actually re-exported", {
+  expect_equal(href_topic_reexported("MISSING", "downlit"), NA_character_)
 })
