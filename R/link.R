@@ -209,35 +209,28 @@ href_topic_remote <- function(topic, package) {
     return(NA_character_)
   }
 
-  if (is_reexported(topic, package)) {
-    href_topic_reexported(topic, package)
+  # If it's re-exported, follow it to the package that actually documents it
+  source <- rdtools::topic_source(topic, package)
+  if (source != package) {
+    href_topic_remote(topic, source)
   } else {
     paste0(href_package_ref(package), "/", rdname, ".html")
   }
-}
-
-is_reexported <- function(name, package) {
-  if (package == "base") {
-    return(FALSE)
-  }
-  is_imported <- env_has(ns_imports_env(package), name)
-  is_imported && is_exported(name, package)
 }
 
 is_exported <- function(name, package) {
   name %in% getNamespaceExports(ns_env(package))
 }
 
-# If it's a re-exported function, we need to work a little harder to
-# find out its source so that we can link to it.
+# Follow a topic documented in the local package's reexports.Rd to the
+# package that actually documents it.
 href_topic_reexported <- function(topic, package) {
-  ex_package <- rdtools::topic_source(topic, package)
-  # Give up if it isn't re-exported from somewhere else
-  if (package == ex_package) {
+  source <- rdtools::topic_source(topic, package)
+  if (source == package) {
     return(NA_character_)
   }
 
-  href_topic_remote(topic, ex_package)
+  href_topic_remote(topic, source)
 }
 
 # Articles ----------------------------------------------------------------
