@@ -26,22 +26,15 @@ find_rdname <- function(package, topic) {
 find_rdname_attached <- function(topic, is_fun = FALSE) {
   packages <- c(
     getOption("downlit.attached"),
-    c("datasets", "utils", "grDevices", "graphics", "stats", "base")
+    rdtools::pkgs_search_base()
   )
 
-  for (package in packages) {
-    if (!is_installed(package)) {
+  for (match in rdtools::topic_find_all(topic, packages)) {
+    # When linking a bare call, only link to exported symbols
+    if (is_fun && !is_exported(topic, match$package)) {
       next
     }
-
-    if (is_fun && !is_exported(topic, package)) {
-      next
-    }
-
-    rdname <- find_rdname(package, topic)
-    if (!is.null(rdname)) {
-      return(list(rdname = rdname, package = package))
-    }
+    return(list(rdname = match$file, package = match$package))
   }
   NULL
 }

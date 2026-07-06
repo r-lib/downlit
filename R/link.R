@@ -372,21 +372,5 @@ href_package_ref <- function(package) {
 }
 
 is_base_package <- function(x) {
-  x %in%
-    c(
-      "base",
-      "compiler",
-      "datasets",
-      "graphics",
-      "grDevices",
-      "grid",
-      "methods",
-      "parallel",
-      "splines",
-      "stats",
-      "stats4",
-      "tcltk",
-      "tools",
-      "utils"
-    )
+  x %in% rdtools::pkgs_search_base()
 }
