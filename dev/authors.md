@@ -12,13 +12,13 @@
 Source:
 [`DESCRIPTION`](https://github.com/r-lib/downlit/blob/main/DESCRIPTION)
 
-Wickham H (2025). *downlit: Syntax Highlighting and Automatic Linking*.
+Wickham H (2026). *downlit: Syntax Highlighting and Automatic Linking*.
 R package version 0.4.5.9000, <https://downlit.r-lib.org/>.
 
     @Manual{,
       title = {downlit: Syntax Highlighting and Automatic Linking},
       author = {Hadley Wickham},
-      year = {2025},
+      year = {2026},
       note = {R package version 0.4.5.9000},
       url = {https://downlit.r-lib.org/},
     }
