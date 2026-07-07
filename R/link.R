@@ -209,66 +209,28 @@ href_topic_remote <- function(topic, package) {
     return(NA_character_)
   }
 
-  if (is_reexported(topic, package)) {
-    href_topic_reexported(topic, package)
+  # If it's re-exported, follow it to the package that actually documents it
+  source <- rdtools::topic_origin(topic, package)
+  if (source != package) {
+    href_topic_remote(topic, source)
   } else {
     paste0(href_package_ref(package), "/", rdname, ".html")
   }
-}
-
-is_reexported <- function(name, package) {
-  if (package == "base") {
-    return(FALSE)
-  }
-  is_imported <- env_has(ns_imports_env(package), name)
-  is_imported && is_exported(name, package)
 }
 
 is_exported <- function(name, package) {
   name %in% getNamespaceExports(ns_env(package))
 }
 
-# If it's a re-exported function, we need to work a little harder to
-# find out its source so that we can link to it.
+# Follow a topic documented in the local package's reexports.Rd to the
+# package that actually documents it.
 href_topic_reexported <- function(topic, package) {
-  ns <- ns_env(package)
-  if (!env_has(ns, topic, inherit = TRUE)) {
+  source <- rdtools::topic_origin(topic, package)
+  if (source == package) {
     return(NA_character_)
   }
 
-  obj <- env_get(ns, topic, inherit = TRUE)
-  ex_package <- find_reexport_source(obj, ns, topic)
-  # Give up if we're stuck in an infinite loop
-  if (package == ex_package) {
-    return(NA_character_)
-  }
-
-  href_topic_remote(topic, ex_package)
-}
-
-find_reexport_source <- function(obj, ns, topic) {
-  if (is.primitive(obj)) {
-    # primitive functions all live in base
-    "base"
-  } else if (is.function(obj)) {
-    ## For functions, we can just take their environment.
-    ns_env_name(get_env(obj))
-  } else {
-    ## For other objects, we need to check the import env of the package,
-    ## to see where 'topic' is coming from. The import env has redundant
-    ## information. It seems that we just need to find a named list
-    ## entry that contains `topic`.
-    imp <- getNamespaceImports(ns)
-    imp <- imp[names(imp) != ""]
-    wpkgs <- vapply(imp, `%in%`, x = topic, FUN.VALUE = logical(1))
-
-    if (!any(wpkgs)) {
-      return(NA_character_)
-    }
-    pkgs <- names(wpkgs)[wpkgs]
-    # Take the last match, in case imports have name clashes.
-    pkgs[[length(pkgs)]]
-  }
+  href_topic_remote(topic, source)
 }
 
 # Articles ----------------------------------------------------------------
@@ -372,21 +334,5 @@ href_package_ref <- function(package) {
 }
 
 is_base_package <- function(x) {
-  x %in%
-    c(
-      "base",
-      "compiler",
-      "datasets",
-      "graphics",
-      "grDevices",
-      "grid",
-      "methods",
-      "parallel",
-      "splines",
-      "stats",
-      "stats4",
-      "tcltk",
-      "tools",
-      "utils"
-    )
+  x %in% rdtools::pkg_search_base()
 }

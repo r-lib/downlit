@@ -116,11 +116,6 @@ test_that("R6 instantiation gets linked", {
     highlight("mean$new()"),
     "<span><span class='nv'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='o'>$</span><span class='nf'>new</span><span class='o'>(</span><span class='o'>)</span></span>"
   )
-  # But not new itself
-  expect_equal(
-    highlight("new()"),
-    "<span><span class='nf'>new</span><span class='o'>(</span><span class='o'>)</span></span>"
-  )
 })
 
 test_that("ansi escapes are converted to html", {

@@ -1,5 +1,7 @@
 # downlit (development version)
 
+* downlit now uses the rdtools package to look up help topics, which standardises this behaviour across documentation packages. One consequence is that `highlight()` and `autolink()` now link function calls to topics documented in any base package (such as `methods` and `tools`), so calls like `new()` are linked.
+
 # downlit 0.4.5
 
 * Fix broken test
