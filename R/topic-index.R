@@ -26,15 +26,17 @@ find_rdname <- function(package, topic) {
 find_rdname_attached <- function(topic, is_fun = FALSE) {
   packages <- c(
     getOption("downlit.attached"),
-    rdtools::pkgs_search_base()
+    rdtools::pkg_search_base()
   )
 
-  for (match in rdtools::topic_find_all(topic, packages)) {
+  matches <- rdtools::topic_find_all(topic, packages)
+  for (i in seq_len(nrow(matches))) {
+    package <- matches$package[[i]]
     # When linking a bare call, only link to exported symbols
-    if (is_fun && !is_exported(topic, match$package)) {
+    if (is_fun && !is_exported(topic, package)) {
       next
     }
-    return(list(rdname = match$file, package = match$package))
+    return(list(rdname = matches$file[[i]], package = package))
   }
   NULL
 }

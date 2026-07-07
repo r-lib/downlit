@@ -210,7 +210,7 @@ href_topic_remote <- function(topic, package) {
   }
 
   # If it's re-exported, follow it to the package that actually documents it
-  source <- rdtools::topic_source(topic, package)
+  source <- rdtools::topic_origin(topic, package)
   if (source != package) {
     href_topic_remote(topic, source)
   } else {
@@ -225,7 +225,7 @@ is_exported <- function(name, package) {
 # Follow a topic documented in the local package's reexports.Rd to the
 # package that actually documents it.
 href_topic_reexported <- function(topic, package) {
-  source <- rdtools::topic_source(topic, package)
+  source <- rdtools::topic_origin(topic, package)
   if (source == package) {
     return(NA_character_)
   }
@@ -334,5 +334,5 @@ href_package_ref <- function(package) {
 }
 
 is_base_package <- function(x) {
-  x %in% rdtools::pkgs_search_base()
+  x %in% rdtools::pkg_search_base()
 }
